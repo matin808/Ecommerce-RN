@@ -4,6 +4,7 @@ import Home from '../Screens/Home';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RootStackParamList} from './types';
 import AuthStack from './AuthStack';
+import Login from '../Screens/Auth/Login';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -15,6 +16,11 @@ const RootNavigation = () => {
           options={{headerShown: false}}
           name="AuthStack"
           component={AuthStack}
+        />
+        <RootStack.Screen
+          options={{headerShown: false}}
+          name="Login"
+          component={Login}
         />
         <RootStack.Screen
           options={{headerShown: false}}

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {MMKV} from 'react-native-mmkv';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RootStackParamList} from './types';
-import OnboardingScreen from '../Screens/Onboarding';
+import OnboardingScreen from '../Screens/Auth/Onboarding';
 import Login from '../Screens/Auth/Login';
 
 const Auth = createNativeStackNavigator<RootStackParamList>();
@@ -24,7 +24,7 @@ const AuthStack = () => {
 
   return (
     <Auth.Navigator>
-      {isFirstLaunch ? (
+      {!isFirstLaunch ? (
         <Auth.Screen
           options={{headerShown: false}}
           name="Onboarding"

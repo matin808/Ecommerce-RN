@@ -2,8 +2,9 @@
 import {Image, StyleSheet} from 'react-native';
 import React from 'react';
 import Onboarding from 'react-native-onboarding-swiper';
-import {OnboardingScreenNavigationProps} from '../../Navigation/types';
+import {OnboardingScreenNavigationProps} from '../../../Navigation/types';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {colors} from '../../../assets/colors/Colors';
 
 type doneProps = {
   handlePress: (arg: any) => void;
@@ -26,8 +27,8 @@ const OnboardingScreen = ({navigation}: OnboardingScreenNavigationProps) => {
   return (
     <>
       <Onboarding
-        onSkip={() => navigation.replace('Home')}
-        onDone={() => navigation.replace('Home')}
+        onSkip={() => navigation.replace('Login')}
+        onDone={() => navigation.replace('Login')}
         DoneButtonComponent={() => <DoneComponent handlePress={handlePress} />}
         bottomBarColor="#67C4A7"
         titleStyles={styles.onboardingTitleStyle}
@@ -85,11 +86,11 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   onboardingTitleStyle: {
-    color: '#67C4A7',
+    color: colors.ACTIONCOLOR,
     fontFamily: 'Roboto-Regular',
   },
   onboardingSubStyle: {
-    color: 'gray',
+    color: colors.TEXTDARK,
     fontFamily: 'Roboto-light',
     fontSize: 18,
   },

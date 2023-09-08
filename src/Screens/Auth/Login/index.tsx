@@ -4,7 +4,7 @@ import React from 'react';
 const Login = () => {
   return (
     <SafeAreaView>
-      <Text>Login</Text>
+      <Text>Hello</Text>
     </SafeAreaView>
   );
 };

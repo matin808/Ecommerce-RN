@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import {Image, StyleSheet} from 'react-native';
+import {Image, StatusBar, StyleSheet} from 'react-native';
 import React from 'react';
 import Onboarding from 'react-native-onboarding-swiper';
 import {OnboardingScreenNavigationProps} from '../../../Navigation/types';
@@ -14,7 +14,7 @@ const DoneComponent = ({handlePress}: doneProps) => (
   <Ionicons
     style={styles.IconStyle}
     onPress={handlePress}
-    color="#fff"
+    color={colors.TEXTDARK}
     name="checkmark-done"
     size={35}
   />
@@ -26,16 +26,19 @@ const OnboardingScreen = ({navigation}: OnboardingScreenNavigationProps) => {
   };
   return (
     <>
+      <StatusBar backgroundColor={colors.UIBG} />
       <Onboarding
         onSkip={() => navigation.replace('Login')}
         onDone={() => navigation.replace('Login')}
         DoneButtonComponent={() => <DoneComponent handlePress={handlePress} />}
-        bottomBarColor="#67C4A7"
+        bottomBarHighlight={false}
+        // bottomBarColor="#67C4A7"
+        bottomBarColor={colors.UIBG}
         titleStyles={styles.onboardingTitleStyle}
         subTitleStyles={styles.onboardingSubStyle}
         pages={[
           {
-            backgroundColor: '#fff',
+            backgroundColor: colors.UIBG,
             image: (
               <Image
                 style={styles.ImageStyle}
@@ -48,7 +51,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenNavigationProps) => {
             subtitle: 'Get variety of products with just few clicks',
           },
           {
-            backgroundColor: '#fff',
+            backgroundColor: colors.UIBG,
             image: (
               <Image
                 style={styles.ImageStyle}
@@ -61,8 +64,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenNavigationProps) => {
             subtitle: 'All type of furniture and tables available',
           },
           {
-            backgroundColor: '#fff',
-
+            backgroundColor: colors.UIBG,
             image: (
               <Image
                 style={styles.ImageStyle}
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-light',
     fontSize: 18,
   },
-  ImageStyle: {width: 200, height: 250},
+  ImageStyle: {width: 220, height: 280},
 });
 
 export default OnboardingScreen;

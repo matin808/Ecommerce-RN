@@ -15,7 +15,33 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
     password: '',
   });
 
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+  });
+
   const onhandleChange = (field: string, value: string) => {
+    if (field === 'email') {
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+      if (reg.test(value) === false) {
+        setErrors({...errors, email: 'Invalid email format'});
+        return;
+      }
+    }
+    if (field === 'password') {
+      let reg =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{6,30}$/;
+      if (reg.test(value) === false) {
+        setErrors({
+          ...errors,
+          password:
+            'Password should containe at least 1(capital, small, special character and number)',
+        });
+        return;
+      }
+    }
+    setErrors({...errors, [field]: ''});
+
     setForm({...form, [field]: value});
   };
 
@@ -49,6 +75,7 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
             style={styles.TextInputContainer}
             handleChange={(value: string) => onhandleChange('email', value)}
           />
+          <Text style={styles.errorText}>{errors.email}</Text>
           <CustomText style={styles.LabelStyle} title="Password" />
           <Input
             placeHolder="******"
@@ -58,6 +85,8 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
             showIcon={true}
             handleVisible={() => setVisiblePass(!visiblePass)}
           />
+          <Text style={styles.errorText}>{errors.password}</Text>
+
           <CustomText
             onPress={() => navigation.navigate('ForgetPassword')}
             style={styles.ForgetPassStyle}
@@ -169,9 +198,17 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
 
-  // linkStyle : {
+  errorText: {
+    color: 'red',
+    // fontSize: 12,
+    fontWeight: '500',
+    marginLeft: 5,
+    // marginBottom: 5,
+  },
 
-  // }
+  linkStyle: {
+    color: 'blue',
+  },
 });
 
 export default Login;

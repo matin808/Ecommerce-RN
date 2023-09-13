@@ -1,7 +1,7 @@
 import {StyleProp, StyleSheet, TextInput, View} from 'react-native';
 import React from 'react';
 import IconComponent from '../Icon';
-import {colors} from '../../../assets/colors/Colors';
+// import {colors} from '../../../assets/colors/Colors';
 
 interface InputProps {
   placeHolder?: string;
@@ -25,7 +25,7 @@ const Input = (props: InputProps) => {
         onChangeText={(txt: any) => handleChange(txt)}
       />
       {showIcon ? (
-        <View style={{marginRight: 10}}>
+        <View style={styles.IconStyle}>
           <IconComponent name="eye" color="gray" handlePress={handleVisible} />
         </View>
       ) : null}
@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 6,
     fontFamily: 'Roboto-Regular',
+  },
+  IconStyle: {
+    marginRight: 10,
   },
 });
 

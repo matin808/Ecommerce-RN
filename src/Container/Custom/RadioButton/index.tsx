@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import {colors} from '../../../assets/colors/Colors';
 import {RadioGroup} from 'react-native-radio-buttons-group';
+import {StyleSheet, View} from 'react-native';
 
 interface IRadioBtn {
   handleChange: (arg: any) => void;
@@ -25,13 +26,21 @@ const RadioBtn = (props: IRadioBtn) => {
     [],
   );
   return (
-    <RadioGroup
-      layout="row"
-      radioButtons={radioButtons}
-      onPress={t => handleChange(t)}
-      selectedId={data}
-    />
+    <View style={styles.Container}>
+      <RadioGroup
+        layout="row"
+        radioButtons={radioButtons}
+        onPress={t => handleChange(t)}
+        selectedId={data}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  Container: {
+    marginTop: 5,
+  },
+});
 
 export default RadioBtn;

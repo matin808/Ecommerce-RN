@@ -1,4 +1,4 @@
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Alert} from 'react-native';
 import React, {useState} from 'react';
 import IconComponent from '../../../Container/Custom/Icon';
 import {colors} from '../../../assets/colors/Colors';
@@ -7,10 +7,15 @@ import Input from '../../../Container/Custom/TextInput';
 import Button from '../../../Container/Custom/Button';
 
 const ForgetPassword = () => {
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState<string>('');
   const handlePress = () => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (reg.test(email) === false) {
+      Alert.alert('Email Address is badly formated');
+    }
     console.log(email);
   };
+
   return (
     <View style={styles.Container}>
       <View style={styles.Icon}>

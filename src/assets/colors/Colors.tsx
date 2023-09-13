@@ -3,4 +3,5 @@ export const colors = {
   CARDBG: '#FAFAFC',
   TEXTDARK: '#393F42',
   UIBG: '#FFFFFF',
+  TEXT: '#222222',
 };

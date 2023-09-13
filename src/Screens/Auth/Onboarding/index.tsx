@@ -3,34 +3,32 @@ import {Image, StatusBar, StyleSheet} from 'react-native';
 import React from 'react';
 import Onboarding from 'react-native-onboarding-swiper';
 import {OnboardingScreenNavigationProps} from '../../../Navigation/types';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../../assets/colors/Colors';
-
-type doneProps = {
-  handlePress: (arg: any) => void;
-};
-
-const DoneComponent = ({handlePress}: doneProps) => (
-  <Ionicons
-    style={styles.IconStyle}
-    onPress={handlePress}
-    color={colors.TEXTDARK}
-    name="checkmark-done"
-    size={35}
-  />
-);
+import IconComponent from '../../../Container/Custom/Icon';
 
 const OnboardingScreen = ({navigation}: OnboardingScreenNavigationProps) => {
   const handlePress = () => {
-    navigation.replace('Home');
+    navigation.replace('Login');
   };
+
+  const HandleDone = () => (
+    <IconComponent
+      style={styles.IconStyle}
+      handlePress={handlePress}
+      color={colors.TEXTDARK}
+      name="checkmark-done"
+      size={35}
+      use="IonIcons"
+    />
+  );
+
   return (
     <>
       <StatusBar backgroundColor={colors.UIBG} />
       <Onboarding
         onSkip={() => navigation.replace('Login')}
         onDone={() => navigation.replace('Login')}
-        DoneButtonComponent={() => <DoneComponent handlePress={handlePress} />}
+        DoneButtonComponent={() => <HandleDone />}
         bottomBarHighlight={false}
         // bottomBarColor="#67C4A7"
         bottomBarColor={colors.UIBG}

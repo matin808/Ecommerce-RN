@@ -7,6 +7,7 @@ const App = () => {
   useEffect(() => {
     if (Platform.OS === 'android') SplashScreen.hide();
   }, []);
+
   return <RootNavigation />;
 };
 

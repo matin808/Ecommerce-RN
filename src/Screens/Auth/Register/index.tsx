@@ -8,11 +8,13 @@ import {RegisterScreenNavigationProps} from '../../../Navigation/types';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import RadioBtn from '../../../Container/Custom/RadioButton';
 import axios from 'axios';
+import {useDispatch} from 'react-redux';
+import {addUser} from '../../../Redux/Users/userSlice';
 
 const Register = ({navigation}: RegisterScreenNavigationProps) => {
   const [passVisible, setPassVisible] = useState(true);
   const [ConfirmPassVisible, setConfirmPassVisible] = useState(true);
-
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',
@@ -99,33 +101,33 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
       Alert.alert('Please fill in all fields');
       return;
     }
+    dispatch(addUser(form));
+    // var bodyFormData = new FormData();
+    // bodyFormData.append('first_name', form.first_name);
+    // bodyFormData.append('last_name', form.last_name);
+    // bodyFormData.append('email', form.email);
+    // bodyFormData.append('password', form.password);
+    // bodyFormData.append('confirm_password', form.confirm_password);
+    // bodyFormData.append('gender', form.gender);
+    // bodyFormData.append('phone_no', form.phone_no);
+    // console.log('body', bodyFormData);
 
-    var bodyFormData = new FormData();
-    bodyFormData.append('first_name', form.first_name);
-    bodyFormData.append('last_name', form.last_name);
-    bodyFormData.append('email', form.email);
-    bodyFormData.append('password', form.password);
-    bodyFormData.append('confirm_password', form.confirm_password);
-    bodyFormData.append('gender', form.gender);
-    bodyFormData.append('phone_no', form.phone_no);
-    console.log('body', bodyFormData);
-
-    axios
-      .post(
-        'http://staging.php-dev.in:8844/trainingapp/api/users/register',
-        bodyFormData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      )
-      .then(function (response) {
-        console.log('response', response.data);
-      })
-      .catch(function (response) {
-        console.log('response err', response);
-      });
+    // axios
+    //   .post(
+    //     'http://staging.php-dev.in:8844/trainingapp/api/users/register',
+    //     bodyFormData,
+    //     {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //       },
+    //     },
+    //   )
+    //   .then(function (response) {
+    //     console.log('response', response.data);
+    //   })
+    //   .catch(function (response) {
+    //     console.log('response err', response);
+    //   });
   };
 
   return (

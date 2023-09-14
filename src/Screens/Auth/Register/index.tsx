@@ -5,7 +5,6 @@ import Input from '../../../Container/Custom/TextInput';
 import {colors} from '../../../assets/colors/Colors';
 import Button from '../../../Container/Custom/Button';
 import {RegisterScreenNavigationProps} from '../../../Navigation/types';
-
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import RadioBtn from '../../../Container/Custom/RadioButton';
 import axios from 'axios';
@@ -122,10 +121,10 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
         },
       )
       .then(function (response) {
-        console.log(response);
+        console.log('response', response.data);
       })
       .catch(function (response) {
-        console.log(response);
+        console.log('response err', response);
       });
   };
 
@@ -223,14 +222,11 @@ const styles = StyleSheet.create({
   RegisterContainer: {
     flex: 1,
     paddingVertical: 5,
-
-    // marginBottom: 50,
   },
 
   ImageContainer: {
     alignSelf: 'center',
     marginTop: 20,
-    // flex: 0.65,
   },
 
   TextStyle: {
@@ -244,7 +240,6 @@ const styles = StyleSheet.create({
   TextInputContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // flex: 1,
     backgroundColor: colors.UIBG,
     marginVertical: 5,
     borderColor: colors.UIBG,
@@ -255,7 +250,6 @@ const styles = StyleSheet.create({
   formContainer: {
     marginTop: 15,
     marginHorizontal: 20,
-    // minHeight: '50%', // here
   },
 
   LabelStyle: {
@@ -289,10 +283,8 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-    // fontSize: 12,
     fontWeight: '500',
     marginLeft: 5,
-    // marginBottom: 5,
   },
 
   linkStyle: {

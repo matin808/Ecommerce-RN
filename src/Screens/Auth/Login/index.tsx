@@ -6,6 +6,7 @@ import {colors} from '../../../assets/colors/Colors';
 import Button from '../../../Container/Custom/Button';
 import {LoginScreenNavigationProps} from '../../../Navigation/types';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
 
 const Login = ({navigation}: LoginScreenNavigationProps) => {
   const [visiblePass, setVisiblePass] = useState(true);
@@ -50,7 +51,27 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
       Alert.alert('Both field are required');
     } else {
       console.log(form);
-      navigation.navigate('Home');
+      // axios
+      var bodyFormData = new FormData();
+      bodyFormData.append('email', form.email);
+      bodyFormData.append('password', form.password);
+      axios
+        .post(
+          'http://staging.php-dev.in:8844/trainingapp/api/users/register',
+          bodyFormData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        )
+        .then(function (response) {
+          console.log('response', response.data);
+        })
+        .catch(function (response) {
+          console.log('response err', response);
+        });
+      navigation.replace('Home');
     }
   };
   return (
@@ -128,7 +149,6 @@ const styles = StyleSheet.create({
   TextInputContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // flex: 1,
     backgroundColor: colors.UIBG,
     marginVertical: 5,
     borderColor: colors.UIBG,
@@ -200,10 +220,8 @@ const styles = StyleSheet.create({
 
   errorText: {
     color: 'red',
-    // fontSize: 12,
     fontWeight: '500',
     marginLeft: 5,
-    // marginBottom: 5,
   },
 
   linkStyle: {

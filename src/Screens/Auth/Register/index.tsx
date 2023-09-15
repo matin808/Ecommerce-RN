@@ -1,5 +1,5 @@
 import {Alert, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CustomText from '../../../Container/Custom/Text';
 import Input from '../../../Container/Custom/TextInput';
 import {colors} from '../../../assets/colors/Colors';
@@ -7,9 +7,16 @@ import Button from '../../../Container/Custom/Button';
 import {RegisterScreenNavigationProps} from '../../../Navigation/types';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import RadioBtn from '../../../Container/Custom/RadioButton';
-import axios from 'axios';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {addUser} from '../../../Redux/Users/userSlice';
+
+/**
+ *
+ * @param param0
+ * @author Matin Kadri
+ *
+ * @returns
+ */
 
 const Register = ({navigation}: RegisterScreenNavigationProps) => {
   const [passVisible, setPassVisible] = useState(true);
@@ -86,8 +93,20 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
 
     setForm({...form, [field]: value});
   };
+  const d = useSelector(state => state.users.success);
 
-  const handlePress = () => {
+  // useEffect(() => {
+  //   if (d) {
+  //     navigation.navigate('Home');
+  //   } else {
+  //     navigation.navigate('Register');
+  //   }
+  // }, []);
+
+  // const data = useSelector(state => state.users.users);
+  const isSuccess = useSelector(state => state.users.success);
+  const isError = useSelector(state => state.users.error);
+  const handlePress = async () => {
     if (
       form.first_name === '' ||
       form.last_name === '' ||
@@ -100,34 +119,19 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
       console.log(form);
       Alert.alert('Please fill in all fields');
       return;
+    } else {
+      try {
+        await dispatch(addUser(form) as any).unwrap();
+        navigation.navigate('Tabs');
+        if (isError) {
+          console.log('Something went wrong');
+        }
+        // console.log('slecteregister', data);
+        console.log('sss', isSuccess);
+      } catch (err) {
+        console.log('rrr', err);
+      }
     }
-    dispatch(addUser(form));
-    // var bodyFormData = new FormData();
-    // bodyFormData.append('first_name', form.first_name);
-    // bodyFormData.append('last_name', form.last_name);
-    // bodyFormData.append('email', form.email);
-    // bodyFormData.append('password', form.password);
-    // bodyFormData.append('confirm_password', form.confirm_password);
-    // bodyFormData.append('gender', form.gender);
-    // bodyFormData.append('phone_no', form.phone_no);
-    // console.log('body', bodyFormData);
-
-    // axios
-    //   .post(
-    //     'http://staging.php-dev.in:8844/trainingapp/api/users/register',
-    //     bodyFormData,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //       },
-    //     },
-    //   )
-    //   .then(function (response) {
-    //     console.log('response', response.data);
-    //   })
-    //   .catch(function (response) {
-    //     console.log('response err', response);
-    //   });
   };
 
   return (

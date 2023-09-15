@@ -6,11 +6,12 @@ import {colors} from '../../../assets/colors/Colors';
 import Button from '../../../Container/Custom/Button';
 import {LoginScreenNavigationProps} from '../../../Navigation/types';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import axios from 'axios';
+import {useDispatch} from 'react-redux';
+import {signInUser} from '../../../Redux/Users/userSlice';
 
 const Login = ({navigation}: LoginScreenNavigationProps) => {
   const [visiblePass, setVisiblePass] = useState(true);
-
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -46,32 +47,18 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
     setForm({...form, [field]: value});
   };
 
-  const handlePress = () => {
+  const handlePress = async () => {
     if (form.email === '' || form.password === '') {
       Alert.alert('Both field are required');
     } else {
       console.log(form);
       // axios
-      var bodyFormData = new FormData();
-      bodyFormData.append('email', form.email);
-      bodyFormData.append('password', form.password);
-      axios
-        .post(
-          'http://staging.php-dev.in:8844/trainingapp/api/users/register',
-          bodyFormData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          },
-        )
-        .then(function (response) {
-          console.log('response', response.data);
-        })
-        .catch(function (response) {
-          console.log('response err', response);
-        });
-      navigation.replace('Home');
+      try {
+        await dispatch(signInUser(form) as any);
+        navigation.replace('Tabs');
+      } catch (err) {
+        console.log('Sigin err', err);
+      }
     }
   };
   return (

@@ -8,46 +8,58 @@ import Login from '../Screens/Auth/Login';
 import Register from '../Screens/Auth/Register';
 import {colors} from '../assets/colors/Colors';
 import ForgetPassword from '../Screens/Auth/ForgetPassword';
+import {useSelector} from 'react-redux';
+// import Home from '../Screens/Home';
+import MyTabs from './BottomNavigation';
 
 const Auth = createNativeStackNavigator<RootStackParamList>();
 
 const AuthStack = () => {
-  const [isFirstLaunch, setIsFirstLaunch] = useState(false);
+  const [isFirstLaunch, setIsFirstLaunch] = useState(-1);
   const storage = new MMKV();
+  const data = useSelector(state => state.users);
+  console.log('suthstack', data.users.length);
 
   useEffect(() => {
-    const value = storage.getBoolean('alreadyLaunch');
-
-    if (value === undefined) {
-      storage.set('alreadyLaunch', true);
-      setIsFirstLaunch(true);
+    if (storage.getBoolean('alreadyLaunched') === undefined) {
+      storage.set('alreadyLaunched', true);
+      setIsFirstLaunch(0);
+      // routeName = 'Onboarding';
     } else {
-      setIsFirstLaunch(false);
+      setIsFirstLaunch(1);
     }
   }, []);
-
-  // let screenToShow: any = isFirstLaunch ? 'Login' : 'Onboarding';
-  // let ComponentToShow: any = isFirstLaunch ? Login : OnboardingScreen;
-  let screenToShow: any = isFirstLaunch ? 'Onboarding' : 'Login';
-  let ComponentToShow: any = isFirstLaunch ? OnboardingScreen : Login;
+  let route: any;
+  console.log(isFirstLaunch);
+  if (isFirstLaunch === -1) {
+    return null;
+  } else if (isFirstLaunch === 0) {
+    route = 'OnboardingScreen';
+  } else if (data.users.length === 0) {
+    route = 'Login';
+  } else if (data.users[0].access_token) {
+    route = 'Tabs';
+  }
 
   return (
-    <Auth.Navigator>
+    <Auth.Navigator initialRouteName={route}>
       <Auth.Screen
         options={{headerShown: false}}
-        name={screenToShow}
-        component={ComponentToShow}
+        name="Onboarding"
+        component={OnboardingScreen}
       />
-      {screenToShow === 'Login' ? null : (
-        <Auth.Screen
-          options={{headerShown: false}}
-          name="Login"
-          component={Login}
-        />
-      )}
+      <Auth.Screen
+        options={{headerShown: false}}
+        name="Login"
+        component={Login}
+      />
 
       <Auth.Screen
-        // options={{headerShown: false}}
+        options={{headerShown: false}}
+        name="Tabs"
+        component={MyTabs}
+      />
+      <Auth.Screen
         name="Register"
         component={Register}
         options={{

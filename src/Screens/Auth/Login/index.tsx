@@ -6,34 +6,37 @@ import {colors} from '../../../assets/colors/Colors';
 import Button from '../../../Container/Custom/Button';
 import {LoginScreenNavigationProps} from '../../../Navigation/types';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useDispatch} from 'react-redux';
 import {signInUser} from '../../../Redux/Users/userSlice';
+import {validateEmail, validatePassword} from '../../../utils/Validator';
+import {useAppDispatch} from '../../../Redux/store';
+
+export interface ILoginForm {
+  email: string;
+  password: string;
+}
 
 const Login = ({navigation}: LoginScreenNavigationProps) => {
   const [visiblePass, setVisiblePass] = useState(true);
-  const dispatch = useDispatch();
-  const [form, setForm] = useState({
+  const dispatch = useAppDispatch();
+  const [form, setForm] = useState<ILoginForm>({
     email: '',
     password: '',
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<ILoginForm>({
     email: '',
     password: '',
   });
 
   const onhandleChange = (field: string, value: string) => {
     if (field === 'email') {
-      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-      if (reg.test(value) === false) {
+      if (!validateEmail(value)) {
         setErrors({...errors, email: 'Invalid email format'});
         return;
       }
     }
     if (field === 'password') {
-      let reg =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{6,30}$/;
-      if (reg.test(value) === false) {
+      if (!validatePassword(value)) {
         setErrors({
           ...errors,
           password:
@@ -51,10 +54,8 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
     if (form.email === '' || form.password === '') {
       Alert.alert('Both field are required');
     } else {
-      console.log(form);
-      // axios
       try {
-        await dispatch(signInUser(form) as any);
+        await dispatch(signInUser(form));
         navigation.replace('Tabs');
       } catch (err) {
         console.log('Sigin err', err);

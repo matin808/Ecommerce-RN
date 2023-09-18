@@ -1,3 +1,4 @@
+import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
@@ -7,7 +8,12 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   ForgetPassword: undefined;
+  CategoryItems: {name: string};
+  Home: undefined;
+  ProductDetails: {id: number; name: string};
 };
+
+export type MyNavigationProp = NavigationProp<ParamListBase>;
 
 export type OnboardingScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
@@ -29,4 +35,16 @@ export type RegisterScreenNavigationProps = NativeStackScreenProps<
 export type ForgetScreenNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'ForgetPassword'
+>;
+export type CategoryItemsScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'CategoryItems'
+>;
+export type HomeScreenNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Home'
+>;
+export type ProductDetailsNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'ProductDetails'
 >;

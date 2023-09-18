@@ -1,44 +1,60 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import {baseUrl, register, signin} from '../../utils/constants';
+import {IFormState} from '../../Screens/Auth/Register';
+import {ILoginForm} from '../../Screens/Auth/Login';
 
-const initialState = {
+/**
+ * @author Matin Kadri
+ * @param Handling Authentication of users
+ */
+
+interface IInitialState {
+  users: any[];
+  success: boolean;
+  error: boolean;
+  loading: boolean;
+}
+
+interface IState {
+  users: {
+    users?: any[];
+  };
+}
+
+const initialState: IInitialState = {
   users: [],
   success: false,
   error: false,
+  loading: false,
 };
 
 export const signInUser = createAsyncThunk(
   'users/signInUser',
-  async (form: any, thunkAPI) => {
+  async (form: ILoginForm, thunkAPI) => {
     let bodyFormData = new FormData();
     bodyFormData.append('email', form.email);
     bodyFormData.append('password', form.password);
     console.log('fromm thunk', bodyFormData);
 
     try {
-      const response = await axios.post(
-        'http://staging.php-dev.in:8844/trainingapp/api/users/login',
-        bodyFormData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+      const response = await axios.post(`${baseUrl}/${signin}`, bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-      );
+      });
       console.log('singin', response.data);
-      //
       return response.data;
     } catch (err: any) {
       console.log('singin err', err);
       return thunkAPI.rejectWithValue(err);
-      // return err;
     }
   },
 );
 
 export const addUser = createAsyncThunk(
   'users/addUser',
-  async (form: any, thunkAPI) => {
+  async (form: IFormState, thunkAPI) => {
     let bodyFormData = new FormData();
     console.log('userrr', form);
     bodyFormData.append('first_name', form.first_name);
@@ -52,7 +68,7 @@ export const addUser = createAsyncThunk(
 
     try {
       const response = await axios.post(
-        'http://staging.php-dev.in:8844/trainingapp/api/users/register',
+        `${baseUrl}/${register}`,
         bodyFormData,
         {
           headers: {
@@ -61,13 +77,10 @@ export const addUser = createAsyncThunk(
         },
       );
       console.log('ddd', response.data);
-      //
-
       return response.data;
     } catch (err: any) {
       console.log('myerr', err);
       return thunkAPI.rejectWithValue(err);
-      // return err;
     }
   },
 );
@@ -77,30 +90,47 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(addUser.pending, (state, action) => {
-      state.status = 'loading';
+    builder.addCase(addUser.pending, state => {
+      state.loading = true;
       console.log('Loaddding');
     });
     builder.addCase(addUser.fulfilled, (state, action) => {
       state.users.push(action.payload.data);
       state.success = true;
+      state.loading = false;
       console.log('my state', state.users);
     });
-    builder.addCase(addUser.rejected, (state, action) => {
-      state.status = 'failed';
+    builder.addCase(addUser.rejected, state => {
+      state.loading = false;
       state.error = true;
       console.log('build err', state.error);
     });
-    //
+
+    /**
+     * @author Matin Kadri
+     * @param Handling Sign IN user state
+     */
+
+    builder.addCase(signInUser.pending, (state, action) => {
+      console.log('builder sign in', action.payload);
+      state.loading = true;
+    });
 
     builder.addCase(signInUser.fulfilled, (state, action) => {
       console.log('builder sign in', action.payload);
       state.users.push(action.payload.data);
       state.success = true;
+      state.loading = false;
+    });
+
+    builder.addCase(signInUser.rejected, (state, action) => {
+      console.log('builder sign in', action.payload);
+      state.success = true;
+      state.error = true;
     });
   },
 });
 
-export const getAllUsers = state => state.users.users;
+export const getAllUsers = (state: IState) => state.users.users;
 
 export default userSlice.reducer;

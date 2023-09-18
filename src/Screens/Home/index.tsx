@@ -1,13 +1,15 @@
-import {SafeAreaView} from 'react-native';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
 import Header from '../../Container/Home/Header';
 import {colors} from '../../assets/colors/Colors';
-import {useSelector} from 'react-redux';
 import {getAllUsers} from '../../Redux/Users/userSlice';
 import Carousel from '../../Container/Home/Carousel';
 import Category from '../../Container/Home/Category';
-const Home = ({navigation}) => {
-  const userData = useSelector(getAllUsers);
+import {useAppSelector} from '../../Redux/store';
+
+const Home = () => {
+  const userData = useAppSelector(getAllUsers);
 
   useEffect(() => {
     if (userData) {
@@ -16,12 +18,18 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: colors.UIBG}}>
+    <SafeAreaView style={styles.container}>
       <Header />
-      <Carousel />
-      <Category />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Carousel />
+        <Category />
+      </ScrollView>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {flex: 1, backgroundColor: colors.UIBG},
+});
 
 export default Home;

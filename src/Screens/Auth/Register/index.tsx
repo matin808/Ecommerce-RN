@@ -1,5 +1,5 @@
 import {Alert, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import CustomText from '../../../Container/Custom/Text';
 import Input from '../../../Container/Custom/TextInput';
 import {colors} from '../../../assets/colors/Colors';
@@ -7,22 +7,44 @@ import Button from '../../../Container/Custom/Button';
 import {RegisterScreenNavigationProps} from '../../../Navigation/types';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import RadioBtn from '../../../Container/Custom/RadioButton';
-import {useDispatch, useSelector} from 'react-redux';
 import {addUser} from '../../../Redux/Users/userSlice';
+import {
+  validateEmail,
+  validatePassword,
+  validatePhoneNo,
+} from '../../../utils/Validator';
+import {useAppDispatch, useAppSelector} from '../../../Redux/store';
 
 /**
  *
  * @param param0
  * @author Matin Kadri
- *
  * @returns
  */
+
+export interface IFormState {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  gender: string;
+  phone_no: number;
+}
+
+interface IErrorState {
+  general: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  phone_no: string;
+}
 
 const Register = ({navigation}: RegisterScreenNavigationProps) => {
   const [passVisible, setPassVisible] = useState(true);
   const [ConfirmPassVisible, setConfirmPassVisible] = useState(true);
-  const dispatch = useDispatch();
-  const [form, setForm] = useState({
+  const dispatch = useAppDispatch();
+  const [form, setForm] = useState<IFormState>({
     first_name: '',
     last_name: '',
     email: '',
@@ -32,7 +54,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
     phone_no: 1231231230,
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<IErrorState>({
     general: '',
     email: '',
     password: '',
@@ -42,16 +64,13 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
 
   const onhandleChange = (field: string, value: any) => {
     if (field === 'email') {
-      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-      if (reg.test(value) === false) {
-        setErrors({...errors, email: 'Invalid email format'});
+      if (!validateEmail(value)) {
+        setErrors({...errors, general: '', email: 'Invalid email format'});
         return;
       }
     }
     if (field === 'password') {
-      let reg =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{6,30}$/;
-      if (reg.test(value) === false) {
+      if (!validatePassword(value)) {
         setErrors({
           ...errors,
           password:
@@ -79,11 +98,10 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
     }
 
     if (field === 'phone_no') {
-      const phoneNumberRegex = /^\d{10}$/;
-      if (phoneNumberRegex.test(value) === false) {
+      if (!validatePhoneNo(value)) {
         setErrors({
           ...errors,
-          phone_no: 'Phone number should be at least 10 number long',
+          phone_no: 'Phone number should be 10 number long',
         });
         return;
       }
@@ -93,19 +111,9 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
 
     setForm({...form, [field]: value});
   };
-  const d = useSelector(state => state.users.success);
+  const isSuccess = useAppSelector(state => state.users.success);
+  const isError = useAppSelector(state => state.users.error);
 
-  // useEffect(() => {
-  //   if (d) {
-  //     navigation.navigate('Home');
-  //   } else {
-  //     navigation.navigate('Register');
-  //   }
-  // }, []);
-
-  // const data = useSelector(state => state.users.users);
-  const isSuccess = useSelector(state => state.users.success);
-  const isError = useSelector(state => state.users.error);
   const handlePress = async () => {
     if (
       form.first_name === '' ||
@@ -121,13 +129,13 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
       return;
     } else {
       try {
-        await dispatch(addUser(form) as any).unwrap();
-        navigation.navigate('Tabs');
+        await dispatch(addUser(form)).unwrap();
+        navigation.replace('Tabs');
+        console.log('sss', isSuccess);
         if (isError) {
           console.log('Something went wrong');
         }
         // console.log('slecteregister', data);
-        console.log('sss', isSuccess);
       } catch (err) {
         console.log('rrr', err);
       }
@@ -141,7 +149,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
           <Image source={require('../../../assets/images/register.png')} />
         </View>
         <View style={styles.formContainer}>
-          <CustomText style={styles.LabelStyle} title="First Name" />
+          <CustomText style={styles.LabelStyle} title="First Name*" />
           <Input
             placeHolder="john"
             style={styles.TextInputContainer}
@@ -149,7 +157,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
           />
           <Text style={styles.errorText}>{errors.general}</Text>
 
-          <CustomText style={styles.LabelStyle} title="Last Name" />
+          <CustomText style={styles.LabelStyle} title="Last Name*" />
           <Input
             placeHolder="Kahh"
             style={styles.TextInputContainer}
@@ -157,15 +165,18 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
           />
           <Text style={styles.errorText}>{errors.general}</Text>
 
-          <CustomText style={styles.LabelStyle} title="Email" />
+          <CustomText style={styles.LabelStyle} title="Email*" />
           <Input
             placeHolder="john@gmail.com"
             style={styles.TextInputContainer}
             handleChange={value => onhandleChange('email', value)}
           />
-          <Text style={styles.errorText}>{errors.email}</Text>
+          <Text style={styles.errorText}>
+            {errors.email}
+            {errors.general}
+          </Text>
 
-          <CustomText style={styles.LabelStyle} title="Password" />
+          <CustomText style={styles.LabelStyle} title="Password*" />
           <Input
             placeHolder="Jon@123"
             style={styles.TextInputContainer}
@@ -175,9 +186,11 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
             handleVisible={() => setPassVisible(!passVisible)}
           />
 
-          <Text style={styles.errorText}>{errors.password}</Text>
+          <Text style={styles.errorText}>
+            {errors.password} {errors.general}
+          </Text>
 
-          <CustomText style={styles.LabelStyle} title="Confirm Password" />
+          <CustomText style={styles.LabelStyle} title="Confirm Password*" />
           <Input
             placeHolder="Jon@123"
             style={styles.TextInputContainer}
@@ -186,9 +199,11 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
             showIcon={true}
             handleVisible={() => setConfirmPassVisible(!ConfirmPassVisible)}
           />
-          <Text style={styles.errorText}>{errors.confirm_password}</Text>
+          <Text style={styles.errorText}>
+            {errors.confirm_password} {errors.general}
+          </Text>
 
-          <CustomText style={styles.LabelStyle} title="Gender" />
+          <CustomText style={styles.LabelStyle} title="Gender*" />
 
           <RadioBtn
             handleChange={value => onhandleChange('gender', value)}
@@ -196,13 +211,15 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
           />
           <Text style={styles.errorText}>{errors.general}</Text>
 
-          <CustomText style={styles.LabelStyle} title="Phone Number" />
+          <CustomText style={styles.LabelStyle} title="Phone Number*" />
           <Input
             style={styles.TextInputContainer}
             placeHolder="1231231230"
             handleChange={value => onhandleChange('phone_no', value)}
           />
-          <Text style={styles.errorText}>{errors.phone_no}</Text>
+          <Text style={styles.errorText}>
+            {errors.phone_no} {errors.general}
+          </Text>
 
           <Button
             handlePress={handlePress}

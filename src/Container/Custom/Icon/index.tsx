@@ -7,7 +7,7 @@ interface IIconProps {
   name: string;
   size?: number;
   color?: string;
-  handlePress?: (arg: any) => void;
+  handlePress?: () => void;
   use?: string;
   style?: Object;
 }

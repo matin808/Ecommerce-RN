@@ -8,9 +8,9 @@ interface InputProps {
   value?: string;
   style?: StyleProp<Text>;
   secure?: boolean;
-  handleChange?: (arg1: any) => void;
+  handleChange: (event: string) => void;
   showIcon?: boolean;
-  handleVisible?: (arg: any) => void;
+  handleVisible?: () => void;
 }
 
 const Input = (props: InputProps) => {
@@ -22,7 +22,7 @@ const Input = (props: InputProps) => {
         style={styles.TextInputStyle}
         placeholder={placeHolder}
         secureTextEntry={secure}
-        onChangeText={(txt: any) => handleChange(txt)}
+        onChangeText={txt => handleChange(txt)}
       />
       {showIcon ? (
         <View style={styles.IconStyle}>

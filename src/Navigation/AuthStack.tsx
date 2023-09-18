@@ -8,23 +8,21 @@ import Login from '../Screens/Auth/Login';
 import Register from '../Screens/Auth/Register';
 import {colors} from '../assets/colors/Colors';
 import ForgetPassword from '../Screens/Auth/ForgetPassword';
-import {useSelector} from 'react-redux';
-// import Home from '../Screens/Home';
 import MyTabs from './BottomNavigation';
+import {useAppSelector} from '../Redux/store';
 
 const Auth = createNativeStackNavigator<RootStackParamList>();
 
 const AuthStack = () => {
   const [isFirstLaunch, setIsFirstLaunch] = useState(-1);
   const storage = new MMKV();
-  const data = useSelector(state => state.users);
+  const data = useAppSelector(state => state.users);
   console.log('suthstack', data.users.length);
 
   useEffect(() => {
     if (storage.getBoolean('alreadyLaunched') === undefined) {
       storage.set('alreadyLaunched', true);
       setIsFirstLaunch(0);
-      // routeName = 'Onboarding';
     } else {
       setIsFirstLaunch(1);
     }

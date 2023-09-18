@@ -5,35 +5,40 @@ import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigat
 import Settings from '../Screens/Settings';
 import Home from '../Screens/Home';
 import IconComponent from '../Container/Custom/Icon';
-import {colors} from '../assets/colors/Colors';
+
 const Tab = createMaterialBottomTabNavigator();
 
 function MyTabs() {
   return (
     <Tab.Navigator
       activeColor="#67C4A7"
-      inactiveColor="#67C4A7"
-      //   activeColor={colors.UIBG}
-      barStyle={{backgroundColor: '#fefefe'}}>
+      inactiveColor="#000"
+      // activeColor={colors.UIBG}
+      barStyle={{
+        backgroundColor: '#fefefe',
+        borderTopWidth: 1,
+        borderTopColor: 'lightgray',
+      }}>
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
           tabBarLabel: 'Home',
+
           tabBarIcon: ({color}) => (
             <IconComponent name="home" color={color} size={26} />
           ),
         }}
       />
       <Tab.Screen
-        name="Settings"
+        name="Explore"
         component={Settings}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: 'Explore',
           tabBarIcon: ({color}) => (
             <IconComponent
               use="IonIcons"
-              name="settings"
+              name="search"
               color={color}
               size={26}
             />
@@ -41,14 +46,14 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Setdtings"
+        name="Orders"
         component={Settings}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: 'Orders',
           tabBarIcon: ({color}) => (
             <IconComponent
               use="IonIcons"
-              name="settings"
+              name="bag-check"
               color={color}
               size={26}
             />

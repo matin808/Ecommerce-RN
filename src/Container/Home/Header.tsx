@@ -28,20 +28,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 10,
+    marginLeft: 15,
     alignItems: 'center',
   },
 
   TextContainer: {flexDirection: 'row'},
 
   TextStyle_one: {
-    color: colors.ACTIONCOLOR,
+    color: colors.TEXTDARK,
     fontSize: 30,
-    fontFamily: 'Roboto-Blod',
+    fontFamily: 'Montserrat-Regular',
   },
   TextStyle_two: {
-    color: colors.ACTIONCOLOR,
+    color: colors.TEXTDARK,
     fontSize: 30,
-    fontFamily: 'Roboto-Black',
+    fontFamily: 'Montserrat-SemiBold',
   },
 });
 

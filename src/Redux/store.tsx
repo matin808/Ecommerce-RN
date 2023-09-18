@@ -3,7 +3,6 @@ import userSlice from './Users/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
-  persistStore,
   persistReducer,
   FLUSH,
   REHYDRATE,
@@ -12,14 +11,18 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import productsSlice from './Products/ProductSlice';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
+  whitelist: ['users'],
 };
 
 const rootReducer = combineReducers({
   users: userSlice,
+  products: productsSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -33,3 +36,10 @@ export const store = configureStore({
       },
     }),
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

@@ -1,4 +1,9 @@
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  GestureResponderEvent,
+} from 'react-native';
 import React from 'react';
 import {colors} from '../../../assets/colors/Colors';
 
@@ -6,7 +11,7 @@ interface ButtonProps {
   title: string;
   // handlePress: (arg: any) => void;
   style?: Object;
-  handlePress: (arg: any) => void;
+  handlePress: (event: GestureResponderEvent) => void;
 }
 
 const Button = (props: ButtonProps) => {

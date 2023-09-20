@@ -16,7 +16,7 @@ interface IInitialState {
   loading: boolean;
 }
 
-interface IState {
+export interface IState {
   users: {
     users?: any[];
   };
@@ -131,6 +131,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const getAllUsers = (state: IState) => state.users.users;
+export const getUserData = (state: IState) => state.users.users;
 
 export default userSlice.reducer;

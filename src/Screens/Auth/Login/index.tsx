@@ -55,8 +55,10 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
       Alert.alert('Both field are required');
     } else {
       try {
-        await dispatch(signInUser(form));
-        navigation.replace('Tabs');
+        const data = await dispatch(signInUser(form)).unwrap();
+        if (data.status === 200) {
+          navigation.replace('Tabs');
+        }
       } catch (err) {
         console.log('Sigin err', err);
       }

@@ -14,6 +14,7 @@ import {useAppSelector} from '../../Redux/store';
 
 const Settings = () => {
   const userData = useAppSelector(state => state.users.users[0]);
+  const token = userData.access_token;
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -22,8 +23,8 @@ const Settings = () => {
   console.log('My user de', userData[0]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <PaperProvider>
+    <PaperProvider>
+      <SafeAreaView style={styles.container}>
         <View style={styles.main}>
           <CustomText style={styles.heading} title="My Profile" />
           <View style={styles.profileContainer}>
@@ -44,20 +45,24 @@ const Settings = () => {
             </View>
           </View>
         </View>
+        <View style={{marginHorizontal: 10}}>
+          <ChangePassword
+            token={token}
+            showDialog={showDialog}
+            visible={visible}
+            hideDialog={hideDialog}
+          />
 
-        <ChangePassword
-          showDialog={showDialog}
-          visible={visible}
-          hideDialog={hideDialog}
-        />
-      </PaperProvider>
-    </SafeAreaView>
+          {/* <CustomText title="Hello World" /> */}
+        </View>
+      </SafeAreaView>
+    </PaperProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
   },
   main: {
     margin: 15,

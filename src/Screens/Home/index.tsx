@@ -3,13 +3,14 @@ import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
 import Header from '../../Container/Home/Header';
 import {colors} from '../../assets/colors/Colors';
-import {getAllUsers} from '../../Redux/Users/userSlice';
+import {getUserData} from '../../Redux/Users/userSlice';
 import Carousel from '../../Container/Home/Carousel';
 import Category from '../../Container/Home/Category';
 import {useAppSelector} from '../../Redux/store';
+import {HomeScreenNavigationProps} from '../../Navigation/types';
 
-const Home = () => {
-  const userData = useAppSelector(getAllUsers);
+const Home = ({navigation}: HomeScreenNavigationProps) => {
+  const userData = useAppSelector(getUserData);
 
   useEffect(() => {
     if (userData) {
@@ -19,7 +20,7 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
+      <Header handlePress={() => navigation.navigate('Cart')} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Carousel />
         <Category />

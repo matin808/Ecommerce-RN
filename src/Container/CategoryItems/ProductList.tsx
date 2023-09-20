@@ -1,5 +1,5 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 // import Toast from 'react-native-simple-toast';
 import {colors} from '../../assets/colors/Colors';
 import {Rating} from 'react-native-ratings';
@@ -26,9 +26,9 @@ export interface IProductListProps {
 }
 
 const ProductList = ({item}: IProductListProps) => {
-  console.log('from product list', item);
   const {id, name} = item;
   const navigation: MyNavigationProp = useNavigation();
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('ProductDetails', {id, name})}>

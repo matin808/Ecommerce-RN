@@ -11,6 +11,7 @@ export type RootStackParamList = {
   CategoryItems: {name: string};
   Home: undefined;
   ProductDetails: {id: number; name: string};
+  Cart: undefined;
 };
 
 export type MyNavigationProp = NavigationProp<ParamListBase>;
@@ -47,4 +48,8 @@ export type HomeScreenNavigationProps = NativeStackScreenProps<
 export type ProductDetailsNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'ProductDetails'
+>;
+export type CartNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Cart'
 >;

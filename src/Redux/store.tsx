@@ -13,6 +13,7 @@ import {
 } from 'redux-persist';
 import productsSlice from './Products/ProductSlice';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
+import cartSlice from './Cart/CartSlice';
 const persistConfig = {
   key: 'root',
   version: 1,
@@ -23,6 +24,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   users: userSlice,
   products: productsSlice,
+  cart: cartSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

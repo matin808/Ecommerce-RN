@@ -4,7 +4,10 @@ import CustomText from '../Custom/Text';
 import IconComponent from '../Custom/Icon';
 import {colors} from '../../assets/colors/Colors';
 
-const Header = () => {
+interface IHeaderProps {
+  handlePress: () => void;
+}
+const Header: React.FC<IHeaderProps> = ({handlePress}) => {
   return (
     <View style={styles.Container}>
       <View style={styles.TextContainer}>
@@ -15,6 +18,7 @@ const Header = () => {
         <IconComponent
           use="AntDesign"
           name="shoppingcart"
+          handlePress={handlePress}
           size={33}
           color={colors.ACTIONCOLOR}
         />

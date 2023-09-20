@@ -5,6 +5,7 @@ import {RootStackParamList} from './types';
 import AuthStack from './AuthStack';
 import CategoryItems from '../Screens/CategoryItems';
 import ProductDetails from '../Screens/ProductDetails';
+import Cart from '../Screens/Cart';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -32,6 +33,13 @@ const RootNavigation = () => {
             headerBackTitleVisible: false,
           })}
           component={ProductDetails}
+        />
+        <RootStack.Screen
+          name="Cart"
+          options={{
+            headerBackTitleVisible: false,
+          }}
+          component={Cart}
         />
       </RootStack.Navigator>
     </NavigationContainer>

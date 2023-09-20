@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {SliderBox} from 'react-native-image-slider-box';
 
@@ -18,7 +18,7 @@ const ImageComponent = ({images}: ImageProps) => {
   images?.map(val => img.push(val.image as any));
   console.log('images', img);
   return (
-    <View style={{marginTop: 20}}>
+    <View style={styles.container}>
       <SliderBox
         images={img}
         // sliderBoxHeight={350}
@@ -30,5 +30,11 @@ const ImageComponent = ({images}: ImageProps) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+  },
+});
 
 export default ImageComponent;

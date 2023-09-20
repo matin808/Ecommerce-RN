@@ -27,6 +27,7 @@ const AuthStack = () => {
       setIsFirstLaunch(1);
     }
   }, []);
+
   let route: any;
   console.log(isFirstLaunch);
   if (isFirstLaunch === -1) {

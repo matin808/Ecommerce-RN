@@ -129,8 +129,10 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
       return;
     } else {
       try {
-        await dispatch(addUser(form)).unwrap();
-        navigation.replace('Tabs');
+        const data = await dispatch(addUser(form)).unwrap();
+        if (data.status === 200) {
+          navigation.replace('Tabs');
+        }
         console.log('sss', isSuccess);
         if (isError) {
           console.log('Something went wrong');

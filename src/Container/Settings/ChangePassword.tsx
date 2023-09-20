@@ -4,31 +4,54 @@ import {Button, Dialog, Portal, Text} from 'react-native-paper';
 import IconComponent from '../Custom/Icon';
 import Input from '../Custom/TextInput';
 import {colors} from '../../assets/colors/Colors';
+import {baseUrl} from '../../utils/constants';
+import axios from 'axios';
 
 interface IProps {
+  token: string;
   visible: boolean;
   hideDialog: () => void;
   showDialog: () => void;
 }
 
 interface IForm {
-  oldPassword: string;
-  newPassWord: string;
-  confirmPassword: string;
+  old_password: string;
+  password: string;
+  confirm_password: string;
 }
-
-const ChangePassword = ({visible, hideDialog, showDialog}: IProps) => {
+// Ma@111
+const ChangePassword = ({token, visible, hideDialog, showDialog}: IProps) => {
   const [form, setForm] = useState<IForm>({
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: '',
+    old_password: '',
+    password: '',
+    confirm_password: '',
   });
 
   const onChange = (field: string, value: string) => {
     setForm({...form, [field]: value});
   };
 
+  const handleChangePassword = async (myForm: IForm) => {
+    console.log('asasdddd', myForm);
+    const formData = new FormData();
+    formData.append('old_password', form.old_password);
+    formData.append('password', form.password);
+    formData.append('confirm_password', form.confirm_password);
+    try {
+      const res = await axios.post(`${baseUrl}/users/change`, formData, {
+        headers: {
+          access_token: token,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('pass changed', res.data);
+    } catch (err) {
+      console.log('Something went wrong');
+    }
+  };
+
   const handlePress = () => {
+    handleChangePassword(form);
     console.log(form);
   };
   return (
@@ -53,19 +76,19 @@ const ChangePassword = ({visible, hideDialog, showDialog}: IProps) => {
               style={styles.TextInputContainer}
               secure={true}
               showIcon={true}
-              handleChange={txt => onChange('oldPassword', txt)}
+              handleChange={txt => onChange('old_password', txt)}
             />
             <Text variant="bodyMedium">New Password</Text>
             <Input
               style={styles.TextInputContainer}
               secure={true}
-              handleChange={txt => onChange('newPassword', txt)}
+              handleChange={txt => onChange('password', txt)}
             />
             <Text variant="bodyMedium">Confirm Password</Text>
             <Input
               style={styles.TextInputContainer}
               secure={true}
-              handleChange={txt => onChange('confirmPassword', txt)}
+              handleChange={txt => onChange('confirm_password', txt)}
             />
           </Dialog.Content>
           <Button
@@ -84,13 +107,13 @@ const ChangePassword = ({visible, hideDialog, showDialog}: IProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
   },
   main: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
   },
   heading: {
     fontSize: 20,

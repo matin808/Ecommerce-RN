@@ -132,5 +132,5 @@ export const userSlice = createSlice({
 });
 
 export const getUserData = (state: IState) => state.users.users;
-
+export const userToken = (state: IState) => state.users.users[0].access_token;
 export default userSlice.reducer;

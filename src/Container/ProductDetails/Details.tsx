@@ -5,7 +5,7 @@ import ImageComponent from './ImageComponent';
 import IconComponent from '../Custom/Icon';
 import {colors} from '../../assets/colors/Colors';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
-import {getUserData} from '../../Redux/Users/userSlice';
+import {userToken} from '../../Redux/Users/userSlice';
 import {AddToCart} from '../../Redux/Cart/CartSlice';
 // import Quantity from '../Custom/Quantity';
 
@@ -20,27 +20,36 @@ interface IDetails {
   description?: string;
   cost?: string;
   id: number;
-  handlePress?: () => void;
+  handlePress?: any;
 }
 
 const Details = (props: IDetails) => {
   const {product_images, description, cost, id, handlePress} = props;
-  const userData: any = useAppSelector(getUserData);
-  const token: string = userData[0]?.access_token;
   const dispatch = useAppDispatch();
-  const [quantity, setQuantity] = useState(1);
+  const token: string = useAppSelector(userToken);
   const [addedToCart, setAddedToCart] = useState(false);
   const cartDetails = useAppSelector(state => state.cart);
-  console.log('aa111111', cartDetails);
-  const handleCart = async () => {
+  const cartData = cartDetails.cart.data;
+  let present = false;
+  cartData?.map((data: any) => {
+    if (data.product.id === id) {
+      present = true;
+    }
+  });
+
+  const handleCart = async (str: string) => {
     setAddedToCart(true);
-    // console.log(id);
-    // try {
-    //   await dispatch(AddToCart({token, id, quantity})).unwrap;
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    console.log(id);
+    try {
+      await dispatch(AddToCart({token, id, quantity: 1})).unwrap();
+      if (str === 'buy') {
+        handlePress();
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   return (
     <View style={styles.detail}>
       <View style={styles.ImageContainer}>
@@ -50,7 +59,7 @@ const Details = (props: IDetails) => {
             <IconComponent name="star" size={29} color="gold" />
 
             <IconComponent
-              style={{marginRight: 10}}
+              style={styles.Icon}
               name="share"
               size={29}
               color="gray"
@@ -64,32 +73,34 @@ const Details = (props: IDetails) => {
         <Text style={styles.DescStyle}>{description}</Text>
       </View>
       <View style={styles.btnContainer}>
-        {addedToCart ? (
+        {addedToCart || present ? (
           // <Quantity
           //   value={quantity}
           //   increment={() => setQuantity(quantity + 1)}
           //   decrement={() => setQuantity(quantity - 1)}
           // />
           <>
-            <Text>Already In Cart</Text>
+            {/* <Text>Already In Cart</Text> */}
             <Button mode="outlined" textColor="green" onPress={handlePress}>
-              View Cart{' '}
+              Go To Cart{' '}
             </Button>
           </>
         ) : (
           <>
-            <Button mode="outlined" textColor="#000" onPress={handleCart}>
+            <Button
+              mode="outlined"
+              textColor="#000"
+              onPress={() => handleCart('add')}>
               Add to Cart
             </Button>
           </>
         )}
-
         <Button
           textColor="#000"
           buttonColor="lightgreen"
           mode="outlined"
-          // style={{marginTop: 10}}
-          onPress={() => console.log('Pressed')}>
+          disabled={present}
+          onPress={() => handleCart('buy')}>
           Buy Now
         </Button>
       </View>
@@ -134,6 +145,10 @@ const styles = StyleSheet.create({
     gap: 10,
     borderRadius: 10,
     marginHorizontal: 20,
+  },
+
+  Icon: {
+    marginRight: 10,
   },
 });
 

@@ -3,18 +3,20 @@ import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
 import Header from '../../Container/Home/Header';
 import {colors} from '../../assets/colors/Colors';
-import {getUserData} from '../../Redux/Users/userSlice';
+import {userToken} from '../../Redux/Users/userSlice';
 import Carousel from '../../Container/Home/Carousel';
 import Category from '../../Container/Home/Category';
-import {useAppSelector} from '../../Redux/store';
+import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {HomeScreenNavigationProps} from '../../Navigation/types';
+import {ListcartItems} from '../../Redux/Cart/CartSlice';
 
 const Home = ({navigation}: HomeScreenNavigationProps) => {
-  const userData = useAppSelector(getUserData);
-
+  const token = useAppSelector(userToken);
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    if (userData) {
-      console.log('fromhome111', userData);
+    dispatch(ListcartItems(token));
+    if (token) {
+      console.log('fromhome111', token);
     }
   }, []);
 

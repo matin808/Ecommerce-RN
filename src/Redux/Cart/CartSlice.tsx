@@ -47,7 +47,7 @@ export const ListcartItems = createAsyncThunk(
       const response = await axios.get(`${baseUrl}/cart`, {
         headers,
       });
-      return response.data.data;
+      return response.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.message);
     }
@@ -64,18 +64,26 @@ export const EditCartItems = createAsyncThunk(
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {},
+  reducers: {
+    fetchCartDetails: (state: any) => {
+      return state.cart;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(AddToCart.fulfilled, (state, action) => {
       console.log('aaasszz', action.payload);
       // state.cart = action.payload;
+      // console.log('myyyyyyyysssssssss', state.cart);
+
+      // state.cart.push(action.payload);
     });
 
     builder.addCase(ListcartItems.fulfilled, (state, action) => {
       state.cart = action.payload;
-      console.log('caszzx', action.payload);
+
+      // console.log('caszzx', state.cart.data);
     });
   },
 });
-
+export const {fetchCartDetails} = cartSlice.actions;
 export default cartSlice.reducer;

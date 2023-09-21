@@ -5,6 +5,7 @@ import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigat
 import Settings from '../Screens/Settings';
 import Home from '../Screens/Home';
 import IconComponent from '../Container/Custom/Icon';
+import Order from '../Screens/Orders';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -47,7 +48,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Orders"
-        component={Settings}
+        component={Order}
         options={{
           tabBarLabel: 'Orders',
           tabBarIcon: ({color}) => (

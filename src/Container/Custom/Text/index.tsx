@@ -13,7 +13,7 @@ const defaultProps: ITextProps = {
   onPress: () => console.log('pressed'),
   style: {},
   fontFamily: 'Roboto-Regular',
-  fontSize: 18,
+  fontSize: 16,
 };
 
 const CustomText: React.FC<ITextProps> = props => {

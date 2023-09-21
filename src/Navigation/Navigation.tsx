@@ -6,6 +6,7 @@ import AuthStack from './AuthStack';
 import CategoryItems from '../Screens/CategoryItems';
 import ProductDetails from '../Screens/ProductDetails';
 import Cart from '../Screens/Cart';
+import DrawerNavigation from './Drawer';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -17,6 +18,11 @@ const RootNavigation = () => {
           options={{headerShown: false}}
           name="AuthStack"
           component={AuthStack}
+        />
+        <RootStack.Screen
+          options={{headerShown: false}}
+          name="Drawer"
+          component={DrawerNavigation}
         />
         <RootStack.Screen
           name="CategoryItems"

@@ -67,7 +67,9 @@ const ProductDetails = ({route, navigation}: ProductDetailsNavigationProps) => {
   return (
     <PaperProvider>
       {loading ? (
-        <ActivityIndicator />
+        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          <ActivityIndicator />
+        </View>
       ) : (
         <ScrollView>
           <View style={styles.container}>

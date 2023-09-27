@@ -4,11 +4,12 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {useState} from 'react';
 import CustomText from '../../Container/Custom/Text';
 import {colors} from '../../assets/colors/Colors';
-import {Avatar} from 'react-native-paper';
+import {Divider} from 'react-native-paper';
 import {PaperProvider, Text} from 'react-native-paper';
 import ChangePassword from '../../Container/Settings/ChangePassword';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
@@ -31,8 +32,8 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
   const showDialog = () => setVisible(true);
 
   const hideDialog = () => setVisible(false);
-  // console.log('My user de', userData[0]);
-
+  console.log('My user de', userData);
+  console.log('sdcs', userData);
   const handleLogout = () => {
     dispatch(logoutUser());
     navigation.navigate('Login');
@@ -42,14 +43,15 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
     <PaperProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.main}>
-          <CustomText style={styles.heading} title="My Profile" />
+          {/* <CustomText style={styles.heading} title="My Profile" />
           <View style={styles.profileContainer}>
             <Avatar.Icon
               size={54}
-              color="#000"
+              color="#fff"
               icon={
                 // userData.profile_pic
-                //   ? require(userData.profile_pic) :
+                //   ? require(userData.profile_pic)
+                // :
                 require('../../assets/images/sofa.png')
               }
             />
@@ -59,9 +61,87 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
               </Text>
               <Text style={styles.email}>{userData?.email}</Text>
             </TouchableOpacity>
+          </View> */}
+
+          <View style={styles.profileContainer}>
+            <View style={styles.ProfileCtnOne}>
+              <Text style={styles.name}>
+                {userData?.first_name} {userData?.last_name}
+              </Text>
+              <Text style={styles.email}>{userData?.email}</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('UpdateProfile')}
+                style={styles.btnContainer}>
+                <Text style={styles.EditText}>edit profile?</Text>
+                <IconComponent
+                  size={20}
+                  color="blue"
+                  name="edit"
+                  use="AntDesign"
+                />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Image
+                style={styles.ImgCtn}
+                source={{
+                  uri: 'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
+                }}
+                height={100}
+                width={100}
+              />
+            </View>
           </View>
         </View>
+        <Divider />
+        {/*  */}
+        <View style={styles.statistics}>
+          <CustomText style={styles.statisticsTitle} title="Statistics" />
+          <View style={styles.statisticsCtn}>
+            <View>
+              <CustomText
+                title="Orders in cart"
+                style={styles.statisticsHeadingText}
+              />
+              <CustomText title="23" style={styles.statisticsvalue} />
+            </View>
+
+            <View>
+              <CustomText
+                title="Order delivered"
+                style={styles.statisticsHeadingText}
+              />
+              <CustomText title="12" style={styles.statisticsvalue} />
+            </View>
+          </View>
+        </View>
+        {/*  */}
         <View style={styles.listContainer}>
+          <CustomText
+            style={[styles.statisticsTitle, {marginBottom: 20}]}
+            title="Additional Functionality"
+          />
+          {/* <View style={{flexDirection: 'row', gap: 15, marginTop: 15}}> */}
+          {/* <View
+              style={{
+                backgroundColor: 'lightgray',
+                padding: 12,
+                borderRadius: 15,
+                // paddingVertical: 25,
+              }}>
+              <CustomText style={{fontSize: 17}} title="View Profile" />
+            </View> */}
+          {/* <View
+              style={{
+                backgroundColor: 'lightgray',
+                padding: 12,
+
+                // paddingVertical: 25,
+                borderRadius: 15,
+              }}> */}
+          {/* <CustomText style={{fontSize: 17}} title="Change Password" /> */}
+          {/* </View> */}
+          {/* </View> */}
           <ChangePassword
             token={token}
             showDialog={showDialog}
@@ -90,7 +170,11 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
               color="#000"
               size={35}
             />
-            {/* <IconComponent name="logout" handlePress={handleLogout} /> */}
+            {/* <IconComponent
+              color="red"
+              name="logout"
+              handlePress={handleLogout}
+            /> */}
           </View>
         </View>
       </SafeAreaView>
@@ -100,10 +184,18 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    // backgroundColor: '#F0F3F4',
+    // marginTop: 40,x
   },
   main: {
-    margin: 15,
+    padding: 15,
+    // backgroundColor: '#FCF3CF',
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
+    // backgroundColor: '#FCF3CF',
   },
 
   heading: {
@@ -113,34 +205,98 @@ const styles = StyleSheet.create({
   },
 
   profileContainer: {
-    marginVertical: 15,
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 15,
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+
+  ProfileCtnOne: {
+    alignSelf: 'center',
+    marginLeft: 6,
   },
   name: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Regular',
-    color: colors.TEXTDARK,
+    fontSize: 25,
+    fontFamily: 'Poppins-Black',
   },
   email: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'Roboto-light',
-    color: colors.TEXT,
+    color: 'gray',
+  },
+
+  btnContainer: {
+    // marginTop: 10,
+    // backgroundColor: '#BDC3C7',
+    flexDirection: 'row',
+    borderRadius: 20,
+    paddingVertical: 8,
+    gap: 5,
+    alignItems: 'center',
+  },
+  EditText: {
+    // alignSelf: 'center',
+    color: 'blue',
+    fontSize: 18,
+  },
+
+  ImgCtn: {
+    borderRadius: 45,
+    marginRight: 5,
   },
   listContainer: {
-    marginHorizontal: 10,
+    // marginHorizontal: 15,
+
+    // flex: 1,
+    // marginTop: 30,
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
+    minHeight: '100%',
+    paddingHorizontal: 15,
+
+    // backgroundColor: '#FCF3CF',
   },
 
   updateHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: 10,
+    marginTop: 10,
   },
 
   DetailHeading: {
     fontSize: 20,
+  },
+  //
+  statistics: {
+    marginVertical: 20,
+    marginHorizontal: 15,
+  },
+  statisticsTitle: {
+    fontSize: 22,
+    fontFamily: 'Montserrat-SemiBold',
+  },
+
+  statisticsCtn: {
+    backgroundColor: '#F2F3F4',
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingTop: 15,
+    paddingBottom: 5,
+    flexDirection: 'row',
+    marginTop: 15,
+    justifyContent: 'space-between',
+  },
+
+  statisticsHeadingText: {
+    fontSize: 18,
+    // margin: 10,
+    fontFamily: 'Montserrat-SemiBold',
+  },
+  statisticsvalue: {
+    fontSize: 22,
+    margin: 10,
+    alignSelf: 'center',
+    fontFamily: 'Montserrat-Bold',
   },
 });
 

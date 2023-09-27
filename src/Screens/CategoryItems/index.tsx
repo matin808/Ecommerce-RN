@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {FlatList, SafeAreaView} from 'react-native';
+import {FlatList, SafeAreaView, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {fetchProductsById} from '../../Redux/Products/ProductSlice';
 import {getIdForSpecificProducts} from '../../utils/getIdForProducts';
@@ -37,13 +37,15 @@ const CategoryItems = ({route}: CategoryItemsScreenNavigationProps) => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       {loading ? (
-        <ActivityIndicator
-          size="large"
-          animating={true}
-          color={colors.ACTIONCOLOR}
-        />
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <ActivityIndicator
+            size="large"
+            animating={true}
+            color={colors.ACTIONCOLOR}
+          />
+        </View>
       ) : (
         <FlatList
           data={mydata}

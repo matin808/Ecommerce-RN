@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   },
 
   ButtonStyle: {
-    backgroundColor: colors.ACTIONCOLOR,
+    backgroundColor: colors.DEFAULT,
     marginTop: 10,
     paddingVertical: 10,
     borderRadius: 13,

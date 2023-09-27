@@ -5,15 +5,32 @@ import {colors} from '../../../assets/colors/Colors';
 import CustomText from '../../../Container/Custom/Text';
 import Input from '../../../Container/Custom/TextInput';
 import Button from '../../../Container/Custom/Button';
+import {forgetPassword} from '../../../utils/API/ForgotPassword';
+import Toast from 'react-native-simple-toast';
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState<string>('');
-  const handlePress = () => {
+
+  const handlePress = async () => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
     if (reg.test(email) === false) {
       Alert.alert('Email Address is badly formated');
+    } else {
+      const status = await forgetPassword(email);
+      if (status === 200) {
+        Toast.showWithGravity(
+          'New password has been sent successfully',
+          Toast.SHORT,
+          Toast.TOP,
+        );
+      } else {
+        Toast.showWithGravity(
+          'Please enter correct email address',
+          Toast.SHORT,
+          Toast.TOP,
+        );
+      }
     }
-    console.log(email);
   };
 
   return (
@@ -58,7 +75,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 22,
     marginVertical: 15,
-    color: colors.ACTIONCOLOR,
+    color: colors.DEFAULT,
   },
 
   InputContainer: {
@@ -67,13 +84,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: colors.CARDBG,
     marginVertical: 10,
-    borderColor: colors.ACTIONCOLOR,
+    borderColor: colors.DEFAULT,
     borderWidth: 2,
     borderRadius: 10,
   },
 
   BtnStyle: {
-    backgroundColor: colors.ACTIONCOLOR,
+    backgroundColor: colors.DEFAULT,
     paddingVertical: 10,
     borderRadius: 10,
     paddingHorizontal: 20,

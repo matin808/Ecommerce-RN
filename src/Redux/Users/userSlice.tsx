@@ -85,10 +85,44 @@ export const addUser = createAsyncThunk(
   },
 );
 
+export const updateDetails = createAsyncThunk(
+  'users/updateUser',
+  async (data, thunkAPI) => {
+    const {form, token} = data;
+    console.log('2333333', data);
+    console.log(`updateDetails`, form, token);
+    const formData = new FormData();
+    formData.append('first_name', form.first_name);
+    formData.append('last_name', form.last_name);
+    formData.append('email', form.email);
+    formData.append('dob', form.dob);
+    formData.append('profile_pic', form.profile_pic);
+    formData.append('phone_no', form.phone_no);
+
+    try {
+      const res = await axios.post(`${baseUrl}/users/update`, formData, {
+        headers: {
+          access_token: token,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('`````', res.data);
+      return res.data;
+    } catch (err) {
+      console.log('Something went wrong', err);
+    }
+  },
+);
+
 export const userSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    logoutUser: state => {
+      console.log('Actiont tirgger');
+      state.users.pop();
+    },
+  },
   extraReducers(builder) {
     builder.addCase(addUser.pending, state => {
       state.loading = true;
@@ -96,6 +130,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(addUser.fulfilled, (state, action) => {
       state.users.push(action.payload.data);
+      // state.users = action.payload.data;
       state.success = true;
       state.loading = false;
       console.log('my state', state.users);
@@ -128,9 +163,19 @@ export const userSlice = createSlice({
       state.success = true;
       state.error = true;
     });
+
+    builder.addCase(updateDetails.fulfilled, (state, action) => {
+      console.log('builder sign in', action.payload);
+      // state.users = action.payload.data;
+      state.users.push(action.payload.data);
+      state.users.shift();
+      console.log('11```', action.payload.data);
+      state.success = true;
+    });
   },
 });
 
-export const getUserData = (state: IState) => state.users.users;
-export const userToken = (state: IState) => state.users.users[0].access_token;
+export const {logoutUser} = userSlice.actions;
+export const getUserData = (state: IState) => state?.users.users;
+export const userToken = (state: any) => state?.users?.users[0]?.access_token;
 export default userSlice.reducer;

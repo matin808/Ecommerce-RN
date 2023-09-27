@@ -97,12 +97,13 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
             handleVisible={() => setVisiblePass(!visiblePass)}
           />
           <Text style={styles.errorText}>{errors.password}</Text>
-
-          <CustomText
-            onPress={() => navigation.navigate('ForgetPassword')}
-            style={styles.ForgetPassStyle}
-            title="Forget Password?"
-          />
+          <View style={styles.ForgetPassStyle}>
+            <CustomText
+              onPress={() => navigation.navigate('ForgetPassword')}
+              style={styles.ForgetPassStyle}
+              title="Forget Password?"
+            />
+          </View>
           <Button
             title="Sign In"
             style={styles.ButtonStyle}
@@ -126,7 +127,7 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
 const styles = StyleSheet.create({
   LoginContainer: {
     flex: 1,
-    backgroundColor: colors.ACTIONCOLOR,
+    backgroundColor: colors.DEFAULT,
   },
 
   main: {
@@ -191,12 +192,12 @@ const styles = StyleSheet.create({
   },
 
   ForgetPassStyle: {
-    marginLeft: '65%',
+    alignItems: 'flex-end',
     color: 'gray',
     marginTop: 3,
   },
   ButtonStyle: {
-    backgroundColor: colors.ACTIONCOLOR,
+    backgroundColor: colors.DEFAULT,
     marginTop: 10,
 
     paddingVertical: 10,

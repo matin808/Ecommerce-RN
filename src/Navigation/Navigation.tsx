@@ -10,6 +10,7 @@ import Checkout from '../Screens/Checkout';
 import UpdateProfile from '../Screens/UpdateProfile';
 import Profile from '../Screens/Profile';
 import OrderDetails from '../Screens/OrderDetails';
+import ChangePassword from '../Screens/Auth/ChangePassword';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -75,6 +76,14 @@ const RootNavigation = () => {
             headerBackTitleVisible: false,
           })}
           component={OrderDetails}
+        />
+        <RootStack.Screen
+          name="ChangePassword"
+          // options={({route}) => ({
+          //   title: 'Order ID : ' + route.params.id,
+          //   headerBackTitleVisible: false,
+          // })}
+          component={ChangePassword}
         />
       </RootStack.Navigator>
     </NavigationContainer>

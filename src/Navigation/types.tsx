@@ -18,6 +18,7 @@ export type RootStackParamList = {
   UpdateProfile: undefined;
   Profile: undefined;
   OrderDetails: {id: number; token: string};
+  ChangePassword: undefined;
 };
 
 export type MyNavigationProp = NavigationProp<ParamListBase>;

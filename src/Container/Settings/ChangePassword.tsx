@@ -74,7 +74,7 @@ const ChangePassword = ({token, visible, hideDialog, showDialog}: IProps) => {
   };
   return (
     <View>
-      <View style={styles.main}>
+      {/* <View style={styles.main}>
         <Text style={styles.heading}>Change Password</Text>
         <IconComponent
           handlePress={showDialog}
@@ -83,7 +83,7 @@ const ChangePassword = ({token, visible, hideDialog, showDialog}: IProps) => {
           color="#000"
           size={35}
         />
-      </View>
+      </View> */}
       <Portal>
         <Dialog
           visible={visible}

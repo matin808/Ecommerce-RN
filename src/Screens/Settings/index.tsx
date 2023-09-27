@@ -43,26 +43,6 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
     <PaperProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.main}>
-          {/* <CustomText style={styles.heading} title="My Profile" />
-          <View style={styles.profileContainer}>
-            <Avatar.Icon
-              size={54}
-              color="#fff"
-              icon={
-                // userData.profile_pic
-                //   ? require(userData.profile_pic)
-                // :
-                require('../../assets/images/sofa.png')
-              }
-            />
-            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-              <Text style={styles.name}>
-                {userData?.first_name} {userData?.last_name}
-              </Text>
-              <Text style={styles.email}>{userData?.email}</Text>
-            </TouchableOpacity>
-          </View> */}
-
           <View style={styles.profileContainer}>
             <View style={styles.ProfileCtnOne}>
               <Text style={styles.name}>
@@ -118,30 +98,21 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
         {/*  */}
         <View style={styles.listContainer}>
           <CustomText
-            style={[styles.statisticsTitle, {marginBottom: 20}]}
-            title="Additional Functionality"
+            style={styles.statisticsTitle}
+            title="Additional Settings"
           />
-          {/* <View style={{flexDirection: 'row', gap: 15, marginTop: 15}}> */}
-          {/* <View
-              style={{
-                backgroundColor: 'lightgray',
-                padding: 12,
-                borderRadius: 15,
-                // paddingVertical: 25,
-              }}>
-              <CustomText style={{fontSize: 17}} title="View Profile" />
-            </View> */}
-          {/* <View
-              style={{
-                backgroundColor: 'lightgray',
-                padding: 12,
 
-                // paddingVertical: 25,
-                borderRadius: 15,
-              }}> */}
-          {/* <CustomText style={{fontSize: 17}} title="Change Password" /> */}
-          {/* </View> */}
-          {/* </View> */}
+          <View style={styles.updateHeader}>
+            <Text style={styles.DetailHeading}>Change Password</Text>
+            <IconComponent
+              // handlePress={showDialog}
+              handlePress={() => navigation.navigate('ChangePassword')}
+              name="arrowright"
+              use="AntDesign"
+              color="#000"
+              size={35}
+            />
+          </View>
           <ChangePassword
             token={token}
             showDialog={showDialog}
@@ -187,15 +158,9 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    // backgroundColor: '#F0F3F4',
-    // marginTop: 40,x
   },
   main: {
     padding: 15,
-    // backgroundColor: '#FCF3CF',
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
-    // backgroundColor: '#FCF3CF',
   },
 
   heading: {
@@ -225,8 +190,6 @@ const styles = StyleSheet.create({
   },
 
   btnContainer: {
-    // marginTop: 10,
-    // backgroundColor: '#BDC3C7',
     flexDirection: 'row',
     borderRadius: 20,
     paddingVertical: 8,
@@ -234,7 +197,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   EditText: {
-    // alignSelf: 'center',
     color: 'blue',
     fontSize: 18,
   },
@@ -244,16 +206,8 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   listContainer: {
-    // marginHorizontal: 15,
-
-    // flex: 1,
-    // marginTop: 30,
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
     minHeight: '100%',
     paddingHorizontal: 15,
-
-    // backgroundColor: '#FCF3CF',
   },
 
   updateHeader: {

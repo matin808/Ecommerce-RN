@@ -21,7 +21,6 @@ interface IProductProps {
 
 const initialState: IProductState = {
   products: [],
-  // similarProducts: [],
   loading: false,
   success: false,
   error: false,

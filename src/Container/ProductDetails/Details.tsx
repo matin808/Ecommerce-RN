@@ -1,13 +1,15 @@
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Image} from 'react-native';
 import React, {useState} from 'react';
-import {Button} from 'react-native-paper';
+import {Button, Dialog, Portal} from 'react-native-paper';
 import ImageComponent from './ImageComponent';
 import IconComponent from '../Custom/Icon';
 import {colors} from '../../assets/colors/Colors';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {userToken} from '../../Redux/Users/userSlice';
-import {AddToCart} from '../../Redux/Cart/CartSlice';
-// import Quantity from '../Custom/Quantity';
+import {AddToCart, ICartDetailsProps} from '../../Redux/Cart/CartSlice';
+import Toast from 'react-native-simple-toast';
+import {Rating} from 'react-native-ratings';
+import {handleRatingFunctionality} from '../../utils/API/handleRatingFunctionality';
 
 interface IDetails {
   product_images?: {
@@ -21,15 +23,33 @@ interface IDetails {
   cost?: string;
   id: number;
   handlePress?: any;
+  name?: string;
+  singleImage?: string;
 }
 
 const Details = (props: IDetails) => {
-  const {product_images, description, cost, id, handlePress} = props;
+  const {
+    product_images,
+    description,
+    cost,
+    id,
+    handlePress,
+    name,
+    singleImage,
+  } = props;
   const dispatch = useAppDispatch();
   const token: string = useAppSelector(userToken);
   const [addedToCart, setAddedToCart] = useState(false);
-  const cartDetails = useAppSelector(state => state.cart);
+  const cartDetails: ICartDetailsProps = useAppSelector(state => state.cart);
+  const [ratingStatus, setRatingStatus] = useState(false);
   const cartData = cartDetails.cart.data;
+
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
+
   let present = false;
   cartData?.map((data: any) => {
     if (data.product.id === id) {
@@ -38,15 +58,31 @@ const Details = (props: IDetails) => {
   });
 
   const handleCart = async (str: string) => {
-    setAddedToCart(true);
     console.log(id);
     try {
       await dispatch(AddToCart({token, id, quantity: 1})).unwrap();
+      setAddedToCart(true);
+      Toast.show('Added to cart', Toast.SHORT);
       if (str === 'buy') {
         handlePress();
       }
     } catch (err) {
-      console.log(err);
+      console.log('something went wrong', err);
+    }
+  };
+
+  const ratingCompleted = async (rating: number) => {
+    console.log('your ratin', rating, 'sdsd', id);
+    const value = await handleRatingFunctionality(rating, id);
+    console.log('vvvvv', value);
+    if (value.status === 200) {
+      setRatingStatus(true);
+      Toast.show('Rating added, Thank you!', Toast.SHORT);
+      setTimeout(() => {
+        hideDialog();
+      }, 500);
+    } else {
+      Toast.show('Something went wrong', Toast.SHORT);
     }
   };
 
@@ -54,9 +90,14 @@ const Details = (props: IDetails) => {
     <View style={styles.detail}>
       <View style={styles.ImageContainer}>
         <View style={styles.priceContainer}>
-          <Text style={styles.Ruppee}>Rs. {cost}</Text>
+          <Text style={styles.Ruppee}>₹ {cost}</Text>
           <View style={styles.priceContainer}>
-            <IconComponent name="star" size={29} color="gold" />
+            <IconComponent
+              handlePress={showDialog}
+              name="star"
+              size={29}
+              color="gold"
+            />
 
             <IconComponent
               style={styles.Icon}
@@ -74,13 +115,7 @@ const Details = (props: IDetails) => {
       </View>
       <View style={styles.btnContainer}>
         {addedToCart || present ? (
-          // <Quantity
-          //   value={quantity}
-          //   increment={() => setQuantity(quantity + 1)}
-          //   decrement={() => setQuantity(quantity - 1)}
-          // />
           <>
-            {/* <Text>Already In Cart</Text> */}
             <Button mode="outlined" textColor="green" onPress={handlePress}>
               Go To Cart{' '}
             </Button>
@@ -104,6 +139,36 @@ const Details = (props: IDetails) => {
           Buy Now
         </Button>
       </View>
+      <Portal>
+        <Dialog
+          style={styles.Dialog}
+          theme={{colors: {primary: 'green'}}}
+          visible={visible}
+          onDismiss={hideDialog}>
+          <Dialog.Title style={styles.DialogText}>{name}</Dialog.Title>
+          <Dialog.Content style={styles.DialogContent}>
+            <Image
+              source={{uri: singleImage}}
+              resizeMode="contain"
+              width={200}
+              height={200}
+            />
+            <Rating
+              imageSize={30}
+              readonly={ratingStatus}
+              ratingImage="custom"
+              startingValue={0}
+              onFinishRating={ratingCompleted}
+            />
+            {/* {ratingStatus && <Toas>Rating has been Added</Toas>} */}
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button style={styles.btn} onPress={hideDialog}>
+              Close
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 };
@@ -124,7 +189,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // marginHorizontal: 20,
     marginLeft: 10,
   },
   Ruppee: {
@@ -149,6 +213,21 @@ const styles = StyleSheet.create({
 
   Icon: {
     marginRight: 10,
+  },
+  Dialog: {
+    backgroundColor: '#fff',
+  },
+  DialogText: {
+    alignSelf: 'center',
+    fontFamily: 'Montserrat-Black',
+  },
+  DialogContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btn: {
+    backgroundColor: '#F8F9F9',
+    paddingHorizontal: 10,
   },
 });
 

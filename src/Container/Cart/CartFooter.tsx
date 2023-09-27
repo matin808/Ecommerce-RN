@@ -1,54 +1,31 @@
 import {View, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {Button, Text} from 'react-native-paper';
 import {colors} from '../../assets/colors/Colors';
-import {baseUrl} from '../../utils/constants';
-import axios from 'axios';
-import {useAppSelector} from '../../Redux/store';
-import {userToken} from '../../Redux/Users/userSlice';
+import {useNavigation} from '@react-navigation/native';
+import {MyNavigationProp} from '../../Navigation/types';
 
 interface FooterProps {
   total: number;
 }
 
 const CartFooter = ({total}: FooterProps) => {
-  const [loader, setLoader] = useState(false);
-  const token = useAppSelector(userToken);
-  const placeOrder = async () => {
-    setLoader(true);
-    try {
-      const formData = new FormData();
-      formData.append(
-        'address',
-        'The Ruby, 29-Senapati Bapat Marg, Dadar (West)',
-      );
-      await axios.post(`${baseUrl}/order`, formData, {
-        headers: {
-          access_token: token,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setLoader(false);
-    } catch (err) {
-      console.log('From order', err);
-    }
-  };
+  const navigation: MyNavigationProp = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.totalCtn}>
         <Text style={styles.textStyle}>Total is : </Text>
         <Text style={styles.textStyle}>
           {' '}
-          ₹{total && total.toLocaleString()}
+          ₹ {total && total.toLocaleString()}
         </Text>
       </View>
       <Button
         textColor="#fff"
         mode="outlined"
         style={styles.btn}
-        onPress={placeOrder}
-        loading={loader}>
-        Place Order
+        onPress={() => navigation.navigate('Checkout')}>
+        Proceed to Checkout
       </Button>
     </View>
   );
@@ -56,7 +33,6 @@ const CartFooter = ({total}: FooterProps) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 5,
-    //
     borderWidth: 1,
     margin: 10,
     backgroundColor: '#fff',
@@ -80,10 +56,11 @@ const styles = StyleSheet.create({
 
   textStyle: {
     fontSize: 18,
-    fontFamily: 'Poppins-Bold',
-    color: 'darkgreen',
+    fontFamily: 'Montserrat-Black',
+    fontWeight: 'bold',
+    color: colors.BTN,
   },
-  btn: {backgroundColor: colors.ACTIONCOLOR, margin: 20},
+  btn: {backgroundColor: colors.BTN, margin: 20},
 });
 
 export default CartFooter;

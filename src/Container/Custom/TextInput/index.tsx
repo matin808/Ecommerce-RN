@@ -8,21 +8,37 @@ interface InputProps {
   value?: string;
   style?: StyleProp<Text>;
   secure?: boolean;
-  handleChange: (event: string) => void;
+  handleChange?: ((event: string) => void) | any;
   showIcon?: boolean;
   handleVisible?: () => void;
+  profileIcon?: boolean;
+  disabled?: boolean;
 }
 
 const Input = (props: InputProps) => {
-  const {placeHolder, style, secure, handleChange, showIcon, handleVisible} =
-    props;
+  const {
+    placeHolder,
+    style,
+    secure,
+    handleChange,
+    showIcon,
+    handleVisible,
+    value,
+    profileIcon,
+    disabled,
+  } = props;
   return (
     <View style={style}>
+      {profileIcon ? <IconComponent name="account" color="gray" /> : null}
+
       <TextInput
         style={styles.TextInputStyle}
         placeholder={placeHolder}
         secureTextEntry={secure}
+        value={value && value}
         onChangeText={txt => handleChange(txt)}
+        editable={disabled}
+        selectTextOnFocus={disabled}
       />
       {showIcon ? (
         <View style={styles.IconStyle}>

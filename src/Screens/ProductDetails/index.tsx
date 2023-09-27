@@ -9,6 +9,16 @@ import {getProductLists} from '../../Redux/Products/ProductSlice';
 import SimilarProducts from '../../Container/ProductDetails/SimilarProducts';
 import ProductDetailsHeader from '../../Container/ProductDetails/Header';
 import Details from '../../Container/ProductDetails/Details';
+// import {useIsFocused} from '@react-navigation/native';
+import {PaperProvider} from 'react-native-paper';
+// import {useFocusEffect} from '@react-navigation/native';
+
+/**
+ * @author Matin kadri
+ * @param route will contain Id for fetching product details information
+ * @param navigation is used to navigate from details screen to cart screen
+ * @description This Screen will contain product details information
+ */
 
 export interface IProductData {
   cost: number;
@@ -52,8 +62,10 @@ const ProductDetails = ({route, navigation}: ProductDetailsNavigationProps) => {
   useEffect(() => {
     fetchProductDetails();
   }, [id]);
+  console.log('1122333', productDetails?.product_images[0].image);
+  const singleImage = productDetails?.product_images[0].image;
   return (
-    <>
+    <PaperProvider>
       {loading ? (
         <ActivityIndicator />
       ) : (
@@ -71,13 +83,15 @@ const ProductDetails = ({route, navigation}: ProductDetailsNavigationProps) => {
               product_images={productDetails?.product_images}
               cost={productDetails?.cost.toLocaleString()}
               description={productDetails?.description}
+              name={productDetails?.name}
+              singleImage={singleImage}
             />
 
             <SimilarProducts data={similarCategoryData} />
           </View>
         </ScrollView>
       )}
-    </>
+    </PaperProvider>
   );
 };
 

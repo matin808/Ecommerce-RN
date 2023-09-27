@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
   Text: {
     fontSize: 21,
     color: colors.TEXT,
+    marginVertical: 10,
+    marginLeft: 10,
     fontWeight: '500',
   },
 });

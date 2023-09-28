@@ -3,27 +3,29 @@ import {FlatList, SafeAreaView, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {fetchProductsById} from '../../Redux/Products/ProductSlice';
 import {getIdForSpecificProducts} from '../../utils/getIdForProducts';
-import ProductList, {
-  SingleProduct,
-} from '../../Container/CategoryItems/ProductList';
-import {useAppDispatch} from '../../Redux/store';
+import ProductList from '../../Container/CategoryItems/ProductList';
+import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {CategoryItemsScreenNavigationProps} from '../../Navigation/types';
 import {ActivityIndicator} from 'react-native-paper';
 import {colors} from '../../assets/colors/Colors';
 
+/**
+ * @author Matin Kadri
+ * @param route for different category id for fetching
+ * @returns
+ */
+
 const CategoryItems = ({route}: CategoryItemsScreenNavigationProps) => {
   const [loading, setLoading] = useState<boolean>();
   const routeNum: number = getIdForSpecificProducts(route.params.name);
-  const [productData, setProductData] = useState<SingleProduct[]>();
 
   const dispatch = useAppDispatch();
+  const mydata = useAppSelector(state => state.products.products);
 
   const fetchProduct = async () => {
     setLoading(true);
     try {
-      const data = await dispatch(fetchProductsById(routeNum)).unwrap();
-      console.log('sss', data);
-      setProductData(data.data);
+      await dispatch(fetchProductsById(routeNum));
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -35,16 +37,18 @@ const CategoryItems = ({route}: CategoryItemsScreenNavigationProps) => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       {loading ? (
-        <ActivityIndicator
-          size="large"
-          animating={true}
-          color={colors.ACTIONCOLOR}
-        />
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <ActivityIndicator
+            size="large"
+            animating={true}
+            color={colors.ACTIONCOLOR}
+          />
+        </View>
       ) : (
         <FlatList
-          data={productData}
+          data={mydata}
           renderItem={({item}) => <ProductList item={item} />}
         />
       )}

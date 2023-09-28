@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {View, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -5,35 +6,35 @@ import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {userToken} from '../../Redux/Users/userSlice';
 import {ListcartItems} from '../../Redux/Cart/CartSlice';
 import CartItems from '../../Container/Cart/CartItems';
-import {ActivityIndicator} from 'react-native-paper';
+import {ActivityIndicator, Text} from 'react-native-paper';
 import CartFooter from '../../Container/Cart/CartFooter';
+import {styles} from '../Orders';
 
-// const;
+/**
+ * @author Matin Kadri
+ * @description This will render products in Cart
+ * @returns
+ */
 
 const Cart = () => {
   const token: any = useAppSelector(userToken);
-  const [cartData, setCartData] = useState();
   const [loading, setLoading] = useState<boolean>();
-  const [total, setTotal] = useState();
-
-  // const total = fdata.cart.total;
+  const data: any = useAppSelector(state => state.cart.cart);
+  // const data: any = useAppSelector(state => state.cart.updatedCart);
+  console.log('daaasad', data);
+  const total: number = data?.total;
+  const cartData = data?.data;
   const dispatch = useAppDispatch();
+  console.log('@@@@', data.count);
 
-  const getCartdata = async () => {
+  const fetch = async () => {
     setLoading(true);
-    try {
-      let data = await dispatch(ListcartItems(token)).unwrap();
-      console.log('cartdetails, data', data);
-      setCartData(data.data);
-      setTotal(data.total);
-      setLoading(false);
-    } catch (err) {
-      console.log('erfromcart', err);
-    }
+    await dispatch(ListcartItems(token));
+    setLoading(false);
   };
 
   useEffect(() => {
-    getCartdata();
+    fetch();
   }, []);
 
   return (
@@ -42,13 +43,21 @@ const Cart = () => {
         <ActivityIndicator size={'large'} />
       ) : (
         <>
-          {/* <CustomText title="Your cart Items" /> */}
-          <FlatList
-            data={cartData}
-            renderItem={({item}) => <CartItems item={item} />}
-            keyExtractor={item => item.id.toString()}
-            ListFooterComponent={() => <CartFooter total={total} />}
-          />
+          {data.count > 0 ? (
+            <FlatList
+              data={cartData}
+              alwaysBounceVertical={false}
+              renderItem={({item}) => <CartItems item={item} />}
+              keyExtractor={item => item.id.toString()}
+              ListFooterComponent={() => <CartFooter total={total} />}
+            />
+          ) : (
+            <>
+              <View style={styles.noOrdersContainer}>
+                <Text style={styles.noOrdersText}>No product in cart</Text>
+              </View>
+            </>
+          )}
         </>
       )}
     </View>

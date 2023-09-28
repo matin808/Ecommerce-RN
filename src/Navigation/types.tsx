@@ -13,6 +13,12 @@ export type RootStackParamList = {
   ProductDetails: {id: number; name: string};
   Cart: undefined;
   Orders: undefined;
+  Checkout: undefined;
+  Settings: undefined;
+  UpdateProfile: undefined;
+  Profile: undefined;
+  OrderDetails: {id: number; token: string};
+  ChangePassword: undefined;
 };
 
 export type MyNavigationProp = NavigationProp<ParamListBase>;
@@ -54,7 +60,27 @@ export type CartNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'Cart'
 >;
+export type SettingsNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Settings'
+>;
 export type OrderNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'Orders'
+>;
+export type CheckoutNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Checkout'
+>;
+export type UpdateProfileNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'UpdateProfile'
+>;
+export type ProfileNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Profile'
+>;
+export type OrderDetailsNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'OrderDetails'
 >;

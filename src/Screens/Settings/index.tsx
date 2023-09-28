@@ -3,57 +3,138 @@ import {
   // Text,
   SafeAreaView,
   StyleSheet,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import React from 'react';
 import CustomText from '../../Container/Custom/Text';
 import {colors} from '../../assets/colors/Colors';
-import {Avatar} from 'react-native-paper';
+import {Divider} from 'react-native-paper';
 import {PaperProvider, Text} from 'react-native-paper';
-import ChangePassword from '../../Container/Settings/ChangePassword';
-import {useAppSelector} from '../../Redux/store';
+import {useAppDispatch, useAppSelector} from '../../Redux/store';
+import IconComponent from '../../Container/Custom/Icon';
+import {SettingsNavigationProps} from '../../Navigation/types';
+import {logoutUser} from '../../Redux/Users/userSlice';
 
-const Settings = () => {
-  const userData = useAppSelector(state => state.users.users[0]);
-  const token = userData.access_token;
-  const [visible, setVisible] = React.useState(false);
+/**
+ * @author Matin Kadri
+ * @param navigation for navigation user to different settings location
+ * @description It will list down settings options for the current user to use
+ * @returns
+ */
 
-  const showDialog = () => setVisible(true);
+const Settings = ({navigation}: SettingsNavigationProps) => {
+  const userData = useAppSelector(state => state?.users?.users[0]);
+  const dispatch = useAppDispatch();
+  console.log('My user de', userData);
 
-  const hideDialog = () => setVisible(false);
-  console.log('My user de', userData[0]);
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigation.navigate('Login');
+  };
 
   return (
     <PaperProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.main}>
-          <CustomText style={styles.heading} title="My Profile" />
           <View style={styles.profileContainer}>
-            <Avatar.Icon
-              size={54}
-              color="#000"
-              icon={
-                // userData.profile_pic
-                //   ? require(userData.profile_pic) :
-                require('../../assets/images/sofa.png')
-              }
-            />
-            <View>
+            <View style={styles.ProfileCtnOne}>
               <Text style={styles.name}>
-                {userData.first_name} {userData.last_name}
+                {userData?.first_name} {userData?.last_name}
               </Text>
-              <Text style={styles.email}>{userData.email}</Text>
+              <Text style={styles.email}>{userData?.email}</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('UpdateProfile')}
+                style={styles.btnContainer}>
+                <Text style={styles.EditText}>edit profile?</Text>
+                <IconComponent
+                  size={20}
+                  color="blue"
+                  name="edit"
+                  use="AntDesign"
+                />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Image
+                style={styles.ImgCtn}
+                source={{
+                  uri: 'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
+                }}
+                height={100}
+                width={100}
+              />
             </View>
           </View>
         </View>
-        <View style={{marginHorizontal: 10}}>
-          <ChangePassword
-            token={token}
-            showDialog={showDialog}
-            visible={visible}
-            hideDialog={hideDialog}
+        <Divider />
+        {/*  */}
+        <View style={styles.statistics}>
+          <CustomText style={styles.statisticsTitle} title="Statistics" />
+          <View style={styles.statisticsCtn}>
+            <View>
+              <CustomText
+                title="Orders in cart"
+                style={styles.statisticsHeadingText}
+              />
+              <CustomText title="23" style={styles.statisticsvalue} />
+            </View>
+
+            <View>
+              <CustomText
+                title="Order delivered"
+                style={styles.statisticsHeadingText}
+              />
+              <CustomText title="12" style={styles.statisticsvalue} />
+            </View>
+          </View>
+        </View>
+        {/*  */}
+        <View style={styles.listContainer}>
+          <CustomText
+            style={styles.statisticsTitle}
+            title="Additional Settings"
           />
 
-          {/* <CustomText title="Hello World" /> */}
+          <View style={styles.updateHeader}>
+            <Text style={styles.DetailHeading}>Change Password</Text>
+            <IconComponent
+              // handlePress={showDialog}
+              handlePress={() => navigation.navigate('ChangePassword')}
+              name="arrowright"
+              use="AntDesign"
+              color="#000"
+              size={35}
+            />
+          </View>
+
+          <View style={styles.updateHeader}>
+            <Text style={styles.DetailHeading}>Update Your Profile</Text>
+            <IconComponent
+              handlePress={() => navigation.navigate('UpdateProfile')}
+              name="arrowright"
+              use="AntDesign"
+              color="#000"
+              size={35}
+            />
+          </View>
+
+          {/* LOGOUT */}
+          <View style={styles.updateHeader}>
+            <Text style={styles.DetailHeading}>Logout</Text>
+            <IconComponent
+              handlePress={handleLogout}
+              name="arrowright"
+              use="AntDesign"
+              color="#000"
+              size={35}
+            />
+            {/* <IconComponent
+              color="red"
+              name="logout"
+              handlePress={handleLogout}
+            /> */}
+          </View>
         </View>
       </SafeAreaView>
     </PaperProvider>
@@ -62,10 +143,12 @@ const Settings = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
   main: {
-    margin: 15,
+    padding: 15,
   },
 
   heading: {
@@ -75,22 +158,88 @@ const styles = StyleSheet.create({
   },
 
   profileContainer: {
-    marginVertical: 15,
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 15,
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+
+  ProfileCtnOne: {
+    alignSelf: 'center',
+    marginLeft: 6,
   },
   name: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Regular',
-    color: colors.TEXTDARK,
+    fontSize: 25,
+    fontFamily: 'Poppins-Black',
   },
   email: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'Roboto-light',
-    color: colors.TEXT,
+    color: 'gray',
   },
-  changePassContainer: {},
+
+  btnContainer: {
+    flexDirection: 'row',
+    borderRadius: 20,
+    paddingVertical: 8,
+    gap: 5,
+    alignItems: 'center',
+  },
+  EditText: {
+    color: 'blue',
+    fontSize: 18,
+  },
+
+  ImgCtn: {
+    borderRadius: 45,
+    marginRight: 5,
+  },
+  listContainer: {
+    minHeight: '100%',
+    paddingHorizontal: 15,
+  },
+
+  updateHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+
+  DetailHeading: {
+    fontSize: 20,
+  },
+  //
+  statistics: {
+    marginVertical: 20,
+    marginHorizontal: 15,
+  },
+  statisticsTitle: {
+    fontSize: 22,
+    fontFamily: 'Montserrat-SemiBold',
+  },
+
+  statisticsCtn: {
+    backgroundColor: '#F2F3F4',
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingTop: 15,
+    paddingBottom: 5,
+    flexDirection: 'row',
+    marginTop: 15,
+    justifyContent: 'space-between',
+  },
+
+  statisticsHeadingText: {
+    fontSize: 18,
+    // margin: 10,
+    fontFamily: 'Montserrat-SemiBold',
+  },
+  statisticsvalue: {
+    fontSize: 22,
+    margin: 10,
+    alignSelf: 'center',
+    fontFamily: 'Montserrat-Bold',
+  },
 });
 
 export default Settings;

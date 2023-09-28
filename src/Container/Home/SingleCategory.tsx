@@ -1,6 +1,5 @@
 import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {colors} from '../../assets/colors/Colors';
 import {Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -21,7 +20,8 @@ const SingleCategory = (props: ICategoryProps) => {
       onPress={() => navigation.navigate('CategoryItems', {name})}
       style={styles.category}>
       <Text style={styles.categoryTitle}>{name}</Text>
-      <Image tintColor={colors.ACTIONCOLOR} source={imageUrl} />
+      {/* <Image tintColor={colors.ACTIONCOLOR} source={imageUrl} /> */}
+      <Image tintColor="#2B1700" source={imageUrl} />
     </TouchableOpacity>
   );
 };
@@ -40,11 +40,13 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 2,
     marginVertical: 8,
-    backgroundColor: '#fff',
+
+    // backgroundColor: '#fff',
+    backgroundColor: '#FEF9E7',
     // backgroundColor: colors.ACTIONCOLOR,
     padding: 10,
     paddingVertical: 10,
-    paddingHorizontal: 30,
+    paddingHorizontal: 24,
     // alignSelf: 'center',
 
     gap: 10,

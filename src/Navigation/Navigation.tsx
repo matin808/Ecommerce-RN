@@ -6,7 +6,11 @@ import AuthStack from './AuthStack';
 import CategoryItems from '../Screens/CategoryItems';
 import ProductDetails from '../Screens/ProductDetails';
 import Cart from '../Screens/Cart';
-import DrawerNavigation from './Drawer';
+import Checkout from '../Screens/Checkout';
+import UpdateProfile from '../Screens/UpdateProfile';
+import Profile from '../Screens/Profile';
+import OrderDetails from '../Screens/OrderDetails';
+import ChangePassword from '../Screens/Auth/ChangePassword';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -19,11 +23,7 @@ const RootNavigation = () => {
           name="AuthStack"
           component={AuthStack}
         />
-        <RootStack.Screen
-          options={{headerShown: false}}
-          name="Drawer"
-          component={DrawerNavigation}
-        />
+
         <RootStack.Screen
           name="CategoryItems"
           options={({route}) => ({
@@ -31,6 +31,14 @@ const RootNavigation = () => {
             headerBackTitleVisible: false, // for disbale
           })}
           component={CategoryItems}
+        />
+        <RootStack.Screen
+          name="Profile"
+          options={() => ({
+            title: 'My Account',
+            headerBackTitleVisible: false, // for disbale
+          })}
+          component={Profile}
         />
         <RootStack.Screen
           name="ProductDetails"
@@ -46,6 +54,37 @@ const RootNavigation = () => {
             headerBackTitleVisible: false,
           }}
           component={Cart}
+        />
+        <RootStack.Screen
+          name="Checkout"
+          options={{
+            headerBackTitleVisible: false,
+          }}
+          component={Checkout}
+        />
+        <RootStack.Screen
+          name="UpdateProfile"
+          options={{
+            headerBackTitleVisible: false,
+            headerTitle: 'Update Profile',
+          }}
+          component={UpdateProfile}
+        />
+        <RootStack.Screen
+          name="OrderDetails"
+          options={({route}) => ({
+            title: 'Order ID : ' + route.params.id,
+            headerBackTitleVisible: false,
+          })}
+          component={OrderDetails}
+        />
+        <RootStack.Screen
+          name="ChangePassword"
+          options={() => ({
+            headerBackTitleVisible: false,
+            headerTitle: '',
+          })}
+          component={ChangePassword}
         />
       </RootStack.Navigator>
     </NavigationContainer>

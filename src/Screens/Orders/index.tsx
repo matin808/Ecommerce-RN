@@ -1,47 +1,94 @@
-import {FlatList, SafeAreaView} from 'react-native';
-import React, {useEffect, useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
 import OrderHeader from '../../Container/Order/OrderHeader';
 import {OrderNavigationProps} from '../../Navigation/types';
-import axios from 'axios';
-import {baseUrl} from '../../utils/constants';
 import {useAppSelector} from '../../Redux/store';
 import {userToken} from '../../Redux/Users/userSlice';
-import {Text} from 'react-native-paper';
+import {fetchOrders} from '../../utils/API/FetchOrders';
+import OrderList from '../../Container/Order/OrderList';
+import {ActivityIndicator, Text} from 'react-native-paper';
+import {useFocusEffect} from '@react-navigation/native';
+
+/**
+ * @author Matin Kadri
+ * @param navigation is used to navigate to order Details page
+ * @description This component will render order which user has placed
+ * @returns
+ */
 
 const Order = ({navigation}: OrderNavigationProps) => {
-  const token = useAppSelector(userToken);
-  const [orderdData, setOrderData] = useState();
+  const token: string = useAppSelector(userToken);
+  const [orderdData, setOrderData] = useState<any>();
+  const [loading, setLoading] = useState(false);
 
-  const fetchOrders = async () => {
-    try {
-      const res = await axios.get(`${baseUrl}/orderList`, {
-        headers: {
-          access_token: token,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log(res.data.data);
-      if (res.status === 200) {
-        setOrderData(res.data.data);
-      }
-    } catch (err) {
-      console.log('Something Went Wrong');
-    }
+  const fetchHandler = async () => {
+    const data = await fetchOrders(token);
+    setOrderData(data);
+    setLoading(false);
   };
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchHandler();
+    }, []),
+  );
 
+  const handlePress = (id: number) => {
+    console.log('33sidd', id);
+    navigation.navigate('OrderDetails', {id, token});
+  };
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.main}>
       <OrderHeader />
-      <FlatList
-        data={orderdData}
-        renderItem={({item}) => <Text>{item.cost}</Text>}
-      />
+      {orderdData?.length < 1 ? (
+        <>
+          <View style={styles.noOrdersContainer}>
+            <Text style={styles.noOrdersText}>No orders yet</Text>
+          </View>
+        </>
+      ) : (
+        <>
+          {loading && <ActivityIndicator size={'large'} />}
+          <FlatList
+            data={orderdData}
+            renderItem={({item}) => (
+              <OrderList item={item} onPress={() => handlePress(item.id)} />
+            )}
+          />
+        </>
+      )}
     </SafeAreaView>
   );
 };
+
+export const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    paddingTop: 10,
+    backgroundColor: '#f4f4f4',
+  },
+  noOrdersContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginHorizontal: 20,
+    marginTop: 20,
+    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  noOrdersText: {
+    fontSize: 18,
+    color: '#555',
+  },
+});
 
 export default Order;

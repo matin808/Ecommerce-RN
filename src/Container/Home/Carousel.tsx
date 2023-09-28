@@ -1,7 +1,6 @@
 import {View, StyleSheet} from 'react-native';
 import React from 'react';
 import {SliderBox} from 'react-native-image-slider-box';
-import {colors} from '../../assets/colors/Colors';
 
 const Carousel = () => {
   const images = [
@@ -12,11 +11,7 @@ const Carousel = () => {
   ];
   return (
     <View style={styles.container}>
-      <SliderBox
-        images={images}
-        dotColor={colors.ACTIONCOLOR}
-        autoplay={true}
-      />
+      <SliderBox images={images} dotColor="#2B1700" autoplay={true} />
     </View>
   );
 };

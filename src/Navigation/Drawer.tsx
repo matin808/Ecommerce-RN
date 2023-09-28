@@ -1,14 +1,16 @@
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import Settings from '../Screens/Settings';
-const Drawer = createDrawerNavigator();
+// import {createDrawerNavigator} from '@react-navigation/drawer';
+// import Settings from '../Screens/Settings';
+// import {RootStackParamList} from './types';
 
-const DrawerNavigation = () => {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Feed" component={Settings} />
-      <Drawer.Screen name="Article" component={Settings} />
-    </Drawer.Navigator>
-  );
-};
+// const Drawer = createDrawerNavigator<RootStackParamList>();
 
-export default DrawerNavigation;
+// const DrawerNavigation = () => {
+//   return (
+//     <Drawer.Navigator>
+//       <Drawer.Screen name="Feed" component={Settings} />
+//       <Drawer.Screen name="Article" component={Settings} />
+//     </Drawer.Navigator>
+//   );
+// };
+
+// export default DrawerNavigation;

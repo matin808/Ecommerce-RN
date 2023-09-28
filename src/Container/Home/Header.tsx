@@ -19,7 +19,7 @@ const Header: React.FC<IHeaderProps> = ({handlePress}) => {
           use="AntDesign"
           name="shoppingcart"
           handlePress={handlePress}
-          size={33}
+          size={28}
           color={colors.ACTIONCOLOR}
         />
       </View>

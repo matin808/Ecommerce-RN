@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   onboardingTitleStyle: {
-    color: colors.ACTIONCOLOR,
+    color: colors.DEFAULT,
     fontFamily: 'Roboto-Regular',
   },
   onboardingSubStyle: {

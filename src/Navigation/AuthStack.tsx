@@ -65,7 +65,7 @@ const AuthStack = () => {
           title: 'Register Yourself',
           headerBackVisible: false,
           headerStyle: {
-            backgroundColor: colors.ACTIONCOLOR,
+            backgroundColor: colors.DEFAULT,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -79,7 +79,7 @@ const AuthStack = () => {
           title: 'Forget Password',
           headerBackVisible: true,
           headerStyle: {
-            backgroundColor: colors.ACTIONCOLOR,
+            backgroundColor: colors.DEFAULT,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {

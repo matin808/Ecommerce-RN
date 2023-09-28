@@ -66,6 +66,7 @@ const RootNavigation = () => {
           name="UpdateProfile"
           options={{
             headerBackTitleVisible: false,
+            headerTitle: 'Update Profile',
           }}
           component={UpdateProfile}
         />
@@ -79,10 +80,10 @@ const RootNavigation = () => {
         />
         <RootStack.Screen
           name="ChangePassword"
-          // options={({route}) => ({
-          //   title: 'Order ID : ' + route.params.id,
-          //   headerBackTitleVisible: false,
-          // })}
+          options={() => ({
+            headerBackTitleVisible: false,
+            headerTitle: '',
+          })}
           component={ChangePassword}
         />
       </RootStack.Navigator>

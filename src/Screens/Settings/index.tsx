@@ -6,12 +6,11 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import CustomText from '../../Container/Custom/Text';
 import {colors} from '../../assets/colors/Colors';
 import {Divider} from 'react-native-paper';
 import {PaperProvider, Text} from 'react-native-paper';
-import ChangePassword from '../../Container/Settings/ChangePassword';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import IconComponent from '../../Container/Custom/Icon';
 import {SettingsNavigationProps} from '../../Navigation/types';
@@ -26,14 +25,9 @@ import {logoutUser} from '../../Redux/Users/userSlice';
 
 const Settings = ({navigation}: SettingsNavigationProps) => {
   const userData = useAppSelector(state => state?.users?.users[0]);
-  const token = userData?.access_token;
-  const [visible, setVisible] = useState(false);
   const dispatch = useAppDispatch();
-  const showDialog = () => setVisible(true);
-
-  const hideDialog = () => setVisible(false);
   console.log('My user de', userData);
-  console.log('sdcs', userData);
+
   const handleLogout = () => {
     dispatch(logoutUser());
     navigation.navigate('Login');
@@ -113,13 +107,7 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
               size={35}
             />
           </View>
-          <ChangePassword
-            token={token}
-            showDialog={showDialog}
-            visible={visible}
-            hideDialog={hideDialog}
-          />
-          {/* UPDATE PROFILE */}
+
           <View style={styles.updateHeader}>
             <Text style={styles.DetailHeading}>Update Your Profile</Text>
             <IconComponent

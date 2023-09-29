@@ -15,37 +15,38 @@ const Address = () => {
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
   console.log(selected);
-  const getAddress = async () => {
-    try {
-      const value = await AsyncStorage.getItem('address');
-      console.log('sdsds', value);
-      if (value !== null) {
-        setAddress(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log('err');
-    }
-  };
+  // const getAddress = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('address');
+  //     console.log('sdsds', value);
+  //     if (value !== null) {
+  //       setAddress(JSON.parse(value));
+  //     }
+  //   } catch (error) {
+  //     console.log('err');
+  //   }
+  // };
 
-  useEffect(() => {
-    getAddress();
-  }, [visible]);
+  // useEffect(() => {
+  //   getAddress();
+  // }, [visible]);
 
   const handlePress = async () => {
-    try {
-      await AsyncStorage.setItem(
-        'address',
-        JSON.stringify([
-          ...address,
-          {id: Math.floor(Math.random() * 100), data: text},
-        ]),
-        // JSON.stringify([]),
-      );
-      console.log('11212', text);
-      console.log('2222', address);
-    } catch (err) {
-      console.log('Error Occurred');
-    }
+    // try {
+    //   await AsyncStorage.setItem(
+    //     'address',
+    //     JSON.stringify([
+    //       ...address,
+    //       {id: Math.floor(Math.random() * 100), data: text},
+    //     ]),
+    //     // JSON.stringify([]),
+    //   );
+    //   console.log('11212', text);
+    //   console.log('2222', address);
+    // } catch (err) {
+    //   console.log('Error Occurred');
+    // }
+
     setVisible(false);
     console.log('22345', text);
   };

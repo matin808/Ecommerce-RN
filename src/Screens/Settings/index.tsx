@@ -39,7 +39,9 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
         <View style={styles.main}>
           <View style={styles.profileContainer}>
             <View style={styles.ProfileCtnOne}>
-              <Text style={styles.name}>
+              <Text
+                style={styles.name}
+                onPress={() => navigation.navigate('Profile')}>
                 {userData?.first_name} {userData?.last_name}
               </Text>
               <Text style={styles.email}>{userData?.email}</Text>
@@ -59,7 +61,7 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
               <Image
                 style={styles.ImgCtn}
                 source={{
-                  uri: 'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
+                  uri: userData?.profile_pic,
                 }}
                 height={100}
                 width={100}
@@ -190,7 +192,7 @@ const styles = StyleSheet.create({
   },
 
   ImgCtn: {
-    borderRadius: 45,
+    borderRadius: 50,
     marginRight: 5,
   },
   listContainer: {

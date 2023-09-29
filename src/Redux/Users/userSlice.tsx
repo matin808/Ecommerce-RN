@@ -1,4 +1,8 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  isRejectedWithValue,
+} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl, register, signin} from '../../utils/constants';
 import {IFormState} from '../../Screens/Auth/Register';
@@ -24,6 +28,7 @@ export interface IState {
 
 const initialState: IInitialState = {
   users: [],
+  address: [],
   success: false,
   error: false,
   loading: false,
@@ -87,7 +92,7 @@ export const addUser = createAsyncThunk(
 
 export const updateDetails = createAsyncThunk(
   'users/updateUser',
-  async (data, thunkAPI) => {
+  async (data: any, thunkAPI) => {
     const {form, token} = data;
     console.log('2333333', data);
     console.log(`updateDetails`, form, token);
@@ -110,6 +115,7 @@ export const updateDetails = createAsyncThunk(
       return res.data;
     } catch (err) {
       console.log('Something went wrong', err);
+      return thunkAPI.rejectWithValue(err);
     }
   },
 );
@@ -121,6 +127,9 @@ export const userSlice = createSlice({
     logoutUser: state => {
       console.log('Actiont tirgger');
       state.users.pop();
+    },
+    addAddress: state => {
+      console.log('Actiont tirgger1122', state);
     },
   },
   extraReducers(builder) {
@@ -175,7 +184,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const {logoutUser} = userSlice.actions;
+export const {logoutUser, addAddress} = userSlice.actions;
 export const getUserData = (state: IState) => state?.users.users;
 export const userToken = (state: any) => state?.users?.users[0]?.access_token;
 export default userSlice.reducer;

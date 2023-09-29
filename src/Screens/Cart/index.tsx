@@ -38,9 +38,11 @@ const Cart = () => {
   }, []);
 
   return (
-    <View>
+    <>
       {loading ? (
-        <ActivityIndicator size={'large'} />
+        <View style={{flex: 1, alignSelf: 'center', justifyContent: 'center'}}>
+          <ActivityIndicator size={'large'} />
+        </View>
       ) : (
         <>
           {data.count > 0 ? (
@@ -60,7 +62,7 @@ const Cart = () => {
           )}
         </>
       )}
-    </View>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
+  Image,
 } from 'react-native';
 import React, {useState} from 'react';
 import Input from '../../Container/Custom/TextInput';
@@ -19,6 +20,7 @@ import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {getUserData, updateDetails} from '../../Redux/Users/userSlice';
 import {colors} from '../../assets/colors/Colors';
 import Toast from 'react-native-simple-toast';
+import ImagePicker from 'react-native-image-crop-picker';
 
 /**
  * @author Matin Kadri
@@ -29,6 +31,7 @@ import Toast from 'react-native-simple-toast';
 const UpdateProfile = () => {
   const data: any = useAppSelector(getUserData);
   const userDetails = data[0];
+  console.log('2222222', userDetails);
   const token = userDetails.access_token;
 
   const [form, setForm] = useState({
@@ -42,17 +45,9 @@ const UpdateProfile = () => {
 
   const onHandleChange = (field: string, value: string) => {
     setForm({...form, [field]: value});
+    console.log('dddssss', form);
   };
   const dispatch = useAppDispatch();
-  const handlePress = async () => {
-    // const res = await updateDetails(form, token);
-
-    const data = {form: form, token: token};
-    await dispatch(updateDetails(data));
-    Toast.show('Profile Updated', Toast.SHORT);
-  };
-
-  // console.log(userDetails, 'sdds');
 
   const [visible, setVisible] = React.useState(false);
 
@@ -62,7 +57,43 @@ const UpdateProfile = () => {
 
   const handlePhotoUpload = () => {
     console.log('async upload');
-    showDialog(true);
+    showDialog();
+  };
+
+  const handleCameraFunctionality = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      // console.log(image);
+      handleImage(image);
+    });
+  };
+  const handleGalleryFunctionality = () => {
+    ImagePicker.openPicker({
+      includeBase64: true,
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      console.log(image);
+      handleImage(image);
+    });
+  };
+
+  const handleImage = (image: any) => {
+    const profilePic = 'data:image/jpg;base64,' + image.data;
+    console.log('111', profilePic);
+    setForm({...form, profile_pic: profilePic});
+  };
+
+  const handlePress = async () => {
+    // const res = await updateDetails(form, token);
+    console.log('12121212', form);
+    const data = {form: form, token: token};
+    await dispatch(updateDetails(data));
+    Toast.show('Profile Updated', Toast.SHORT);
   };
 
   return (
@@ -70,30 +101,14 @@ const UpdateProfile = () => {
       <PaperProvider>
         <Portal>
           <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title style={{alignSelf: 'center'}}>
-              Upload Image{' '}
-            </Dialog.Title>
-            <Dialog.Content
-              style={{
-                alignSelf: 'center',
-              }}>
-              <Text
-                style={{
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  paddingVertical: 10,
-                  paddingHorizontal: 65,
-                }}>
+            <Dialog.Title style={styles.ModalTitle}>Upload Image </Dialog.Title>
+            <Dialog.Content>
+              <Text onPress={handleCameraFunctionality} style={styles.ModalBtn}>
                 Camera
               </Text>
               <Text
-                style={{
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  paddingVertical: 10,
-                  marginTop: 15,
-                  paddingHorizontal: 65,
-                }}>
+                onPress={handleGalleryFunctionality}
+                style={styles.ModalBtn}>
                 Gallery
               </Text>
               {/* <Text variant="bodyMedium">This is simple dialog</Text> */}
@@ -105,15 +120,27 @@ const UpdateProfile = () => {
         </Portal>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
-            <TouchableOpacity onPress={handlePhotoUpload}>
-              <Avatar.Icon
-                size={120}
-                color="#fff"
-                style={styles.avatar}
-                icon="account"
-              />
-            </TouchableOpacity>
-            <View>
+            {form.profile_pic === '' || form.profile_pic === null ? (
+              <TouchableOpacity onPress={handlePhotoUpload}>
+                <Avatar.Icon
+                  size={120}
+                  color="#fff"
+                  style={styles.avatar}
+                  icon="account"
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={handlePhotoUpload}>
+                <Image
+                  source={{uri: form.profile_pic}}
+                  width={120}
+                  height={120}
+                  style={styles.Img}
+                />
+              </TouchableOpacity>
+            )}
+
+            <View style={styles.InputContainer}>
               <Input
                 style={styles.textInput}
                 value={form.first_name}
@@ -143,15 +170,7 @@ const UpdateProfile = () => {
                 placeHolder="Enter phone number"
                 handleChange={(txt: string) => onHandleChange('phone_no', txt)}
               />
-              <Input
-                style={styles.textInput}
-                value={form.profile_pic}
-                profileIcon={true}
-                placeHolder="Enter Your Profile Pic Url"
-                handleChange={(txt: string) =>
-                  onHandleChange('profile_pic', txt)
-                }
-              />
+
               <Input
                 style={styles.textInput}
                 value={form.dob}
@@ -182,7 +201,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 30,
-    marginTop: 10,
+    marginTop: 30,
   },
   avatar: {
     alignSelf: 'center',
@@ -205,6 +224,25 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     backgroundColor: colors.ACTIONCOLOR,
     borderRadius: 8,
+  },
+  ModalTitle: {
+    alignSelf: 'center',
+  },
+  ModalBtn: {
+    borderRadius: 10,
+    borderWidth: 1,
+    paddingVertical: 10,
+    marginVertical: 10,
+    alignSelf: 'center',
+    fontSize: 16,
+    paddingHorizontal: 85,
+  },
+  InputContainer: {
+    marginTop: 20,
+  },
+  Img: {
+    borderRadius: 60,
+    alignSelf: 'center',
   },
 });
 

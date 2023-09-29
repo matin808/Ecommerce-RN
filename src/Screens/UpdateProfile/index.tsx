@@ -1,11 +1,25 @@
-import {View, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import React, {useState} from 'react';
 import Input from '../../Container/Custom/TextInput';
-import {Avatar, Button} from 'react-native-paper';
+import {
+  Avatar,
+  Button,
+  PaperProvider,
+  Dialog,
+  Portal,
+} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {getUserData, updateDetails} from '../../Redux/Users/userSlice';
 import {colors} from '../../assets/colors/Colors';
 import Toast from 'react-native-simple-toast';
+
 /**
  * @author Matin Kadri
  * @description This will used to update the user account details
@@ -38,71 +52,124 @@ const UpdateProfile = () => {
     Toast.show('Profile Updated', Toast.SHORT);
   };
 
-  console.log(userDetails, 'sdds');
+  // console.log(userDetails, 'sdds');
+
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
+
+  const handlePhotoUpload = () => {
+    console.log('async upload');
+    showDialog(true);
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <Avatar.Icon
-            size={120}
-            color="#fff"
-            style={styles.avatar}
-            icon="account"
-          />
+      <PaperProvider>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Title style={{alignSelf: 'center'}}>
+              Upload Image{' '}
+            </Dialog.Title>
+            <Dialog.Content
+              style={{
+                alignSelf: 'center',
+              }}>
+              <Text
+                style={{
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  paddingVertical: 10,
+                  paddingHorizontal: 65,
+                }}>
+                Camera
+              </Text>
+              <Text
+                style={{
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  paddingVertical: 10,
+                  marginTop: 15,
+                  paddingHorizontal: 65,
+                }}>
+                Gallery
+              </Text>
+              {/* <Text variant="bodyMedium">This is simple dialog</Text> */}
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialog}>Close</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
+            <TouchableOpacity onPress={handlePhotoUpload}>
+              <Avatar.Icon
+                size={120}
+                color="#fff"
+                style={styles.avatar}
+                icon="account"
+              />
+            </TouchableOpacity>
+            <View>
+              <Input
+                style={styles.textInput}
+                value={form.first_name}
+                profileIcon={true}
+                handleChange={(txt: string) =>
+                  onHandleChange('first_name', txt)
+                }
+              />
 
-          <View>
-            <Input
-              style={styles.textInput}
-              value={form.first_name}
-              profileIcon={true}
-              handleChange={(txt: string) => onHandleChange('first_name', txt)}
-            />
+              <Input
+                style={styles.textInput}
+                value={form.last_name}
+                profileIcon={true}
+                handleChange={(txt: string) => onHandleChange('last_name', txt)}
+              />
+              <Input
+                style={styles.textInput}
+                value={form?.email}
+                profileIcon={true}
+                placeHolder="Enter your email"
+                handleChange={(txt: string) => onHandleChange('email', txt)}
+              />
+              <Input
+                style={styles.textInput}
+                value={form.phone_no}
+                profileIcon={true}
+                placeHolder="Enter phone number"
+                handleChange={(txt: string) => onHandleChange('phone_no', txt)}
+              />
+              <Input
+                style={styles.textInput}
+                value={form.profile_pic}
+                profileIcon={true}
+                placeHolder="Enter Your Profile Pic Url"
+                handleChange={(txt: string) =>
+                  onHandleChange('profile_pic', txt)
+                }
+              />
+              <Input
+                style={styles.textInput}
+                value={form.dob}
+                placeHolder="Enter your DOB"
+                profileIcon={true}
+                handleChange={(txt: string) => onHandleChange('dob', txt)}
+              />
+            </View>
 
-            <Input
-              style={styles.textInput}
-              value={form.last_name}
-              profileIcon={true}
-              handleChange={(txt: string) => onHandleChange('last_name', txt)}
-            />
-            <Input
-              style={styles.textInput}
-              value={form?.email}
-              profileIcon={true}
-              placeHolder="Enter your email"
-              handleChange={(txt: string) => onHandleChange('email', txt)}
-            />
-            <Input
-              style={styles.textInput}
-              value={form.phone_no}
-              profileIcon={true}
-              placeHolder="Enter phone number"
-              handleChange={(txt: string) => onHandleChange('phone_no', txt)}
-            />
-            <Input
-              style={styles.textInput}
-              value={form.profile_pic}
-              profileIcon={true}
-              placeHolder="Enter Your Profile Pic Url"
-              handleChange={(txt: string) => onHandleChange('profile_pic', txt)}
-            />
-            <Input
-              style={styles.textInput}
-              value={form.dob}
-              placeHolder="Enter your DOB"
-              profileIcon={true}
-              handleChange={(txt: string) => onHandleChange('dob', txt)}
-            />
+            <Button
+              mode="contained"
+              style={styles.editButton}
+              onPress={handlePress}>
+              Submit
+            </Button>
           </View>
-
-          <Button
-            mode="contained"
-            style={styles.editButton}
-            onPress={handlePress}>
-            Submit
-          </Button>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </PaperProvider>
     </SafeAreaView>
   );
 };

@@ -15,6 +15,7 @@ import {ILoginForm} from '../../Screens/Auth/Login';
 
 interface IInitialState {
   users: any[];
+  address: any[];
   success: boolean;
   error: boolean;
   loading: boolean;
@@ -128,8 +129,14 @@ export const userSlice = createSlice({
       console.log('Actiont tirgger');
       state.users.pop();
     },
-    addAddress: state => {
-      console.log('Actiont tirgger1122', state);
+    addAddress: (state, action) => {
+      console.log('Actiont tirgger1122', action.payload);
+      const addData = {
+        id: Math.floor(Math.random() * 1000),
+        data: action.payload,
+      };
+      state.address = [...state?.address, addData];
+      console.log('sdsd', state.address);
     },
   },
   extraReducers(builder) {
@@ -187,4 +194,5 @@ export const userSlice = createSlice({
 export const {logoutUser, addAddress} = userSlice.actions;
 export const getUserData = (state: IState) => state?.users.users;
 export const userToken = (state: any) => state?.users?.users[0]?.access_token;
+export const userAddress = (state: any) => state?.users?.address;
 export default userSlice.reducer;

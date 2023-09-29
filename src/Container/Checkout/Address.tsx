@@ -1,56 +1,29 @@
 /* eslint-disable react-native/no-inline-styles */
 import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {colors} from '../../assets/colors/Colors';
 import CustomText from '../Custom/Text';
 import {Button, Dialog, Portal, Text, TextInput} from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconComponent from '../Custom/Icon';
+import {useAppDispatch, useAppSelector} from '../../Redux/store';
+import {addAddress, userAddress} from '../../Redux/Users/userSlice';
 
 const Address = () => {
   const [text, setText] = useState<string>();
   const [visible, setVisible] = React.useState(false);
-  const [address, setAddress] = React.useState<any>();
+  const addressData = useAppSelector(userAddress);
   const [selected, setSelected] = useState(-1);
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
-  console.log(selected);
-  // const getAddress = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem('address');
-  //     console.log('sdsds', value);
-  //     if (value !== null) {
-  //       setAddress(JSON.parse(value));
-  //     }
-  //   } catch (error) {
-  //     console.log('err');
-  //   }
-  // };
+  const dispatch = useAppDispatch();
+  console.log('112211122', addressData);
 
-  // useEffect(() => {
-  //   getAddress();
-  // }, [visible]);
-
-  const handlePress = async () => {
-    // try {
-    //   await AsyncStorage.setItem(
-    //     'address',
-    //     JSON.stringify([
-    //       ...address,
-    //       {id: Math.floor(Math.random() * 100), data: text},
-    //     ]),
-    //     // JSON.stringify([]),
-    //   );
-    //   console.log('11212', text);
-    //   console.log('2222', address);
-    // } catch (err) {
-    //   console.log('Error Occurred');
-    // }
-
+  const handlePress = () => {
+    dispatch(addAddress(text));
     setVisible(false);
-    console.log('22345', text);
   };
-  console.log(address);
+
+  // console.log(address);
   return (
     <View>
       <View style={styles.addHeader}>
@@ -82,7 +55,7 @@ const Address = () => {
         </Portal>
       </View>
       <FlatList
-        data={address}
+        data={addressData}
         renderItem={({item}) => (
           <TouchableOpacity
             onPress={() => setSelected(item?.id)}
@@ -93,7 +66,7 @@ const Address = () => {
                 borderWidth: 1,
               },
             ]}>
-            <Text style={styles.AddressStyle}>{item?.data}</Text>
+            <Text style={styles.AddressStyle}>{item.data}</Text>
           </TouchableOpacity>
         )}
       />

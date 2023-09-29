@@ -6,7 +6,12 @@ import CustomText from '../Custom/Text';
 import {Button, Dialog, Portal, Text, TextInput} from 'react-native-paper';
 import IconComponent from '../Custom/Icon';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
-import {addAddress, userAddress} from '../../Redux/Users/userSlice';
+import {
+  addAddress,
+  deleteAddress,
+  userAddress,
+} from '../../Redux/Users/userSlice';
+import {Swipeable} from 'react-native-gesture-handler';
 
 const Address = () => {
   const [text, setText] = useState<string>();
@@ -24,6 +29,23 @@ const Address = () => {
   };
 
   // console.log(address);
+
+  const renderRightActions = (id: number) => {
+    console.log(id);
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: 5,
+        }}>
+        <TouchableOpacity onPress={() => dispatch(deleteAddress(id))}>
+          <IconComponent name="delete" />
+        </TouchableOpacity>
+      </View>
+    );
+  };
   return (
     <View>
       <View style={styles.addHeader}>
@@ -57,17 +79,19 @@ const Address = () => {
       <FlatList
         data={addressData}
         renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={() => setSelected(item?.id)}
-            style={[
-              styles.addContainer,
-              {
-                borderColor: selected === item.id ? 'green' : 'lightgray',
-                borderWidth: 1,
-              },
-            ]}>
-            <Text style={styles.AddressStyle}>{item.data}</Text>
-          </TouchableOpacity>
+          <Swipeable renderRightActions={() => renderRightActions(item.id)}>
+            <TouchableOpacity
+              onPress={() => setSelected(item?.id)}
+              style={[
+                styles.addContainer,
+                {
+                  borderColor: selected === item.id ? 'green' : 'lightgray',
+                  borderWidth: 1,
+                },
+              ]}>
+              <Text style={styles.AddressStyle}>{item.data}</Text>
+            </TouchableOpacity>
+          </Swipeable>
         )}
       />
     </View>

@@ -1,8 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  isRejectedWithValue,
-} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {baseUrl, register, signin} from '../../utils/constants';
 import {IFormState} from '../../Screens/Auth/Register';
@@ -138,6 +134,13 @@ export const userSlice = createSlice({
       state.address = [...state?.address, addData];
       console.log('sdsd', state.address);
     },
+    deleteAddress: (state, action) => {
+      console.log('Actiont tirgger1122', action.payload);
+      state.address = state.address.filter(
+        (item: any) => item.id !== action.payload,
+      );
+      console.log('sdsd', state.address);
+    },
   },
   extraReducers(builder) {
     builder.addCase(addUser.pending, state => {
@@ -191,7 +194,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const {logoutUser, addAddress} = userSlice.actions;
+export const {logoutUser, addAddress, deleteAddress} = userSlice.actions;
 export const getUserData = (state: IState) => state?.users.users;
 export const userToken = (state: any) => state?.users?.users[0]?.access_token;
 export const userAddress = (state: any) => state?.users?.address;

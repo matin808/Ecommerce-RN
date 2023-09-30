@@ -92,7 +92,7 @@ export const updateDetails = createAsyncThunk(
   async (data: any, thunkAPI) => {
     const {form, token} = data;
     console.log('2333333', data);
-    console.log(`updateDetails`, form, token);
+    console.log('updateDetails', form, token);
     const formData = new FormData();
     formData.append('first_name', form.first_name);
     formData.append('last_name', form.last_name);
@@ -122,27 +122,31 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logoutUser: state => {
-      console.log('Actiont tirgger');
       state.users.pop();
     },
     addAddress: (state, action) => {
-      console.log('Actiont tirgger1122', action.payload);
       const addData = {
         id: Math.floor(Math.random() * 1000),
         data: action.payload,
       };
-      if (state.address.length > 0) {
-        state.address = [...state.address, addData];
-      } else state.address = [addData];
-
-      console.log('sdsd', state.address.length);
+      state.address.push(addData);
     },
     deleteAddress: (state, action) => {
       console.log('Actiont tirgger1122', action.payload);
       state.address = state.address.filter(
         (item: any) => item.id !== action.payload,
       );
-      console.log('sdsd', state.address);
+    },
+
+    updateAddress: (state, action) => {
+      const updatedAddress = action.payload;
+      const addressIndex = state.address.findIndex(
+        address => address?.id === updatedAddress.id,
+      );
+
+      if (addressIndex !== -1) {
+        state.address[addressIndex] = updatedAddress;
+      }
     },
   },
   extraReducers(builder) {
@@ -152,7 +156,6 @@ export const userSlice = createSlice({
     });
     builder.addCase(addUser.fulfilled, (state, action) => {
       state.users.push(action.payload.data);
-      // state.users = action.payload.data;
       state.success = true;
       state.loading = false;
       console.log('my state', state.users);
@@ -162,11 +165,6 @@ export const userSlice = createSlice({
       state.error = true;
       console.log('build err', state.error);
     });
-
-    /**
-     * @author Matin Kadri
-     * @param Handling Sign IN user state
-     */
 
     builder.addCase(signInUser.pending, (state, action) => {
       console.log('builder sign in', action.payload);
@@ -183,12 +181,11 @@ export const userSlice = createSlice({
     builder.addCase(signInUser.rejected, (state, action) => {
       console.log('builder sign in', action.payload);
       state.success = true;
-      state.error = true;
+      state.error = false;
     });
 
     builder.addCase(updateDetails.fulfilled, (state, action) => {
       console.log('builder sign in', action.payload);
-      // state.users = action.payload.data;
       state.users.push(action.payload.data);
       state.users.shift();
       console.log('11```', action.payload.data);
@@ -197,7 +194,8 @@ export const userSlice = createSlice({
   },
 });
 
-export const {logoutUser, addAddress, deleteAddress} = userSlice.actions;
+export const {logoutUser, addAddress, deleteAddress, updateAddress} =
+  userSlice.actions;
 export const getUserData = (state: IState) => state?.users.users;
 export const userToken = (state: any) => state?.users?.users[0]?.access_token;
 export const userAddress = (state: any) => state?.users?.address;

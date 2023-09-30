@@ -4,12 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
+  // FLUSH,
+  // REHYDRATE,
+  // PAUSE,
+  // PERSIST,
+  // PURGE,
+  // REGISTER,
 } from 'redux-persist';
 import productsSlice from './Products/ProductSlice';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
@@ -33,10 +33,14 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      serializableCheck: false,
     }),
+  // middleware: getDefaultMiddleware =>
+  //   getDefaultMiddleware({
+  //     serializableCheck: {
+  //       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+  //     },
+  //   }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

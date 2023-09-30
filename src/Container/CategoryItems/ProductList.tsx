@@ -1,6 +1,6 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
-// import Toast from 'react-native-simple-toast';
+// import  from 'react-native-simple-toast';
 import {colors} from '../../assets/colors/Colors';
 import {Rating} from 'react-native-ratings';
 import {useNavigation} from '@react-navigation/native';

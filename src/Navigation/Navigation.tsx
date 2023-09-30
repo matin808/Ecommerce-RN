@@ -11,6 +11,7 @@ import UpdateProfile from '../Screens/UpdateProfile';
 import Profile from '../Screens/Profile';
 import OrderDetails from '../Screens/OrderDetails';
 import ChangePassword from '../Screens/Auth/ChangePassword';
+import AddressScreen from '../Screens/AddAddress';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -85,6 +86,14 @@ const RootNavigation = () => {
             headerTitle: '',
           })}
           component={ChangePassword}
+        />
+        <RootStack.Screen
+          name="AddressScreen"
+          options={() => ({
+            headerBackTitleVisible: false,
+            headerTitle: '',
+          })}
+          component={AddressScreen}
         />
       </RootStack.Navigator>
     </NavigationContainer>

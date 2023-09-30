@@ -12,9 +12,8 @@ const Tab = createMaterialBottomTabNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator
-      activeColor="#67C4A7"
-      inactiveColor="#000"
-      // activeColor={colors.UIBG}
+      activeColor="brown"
+      inactiveColor="gray"
       barStyle={{
         backgroundColor: '#fefefe',
         borderTopWidth: 1,
@@ -66,6 +65,7 @@ function MyTabs() {
         component={Settings}
         options={{
           tabBarLabel: 'Settings',
+
           tabBarIcon: ({color}) => (
             <IconComponent
               use="IonIcons"

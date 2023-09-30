@@ -1,14 +1,13 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-hooks/exhaustive-deps */
-import {View, FlatList} from 'react-native';
+import {View, FlatList, Image, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {userToken} from '../../Redux/Users/userSlice';
 import {ListcartItems} from '../../Redux/Cart/CartSlice';
 import CartItems from '../../Container/Cart/CartItems';
-import {ActivityIndicator, Text} from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import CartFooter from '../../Container/Cart/CartFooter';
-import {styles} from '../Orders';
 
 /**
  * @author Matin Kadri
@@ -20,7 +19,6 @@ const Cart = () => {
   const token: any = useAppSelector(userToken);
   const [loading, setLoading] = useState<boolean>();
   const data: any = useAppSelector(state => state.cart.cart);
-  // const data: any = useAppSelector(state => state.cart.updatedCart);
   console.log('daaasad', data);
   const total: number = data?.total;
   const cartData = data?.data;
@@ -39,33 +37,49 @@ const Cart = () => {
 
   return (
     <>
-      {loading ? (
-        <View style={{flex: 1, alignSelf: 'center', justifyContent: 'center'}}>
-          <ActivityIndicator size={'large'} />
-        </View>
-      ) : (
+      {data.count > 0 ? (
         <>
-          {data.count > 0 ? (
-            <FlatList
-              data={cartData}
-              alwaysBounceVertical={false}
-              renderItem={({item}) => <CartItems item={item} />}
-              keyExtractor={item => item.id.toString()}
-              ListFooterComponent={() => <CartFooter total={total} />}
-            />
+          {loading ? (
+            <View style={styles.main}>
+              <ActivityIndicator size={'large'} />
+            </View>
           ) : (
             <>
-              <View style={styles.noOrdersContainer}>
-                <Text style={styles.noOrdersText}>No product in cart</Text>
-              </View>
+              <FlatList
+                data={cartData}
+                alwaysBounceVertical={false}
+                renderItem={({item}) => <CartItems item={item} />}
+                keyExtractor={item => item.id.toString()}
+                ListFooterComponent={() => <CartFooter total={total} />}
+              />
             </>
           )}
+        </>
+      ) : (
+        <>
+          <View style={styles.ImgCtn}>
+            <Image
+              style={styles.Img}
+              source={{
+                uri: 'https://i.pinimg.com/736x/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.jpg',
+              }}
+            />
+          </View>
         </>
       )}
     </>
   );
 };
 
-// const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  main: {flex: 1, alignSelf: 'center', justifyContent: 'center'},
+  ImgCtn: {backgroundColor: '#fff', flex: 1},
+  Img: {
+    width: '80%',
+    height: '70%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default Cart;

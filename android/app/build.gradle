@@ -74,12 +74,18 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "com.assignment"
+    // buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.assignment"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        // 
+        // targetSdkVersion 27
+
+
     }
     signingConfigs {
         debug {

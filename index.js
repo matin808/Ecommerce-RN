@@ -3,7 +3,7 @@
  * @format
  */
 import 'react-native-gesture-handler';
-import {AppRegistry} from 'react-native';
+import {AppRegistry, StyleSheet} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import {Provider} from 'react-redux';
@@ -18,7 +18,7 @@ const Root = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <GestureHandlerRootView style={{flex: 1}}>
+        <GestureHandlerRootView style={styles.container}>
           <App />
         </GestureHandlerRootView>
       </PersistGate>
@@ -27,3 +27,9 @@ const Root = () => {
 };
 
 AppRegistry.registerComponent(appName, () => Root);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

@@ -11,6 +11,7 @@ import {ILoginForm} from '../../Screens/Auth/Login';
 
 interface IInitialState {
   users: any[];
+  address: any[];
   success: boolean;
   error: boolean;
   loading: boolean;
@@ -24,6 +25,7 @@ export interface IState {
 
 const initialState: IInitialState = {
   users: [],
+  address: [],
   success: false,
   error: false,
   loading: false,
@@ -87,7 +89,7 @@ export const addUser = createAsyncThunk(
 
 export const updateDetails = createAsyncThunk(
   'users/updateUser',
-  async (data, thunkAPI) => {
+  async (data: any, thunkAPI) => {
     const {form, token} = data;
     console.log('2333333', data);
     console.log(`updateDetails`, form, token);
@@ -110,6 +112,7 @@ export const updateDetails = createAsyncThunk(
       return res.data;
     } catch (err) {
       console.log('Something went wrong', err);
+      return thunkAPI.rejectWithValue(err);
     }
   },
 );
@@ -121,6 +124,25 @@ export const userSlice = createSlice({
     logoutUser: state => {
       console.log('Actiont tirgger');
       state.users.pop();
+    },
+    addAddress: (state, action) => {
+      console.log('Actiont tirgger1122', action.payload);
+      const addData = {
+        id: Math.floor(Math.random() * 1000),
+        data: action.payload,
+      };
+      if (state.address.length > 0) {
+        state.address = [...state.address, addData];
+      } else state.address = [addData];
+
+      console.log('sdsd', state.address.length);
+    },
+    deleteAddress: (state, action) => {
+      console.log('Actiont tirgger1122', action.payload);
+      state.address = state.address.filter(
+        (item: any) => item.id !== action.payload,
+      );
+      console.log('sdsd', state.address);
     },
   },
   extraReducers(builder) {
@@ -175,7 +197,8 @@ export const userSlice = createSlice({
   },
 });
 
-export const {logoutUser} = userSlice.actions;
+export const {logoutUser, addAddress, deleteAddress} = userSlice.actions;
 export const getUserData = (state: IState) => state?.users.users;
 export const userToken = (state: any) => state?.users?.users[0]?.access_token;
+export const userAddress = (state: any) => state?.users?.address;
 export default userSlice.reducer;

@@ -1,12 +1,13 @@
 import {View, SafeAreaView, StyleSheet, Image} from 'react-native';
 import React from 'react';
-import {Avatar, Button} from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import Input from '../../Container/Custom/TextInput';
 import {useAppSelector} from '../../Redux/store';
 import {getUserData} from '../../Redux/Users/userSlice';
 // import {fetchUserDetails} from '../../utils/API/FetchUserDetails';
 import {colors} from '../../assets/colors/Colors';
 import {ProfileNavigationProps} from '../../Navigation/types';
+import {getAvatarUrl} from '../../utils/GetAvatar';
 
 /**
  * @author Matin Kadri
@@ -19,24 +20,24 @@ const Profile = ({navigation}: ProfileNavigationProps) => {
   const data: any = useAppSelector(getUserData);
   console.log('ds', data);
   const userDetails = data[0];
-  console.log('pp', userDetails.profile_pic);
+  const usrAvatar = getAvatarUrl(userDetails?.gender);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        {userDetails?.profile_pic === null ? (
-          <Avatar.Icon
-            size={120}
-            color="#fff"
+        {userDetails?.profile_pic === '' ? (
+          <Image
+            source={{uri: usrAvatar}}
             style={styles.avatar}
-            icon="account"
+            height={130}
+            width={130}
           />
         ) : (
           <Image
             source={{uri: userDetails?.profile_pic}}
             style={styles.avatar}
-            height={150}
-            width={150}
+            height={130}
+            width={130}
           />
         )}
 
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 25,
     borderRadius: 100,
-    backgroundColor: colors.ACTIONCOLOR,
+    // backgroundColor: colors.ACTIONCOLOR,
   },
   textInput: {
     marginVertical: 10,

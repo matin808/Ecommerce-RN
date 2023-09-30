@@ -15,6 +15,7 @@ import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import IconComponent from '../../Container/Custom/Icon';
 import {SettingsNavigationProps} from '../../Navigation/types';
 import {logoutUser} from '../../Redux/Users/userSlice';
+import {getAvatarUrl} from '../../utils/GetAvatar';
 
 /**
  * @author Matin Kadri
@@ -33,13 +34,17 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
     navigation.navigate('Login');
   };
 
+  const usrAvatar = getAvatarUrl(userData?.gender);
+
   return (
     <PaperProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.main}>
           <View style={styles.profileContainer}>
             <View style={styles.ProfileCtnOne}>
-              <Text style={styles.name}>
+              <Text
+                style={styles.name}
+                onPress={() => navigation.navigate('Profile')}>
                 {userData?.first_name} {userData?.last_name}
               </Text>
               <Text style={styles.email}>{userData?.email}</Text>
@@ -56,14 +61,27 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
               </TouchableOpacity>
             </View>
             <View>
-              <Image
-                style={styles.ImgCtn}
-                source={{
-                  uri: 'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
-                }}
-                height={100}
-                width={100}
-              />
+              {userData?.profile_pic === '' ? (
+                <>
+                  <Image
+                    style={styles.ImgCtn}
+                    source={{
+                      uri: usrAvatar,
+                    }}
+                    height={115}
+                    width={115}
+                  />
+                </>
+              ) : (
+                <Image
+                  style={styles.ImgCtn}
+                  source={{
+                    uri: userData?.profile_pic,
+                  }}
+                  height={100}
+                  width={100}
+                />
+              )}
             </View>
           </View>
         </View>
@@ -190,7 +208,7 @@ const styles = StyleSheet.create({
   },
 
   ImgCtn: {
-    borderRadius: 45,
+    borderRadius: 50,
     marginRight: 5,
   },
   listContainer: {

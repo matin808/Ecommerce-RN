@@ -15,6 +15,7 @@ import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import IconComponent from '../../Container/Custom/Icon';
 import {SettingsNavigationProps} from '../../Navigation/types';
 import {logoutUser} from '../../Redux/Users/userSlice';
+import {getAvatarUrl} from '../../utils/GetAvatar';
 
 /**
  * @author Matin Kadri
@@ -32,6 +33,8 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
     dispatch(logoutUser());
     navigation.navigate('Login');
   };
+
+  const usrAvatar = getAvatarUrl(userData?.gender);
 
   return (
     <PaperProvider>
@@ -58,14 +61,27 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
               </TouchableOpacity>
             </View>
             <View>
-              <Image
-                style={styles.ImgCtn}
-                source={{
-                  uri: userData?.profile_pic,
-                }}
-                height={100}
-                width={100}
-              />
+              {userData?.profile_pic === '' ? (
+                <>
+                  <Image
+                    style={styles.ImgCtn}
+                    source={{
+                      uri: usrAvatar,
+                    }}
+                    height={115}
+                    width={115}
+                  />
+                </>
+              ) : (
+                <Image
+                  style={styles.ImgCtn}
+                  source={{
+                    uri: userData?.profile_pic,
+                  }}
+                  height={100}
+                  width={100}
+                />
+              )}
             </View>
           </View>
         </View>

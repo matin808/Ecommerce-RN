@@ -9,18 +9,13 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Input from '../../Container/Custom/TextInput';
-import {
-  Avatar,
-  Button,
-  PaperProvider,
-  Dialog,
-  Portal,
-} from 'react-native-paper';
+import {Button, PaperProvider, Dialog, Portal} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {getUserData, updateDetails} from '../../Redux/Users/userSlice';
 import {colors} from '../../assets/colors/Colors';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-crop-picker';
+import {getAvatarUrl} from '../../utils/GetAvatar';
 
 /**
  * @author Matin Kadri
@@ -33,6 +28,7 @@ const UpdateProfile = () => {
   const userDetails = data[0];
   console.log('2222222', userDetails);
   const token = userDetails.access_token;
+  const usrAvatar = getAvatarUrl(userDetails?.gender);
 
   const [form, setForm] = useState({
     first_name: userDetails.first_name,
@@ -122,11 +118,11 @@ const UpdateProfile = () => {
           <View style={styles.container}>
             {form.profile_pic === '' || form.profile_pic === null ? (
               <TouchableOpacity onPress={handlePhotoUpload}>
-                <Avatar.Icon
-                  size={120}
-                  color="#fff"
-                  style={styles.avatar}
-                  icon="account"
+                <Image
+                  source={{uri: usrAvatar}}
+                  width={120}
+                  height={120}
+                  style={styles.Img}
                 />
               </TouchableOpacity>
             ) : (

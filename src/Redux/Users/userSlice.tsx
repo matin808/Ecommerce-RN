@@ -131,8 +131,11 @@ export const userSlice = createSlice({
         id: Math.floor(Math.random() * 1000),
         data: action.payload,
       };
-      state.address = [...state?.address, addData];
-      console.log('sdsd', state.address);
+      if (state.address.length > 0) {
+        state.address = [...state.address, addData];
+      } else state.address = [addData];
+
+      console.log('sdsd', state.address.length);
     },
     deleteAddress: (state, action) => {
       console.log('Actiont tirgger1122', action.payload);

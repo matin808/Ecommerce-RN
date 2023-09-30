@@ -79,17 +79,17 @@ const Address = () => {
       <FlatList
         data={addressData}
         renderItem={({item}) => (
-          <Swipeable renderRightActions={() => renderRightActions(item.id)}>
+          <Swipeable renderRightActions={() => renderRightActions(item?.id)}>
             <TouchableOpacity
               onPress={() => setSelected(item?.id)}
               style={[
                 styles.addContainer,
                 {
-                  borderColor: selected === item.id ? 'green' : 'lightgray',
+                  borderColor: selected === item?.id ? 'green' : 'lightgray',
                   borderWidth: 1,
                 },
               ]}>
-              <Text style={styles.AddressStyle}>{item.data}</Text>
+              <Text style={styles.AddressStyle}>{item?.data}</Text>
             </TouchableOpacity>
           </Swipeable>
         )}

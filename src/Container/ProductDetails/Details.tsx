@@ -1,4 +1,4 @@
-import {View, StyleSheet, Text, Image} from 'react-native';
+import {View, StyleSheet, Text, Image, Share, Alert} from 'react-native';
 import React, {useState} from 'react';
 import {Button, Dialog, Portal} from 'react-native-paper';
 import ImageComponent from './ImageComponent';
@@ -86,6 +86,25 @@ const Details = (props: IDetails) => {
     }
   };
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `Check out this amazing product from Monterrack, I love it! ${name}`,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
+
   return (
     <View style={styles.detail}>
       <View style={styles.ImageContainer}>
@@ -101,6 +120,7 @@ const Details = (props: IDetails) => {
 
             <IconComponent
               style={styles.Icon}
+              handlePress={onShare}
               name="share"
               size={29}
               color="gray"
@@ -160,7 +180,6 @@ const Details = (props: IDetails) => {
               startingValue={0}
               onFinishRating={ratingCompleted}
             />
-            {/* {ratingStatus && <Toas>Rating has been Added</Toas>} */}
           </Dialog.Content>
           <Dialog.Actions>
             <Button style={styles.btn} onPress={hideDialog}>

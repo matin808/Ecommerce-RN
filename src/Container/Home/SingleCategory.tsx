@@ -10,8 +10,6 @@ interface ICategoryProps {
   imageUrl: any;
 }
 
-// type MyNavigationProp = NavigationProp<ParamListBase>;
-
 const SingleCategory = (props: ICategoryProps) => {
   const {name, imageUrl} = props;
   const navigation: MyNavigationProp = useNavigation();
@@ -20,7 +18,7 @@ const SingleCategory = (props: ICategoryProps) => {
       onPress={() => navigation.navigate('CategoryItems', {name})}
       style={styles.category}>
       <Text style={styles.categoryTitle}>{name}</Text>
-      {/* <Image tintColor={colors.ACTIONCOLOR} source={imageUrl} /> */}
+
       <Image tintColor="#2B1700" source={imageUrl} />
     </TouchableOpacity>
   );
@@ -40,18 +38,13 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 2,
     marginVertical: 8,
-
-    // backgroundColor: '#fff',
     backgroundColor: '#FEF9E7',
-    // backgroundColor: colors.ACTIONCOLOR,
     padding: 10,
     paddingVertical: 10,
     paddingHorizontal: 24,
-    // alignSelf: 'center',
 
     gap: 10,
     borderRadius: 15,
-    //
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

@@ -9,7 +9,6 @@ import {colors} from '../../../assets/colors/Colors';
 
 interface ButtonProps {
   title: string;
-  // handlePress: (arg: any) => void;
   style?: Object;
   handlePress: (event: GestureResponderEvent) => void;
 }

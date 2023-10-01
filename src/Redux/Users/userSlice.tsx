@@ -3,23 +3,57 @@ import axios from 'axios';
 import {baseUrl, register, signin} from '../../utils/constants';
 import {IFormState} from '../../Screens/Auth/Register';
 import {ILoginForm} from '../../Screens/Auth/Login';
+import {IUpdateStateProps} from '../../Screens/UpdateProfile';
 
 /**
  * @author Matin Kadri
- * @param Handling Authentication of users
+ * @param Handling Authentication of users and storing address of the user
  */
 
+export interface SelectedAddress {
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
+export interface IAddressProps {
+  data: Record<string, SelectedAddress>;
+  id: number;
+}
+
+export interface User {
+  access_token: string;
+  country_id: null | number;
+  created: string;
+  dob: string;
+  email: string;
+  first_name: string;
+  gender: string;
+  id: number;
+  is_active: boolean;
+  last_name: string;
+  modified: string;
+  phone_no: string;
+  profile_pic: string;
+  role_id: number;
+  username: string;
+}
+
 interface IInitialState {
-  users: any[];
-  address: any[];
+  users: User[];
+  address: IAddressProps[];
   success: boolean;
   error: boolean;
   loading: boolean;
+  selectedAddress: SelectedAddress | any;
 }
 
-export interface IState {
+interface IState {
   users: {
-    users?: any[];
+    users: User[];
+    address: [];
+    selectedAddress: SelectedAddress;
   };
 }
 
@@ -29,6 +63,7 @@ const initialState: IInitialState = {
   success: false,
   error: false,
   loading: false,
+  selectedAddress: null,
 };
 
 export const signInUser = createAsyncThunk(
@@ -89,10 +124,8 @@ export const addUser = createAsyncThunk(
 
 export const updateDetails = createAsyncThunk(
   'users/updateUser',
-  async (data: any, thunkAPI) => {
+  async (data: {form: IUpdateStateProps; token: string}, thunkAPI) => {
     const {form, token} = data;
-    console.log('2333333', data);
-    console.log('updateDetails', form, token);
     const formData = new FormData();
     formData.append('first_name', form.first_name);
     formData.append('last_name', form.last_name);
@@ -108,7 +141,6 @@ export const updateDetails = createAsyncThunk(
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('`````', res.data);
       return res.data;
     } catch (err) {
       console.log('Something went wrong', err);
@@ -132,7 +164,6 @@ export const userSlice = createSlice({
       state.address.push(addData);
     },
     deleteAddress: (state, action) => {
-      console.log('Actiont tirgger1122', action.payload);
       state.address = state.address.filter(
         (item: any) => item.id !== action.payload,
       );
@@ -147,6 +178,12 @@ export const userSlice = createSlice({
       if (addressIndex !== -1) {
         state.address[addressIndex] = updatedAddress;
       }
+    },
+
+    selectAddress: (state, action) => {
+      // for getting data for selected address
+      const main = state.address.find(address => address.id === action.payload);
+      state.selectedAddress = main?.data;
     },
   },
   extraReducers(builder) {
@@ -172,31 +209,36 @@ export const userSlice = createSlice({
     });
 
     builder.addCase(signInUser.fulfilled, (state, action) => {
-      console.log('builder sign in', action.payload);
       state.users.push(action.payload.data);
       state.success = true;
       state.loading = false;
     });
 
-    builder.addCase(signInUser.rejected, (state, action) => {
-      console.log('builder sign in', action.payload);
+    builder.addCase(signInUser.rejected, state => {
       state.success = true;
       state.error = false;
     });
 
     builder.addCase(updateDetails.fulfilled, (state, action) => {
-      console.log('builder sign in', action.payload);
       state.users.push(action.payload.data);
       state.users.shift();
-      console.log('11```', action.payload.data);
       state.success = true;
     });
   },
 });
 
-export const {logoutUser, addAddress, deleteAddress, updateAddress} =
-  userSlice.actions;
-export const getUserData = (state: IState) => state?.users.users;
-export const userToken = (state: any) => state?.users?.users[0]?.access_token;
-export const userAddress = (state: any) => state?.users?.address;
+export const {
+  logoutUser,
+  addAddress,
+  deleteAddress,
+  updateAddress,
+  selectAddress,
+} = userSlice.actions;
+
+export const getUserData = (state: IState | any) => state?.users.users;
+export const userToken = (state: IState | any) =>
+  state?.users?.users[0]?.access_token;
+export const userAddress = (state: IState | any) => state?.users?.address;
+export const usrSelectedAddress = (state: IState | any) =>
+  state.users?.selectedAddress;
 export default userSlice.reducer;

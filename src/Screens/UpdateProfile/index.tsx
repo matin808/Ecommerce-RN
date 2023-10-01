@@ -23,6 +23,15 @@ import {getAvatarUrl} from '../../utils/GetAvatar';
  * @returns
  */
 
+export interface IUpdateStateProps {
+  first_name: string;
+  last_name: string;
+  email: string;
+  dob: string;
+  profile_pic: string;
+  phone_no: string;
+}
+
 const UpdateProfile = () => {
   const data: any = useAppSelector(getUserData);
   const userDetails = data[0];
@@ -30,7 +39,7 @@ const UpdateProfile = () => {
   const token = userDetails.access_token;
   const usrAvatar = getAvatarUrl(userDetails?.gender);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<IUpdateStateProps>({
     first_name: userDetails.first_name,
     last_name: userDetails.last_name,
     email: userDetails.email,
@@ -62,7 +71,6 @@ const UpdateProfile = () => {
       height: 400,
       cropping: true,
     }).then(image => {
-      // console.log(image);
       handleImage(image);
     });
   };
@@ -73,7 +81,6 @@ const UpdateProfile = () => {
       height: 400,
       cropping: true,
     }).then(image => {
-      console.log(image);
       handleImage(image);
     });
   };

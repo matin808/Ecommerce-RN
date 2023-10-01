@@ -1,9 +1,8 @@
 import axios from 'axios';
-import {IForm} from '../../Container/Settings/ChangePassword';
 import {baseUrl} from '../constants';
+import {IForm} from '../../Screens/Auth/ChangePassword';
 
 export const handleChangePassword = async (form: IForm, token: string) => {
-  console.log('asasdddd', form);
   const formData = new FormData();
   formData.append('old_password', form.old_password);
   formData.append('password', form.password);

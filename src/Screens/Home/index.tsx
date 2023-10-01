@@ -19,7 +19,6 @@ import {ListcartItems} from '../../Redux/Cart/CartSlice';
 
 const Home = ({navigation}: HomeScreenNavigationProps) => {
   const token = useAppSelector(userToken);
-  console.log('13', token);
   const userData = useAppSelector(getUserData);
   console.log(userData);
   const dispatch = useAppDispatch();

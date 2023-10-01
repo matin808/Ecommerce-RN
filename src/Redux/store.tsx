@@ -2,15 +2,7 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import userSlice from './Users/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {
-  persistReducer,
-  // FLUSH,
-  // REHYDRATE,
-  // PAUSE,
-  // PERSIST,
-  // PURGE,
-  // REGISTER,
-} from 'redux-persist';
+import {persistReducer} from 'redux-persist';
 import productsSlice from './Products/ProductSlice';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import cartSlice from './Cart/CartSlice';
@@ -35,12 +27,6 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-  // middleware: getDefaultMiddleware =>
-  //   getDefaultMiddleware({
-  //     serializableCheck: {
-  //       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-  //     },
-  //   }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

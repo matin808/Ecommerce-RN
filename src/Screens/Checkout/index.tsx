@@ -1,15 +1,14 @@
 import {View, StyleSheet, ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import {useAppSelector} from '../../Redux/store';
-import {userToken} from '../../Redux/Users/userSlice';
+import {userToken, usrSelectedAddress} from '../../Redux/Users/userSlice';
 import Address from '../../Container/Checkout/Address';
 import {PaperProvider} from 'react-native-paper';
 import UserInfo from '../../Container/Checkout/UserInfo';
-import axios from 'axios';
-import {baseUrl} from '../../utils/constants';
 import {CheckoutNavigationProps} from '../../Navigation/types';
 import Toast from 'react-native-simple-toast';
 import CartInfo from '../../Container/Checkout/CartInfo';
+import {placeOrder} from '../../utils/API/PlaceOrder';
 
 /**
  * @author Matin kadri
@@ -20,29 +19,23 @@ import CartInfo from '../../Container/Checkout/CartInfo';
 
 const Checkout = ({navigation}: CheckoutNavigationProps) => {
   const cartData = useAppSelector(state => state.cart.cart);
+  const usrAddress = useAppSelector(usrSelectedAddress);
   const {count, total} = cartData;
   const token = useAppSelector(userToken);
   const [loading, setLoading] = useState(false);
+  const {address, city, state, zipCode} = usrAddress;
+  const merge = address + ' ' + city + ' ' + state + ' ' + zipCode;
 
-  const placeOrder = async () => {
+  const handlePlaceOrder = async () => {
     setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append(
-        'address',
-        'The Ruby, 29-Senapati Bapat Marg, Dadar (West)',
-      );
-      await axios.post(`${baseUrl}/order`, formData, {
-        headers: {
-          access_token: token,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+    const res = await placeOrder(merge, token);
+    if (res === 200) {
       setLoading(false);
       Toast.show('Order Placed Successfully', Toast.SHORT);
       navigation.navigate('Home');
-    } catch (err) {
-      console.log('From order', err);
+    } else {
+      setLoading(false);
+      Toast.show('Something went wrong', Toast.SHORT);
     }
   };
 
@@ -55,7 +48,7 @@ const Checkout = ({navigation}: CheckoutNavigationProps) => {
           <CartInfo
             count={count}
             total={total}
-            onPress={placeOrder}
+            onPress={handlePlaceOrder}
             loading={loading}
           />
         </View>

@@ -13,7 +13,7 @@ interface ICartProps {
 
 const CartInfo = (props: ICartProps) => {
   const {count, total, onPress, loading} = props;
-  const totalAMount = total + 40;
+
   return (
     <View>
       <CustomText title="Cart Details" style={styles.textStyle} />
@@ -31,8 +31,12 @@ const CartInfo = (props: ICartProps) => {
           <Text style={styles.text}>+40</Text>
         </View>
         <View style={styles.main}>
+          <Text style={styles.label}>Discount Applied</Text>
+          <Text style={styles.text}>-40</Text>
+        </View>
+        <View style={styles.main}>
           <Text style={styles.label}>Total Amount</Text>
-          <Text style={styles.text}>₹{totalAMount}</Text>
+          <Text style={styles.text}>₹{total}</Text>
         </View>
       </View>
       <Button

@@ -1,12 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
 import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {colors} from '../../assets/colors/Colors';
 import CustomText from '../Custom/Text';
 import {Text} from 'react-native-paper';
 import IconComponent from '../Custom/Icon';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
-import {deleteAddress, userAddress} from '../../Redux/Users/userSlice';
+import {
+  deleteAddress,
+  selectAddress,
+  userAddress,
+} from '../../Redux/Users/userSlice';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {MyNavigationProp} from '../../Navigation/types';
@@ -15,9 +19,15 @@ const Address = () => {
   const addressData = useAppSelector(userAddress);
   const dispatch = useAppDispatch();
   const navigation: MyNavigationProp = useNavigation();
+  const [selected, setSelected] = useState<number>();
 
   const handleUpdate = (id: number) => {
     navigation.navigate('AddressScreen', {id});
+  };
+
+  const handleSelectedAddress = (id: number) => {
+    dispatch(selectAddress(id));
+    setSelected(id);
   };
 
   const renderRightActions = (id: number) => {
@@ -55,12 +65,20 @@ const Address = () => {
         data={addressData}
         renderItem={({item}) => (
           <Swipeable renderRightActions={() => renderRightActions(item?.id)}>
-            <View style={styles.addressContainer}>
+            <TouchableOpacity
+              onPress={() => handleSelectedAddress(item?.id)}
+              style={[
+                styles.addressContainer,
+                {
+                  borderColor: selected === item?.id ? 'gray' : '#fff',
+                  borderWidth: 2,
+                },
+              ]}>
               <Text style={styles.addressText}>
                 {item?.data?.address} {item?.data?.city} {item?.data?.state}{' '}
                 {item?.data?.zipCode}
               </Text>
-            </View>
+            </TouchableOpacity>
           </Swipeable>
         )}
       />

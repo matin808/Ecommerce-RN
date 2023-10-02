@@ -6,10 +6,17 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import ProductList from '../../Container/CategoryItems/ProductList';
-import {ActivityIndicator} from 'react-native-paper';
+import ProductList, {
+  SingleProduct,
+} from '../../Container/CategoryItems/ProductList';
 import {fetchProductsUsingId} from '../../utils/API/fetchProductsById';
 import IconComponent from '../../Container/Custom/Icon';
+import Loader from '../../Container/Custom/Loader';
+
+/**
+ * @description this screen will contain all products list and a search bar for user to search for products
+ * @returns
+ */
 
 const Explore = () => {
   const [allProducts, setALlProducts] = useState<any>();
@@ -23,7 +30,9 @@ const Explore = () => {
     const p4 = await fetchProductsUsingId(4);
     let main: any = [...p1, ...p2, ...p3, ...p4];
 
-    main.sort((a: any, b: any) => a.name.localeCompare(b.name));
+    main.sort((a: SingleProduct, b: SingleProduct) =>
+      a.name.localeCompare(b.name),
+    );
     setALlProducts(main);
     setLoading(false);
   };
@@ -43,9 +52,7 @@ const Explore = () => {
   return (
     <SafeAreaView style={styles.ctn}>
       {loading ? (
-        <View style={[styles.ctn, styles.middleCtn]}>
-          <ActivityIndicator size={'large'} />
-        </View>
+        <Loader />
       ) : (
         <>
           <View style={styles.searchCtn}>
@@ -64,23 +71,12 @@ const Explore = () => {
               style={styles.Input}
             />
           </View>
-          {query === undefined ? (
-            <>
-              <FlatList
-                style={styles.ctn}
-                data={allProducts}
-                renderItem={({item}) => <ProductList item={item} />}
-              />
-            </>
-          ) : (
-            <>
-              <FlatList
-                style={styles.ctn}
-                data={query}
-                renderItem={({item}: any) => <ProductList item={item} />}
-              />
-            </>
-          )}
+
+          <FlatList
+            style={styles.ctn}
+            data={query ? query : allProducts}
+            renderItem={({item}: any) => <ProductList item={item} />}
+          />
         </>
       )}
     </SafeAreaView>
@@ -90,10 +86,7 @@ const styles = StyleSheet.create({
   ctn: {
     flex: 1,
   },
-  middleCtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
   searchCtn: {
     backgroundColor: '#fff',
     flex: 1,

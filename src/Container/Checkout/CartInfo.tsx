@@ -3,6 +3,7 @@ import React from 'react';
 import CustomText from '../Custom/Text';
 import {Button, Text} from 'react-native-paper';
 import {styles} from './UserInfo';
+import {colors} from '../../assets/colors/Colors';
 
 interface ICartProps {
   count: number;
@@ -42,7 +43,7 @@ const CartInfo = (props: ICartProps) => {
       <Button
         loading={loading}
         textColor="#fff"
-        buttonColor="green"
+        buttonColor={colors.ACTIONCOLOR}
         style={styles.btn}
         mode="outlined"
         onPress={onPress}>

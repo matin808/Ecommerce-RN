@@ -31,7 +31,6 @@ const Address = () => {
   };
 
   const renderRightActions = (id: number) => {
-    console.log('11', id);
     return (
       <View
         style={{
@@ -70,7 +69,7 @@ const Address = () => {
               style={[
                 styles.addressContainer,
                 {
-                  borderColor: selected === item?.id ? 'gray' : '#fff',
+                  borderColor: selected === item?.id ? 'brown' : '#fff',
                   borderWidth: 2,
                 },
               ]}>

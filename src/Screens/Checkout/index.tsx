@@ -9,6 +9,7 @@ import {CheckoutNavigationProps} from '../../Navigation/types';
 import Toast from 'react-native-simple-toast';
 import CartInfo from '../../Container/Checkout/CartInfo';
 import {placeOrder} from '../../utils/API/PlaceOrder';
+import LottieView from 'lottie-react-native';
 
 /**
  * @author Matin kadri
@@ -20,19 +21,37 @@ import {placeOrder} from '../../utils/API/PlaceOrder';
 const Checkout = ({navigation}: CheckoutNavigationProps) => {
   const cartData = useAppSelector(state => state.cart.cart);
   const usrAddress = useAppSelector(usrSelectedAddress);
+  const [Orderloading, setOrderLoading] = useState(false);
   const {count, total} = cartData;
   const token = useAppSelector(userToken);
   const [loading, setLoading] = useState(false);
-  const {address, city, state, zipCode} = usrAddress;
-  const merge = address + ' ' + city + ' ' + state + ' ' + zipCode;
+
+  const merge =
+    usrAddress?.address +
+    ' ' +
+    usrAddress?.city +
+    ' ' +
+    usrAddress?.state +
+    ' ' +
+    usrAddress?.zipCode;
+
+  console.log('1', usrAddress);
 
   const handlePlaceOrder = async () => {
+    if (usrAddress === undefined) {
+      Toast.show('Please select an address', Toast.LONG);
+      return;
+    }
+    setOrderLoading(true);
     setLoading(true);
     const res = await placeOrder(merge, token);
+
     if (res === 200) {
       setLoading(false);
-      Toast.show('Order Placed Successfully', Toast.SHORT);
-      navigation.navigate('Home');
+      // Toast.show('Order Placed Successfully', Toast.SHORT);
+
+      setOrderLoading(false);
+      navigation.navigate('OrderCompleted');
     } else {
       setLoading(false);
       Toast.show('Something went wrong', Toast.SHORT);
@@ -53,6 +72,28 @@ const Checkout = ({navigation}: CheckoutNavigationProps) => {
           />
         </View>
       </ScrollView>
+
+      {Orderloading ? (
+        <View
+          style={{
+            backgroundColor: 'black',
+            opacity: 0.6,
+            justifyContent: 'center',
+            alignContent: 'center',
+            width: '100%',
+            position: 'absolute',
+            height: '100%',
+          }}>
+          <LottieView
+            style={{height: 200}}
+            source={require('../../assets/animation/scanner.json')}
+            speed={3}
+            autoPlay
+          />
+        </View>
+      ) : (
+        <></>
+      )}
     </PaperProvider>
   );
 };

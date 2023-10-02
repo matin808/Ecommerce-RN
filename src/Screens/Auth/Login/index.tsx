@@ -11,6 +11,12 @@ import {validateEmail, validatePassword} from '../../../utils/Validator';
 import {useAppDispatch} from '../../../Redux/store';
 import Toast from 'react-native-simple-toast';
 
+/**
+ * @author Matin Kadri
+ * @param navigation for navigate user to home screen and register/forgot password screen
+ * @description Login Screen
+ */
+
 export interface ILoginForm {
   email: string;
   password: string;

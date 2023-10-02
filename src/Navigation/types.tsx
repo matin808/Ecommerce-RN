@@ -20,6 +20,7 @@ export type RootStackParamList = {
   OrderDetails: {id: number; token: string};
   ChangePassword: undefined;
   AddressScreen: {id: any};
+  OrderCompleted: undefined;
 };
 
 export type MyNavigationProp = NavigationProp<ParamListBase>;
@@ -79,4 +80,8 @@ export type OrderDetailsNavigationProps = NativeStackScreenProps<
 export type AddressScreensNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'AddressScreen'
+>;
+export type OrderCompletedScreensNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'OrderCompleted'
 >;

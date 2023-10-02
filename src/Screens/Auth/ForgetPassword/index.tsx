@@ -48,7 +48,7 @@ const ForgetPassword = () => {
       <Input
         style={styles.InputContainer}
         placeHolder="john@gmail.com"
-        handleChange={txt => setEmail(txt)}
+        handleChange={(txt: string) => setEmail(txt)}
       />
 
       <Button

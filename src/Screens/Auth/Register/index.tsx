@@ -18,6 +18,7 @@ import {useAppDispatch, useAppSelector} from '../../../Redux/store';
 /**
  *
  * @param param0
+ * @description Register screen
  * @author Matin Kadri
  * @returns
  */
@@ -111,7 +112,6 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
 
     setForm({...form, [field]: value});
   };
-  const isSuccess = useAppSelector(state => state.users.success);
   const isError = useAppSelector(state => state.users.error);
 
   const handlePress = async () => {
@@ -122,7 +122,6 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
       form.password === '' ||
       form.confirm_password === '' ||
       form.gender === ''
-      // form.phone_no === ''
     ) {
       console.log(form);
       Alert.alert('Please fill in all fields');
@@ -133,11 +132,9 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
         if (data.status === 200) {
           navigation.replace('Tabs');
         }
-        console.log('sss', isSuccess);
         if (isError) {
           console.log('Something went wrong');
         }
-        // console.log('slecteregister', data);
       } catch (err) {
         console.log('rrr', err);
       }
@@ -155,7 +152,9 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
           <Input
             placeHolder="john"
             style={styles.TextInputContainer}
-            handleChange={value => onhandleChange('first_name', value)}
+            handleChange={(value: string) =>
+              onhandleChange('first_name', value)
+            }
           />
           <Text style={styles.errorText}>{errors.general}</Text>
 
@@ -163,7 +162,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
           <Input
             placeHolder="Kahh"
             style={styles.TextInputContainer}
-            handleChange={value => onhandleChange('last_name', value)}
+            handleChange={(value: string) => onhandleChange('last_name', value)}
           />
           <Text style={styles.errorText}>{errors.general}</Text>
 
@@ -171,7 +170,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
           <Input
             placeHolder="john@gmail.com"
             style={styles.TextInputContainer}
-            handleChange={value => onhandleChange('email', value)}
+            handleChange={(value: string) => onhandleChange('email', value)}
           />
           <Text style={styles.errorText}>
             {errors.email}
@@ -183,7 +182,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
             placeHolder="Jon@123"
             style={styles.TextInputContainer}
             secure={passVisible}
-            handleChange={value => onhandleChange('password', value)}
+            handleChange={(value: string) => onhandleChange('password', value)}
             showIcon={true}
             handleVisible={() => setPassVisible(!passVisible)}
           />
@@ -197,7 +196,9 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
             placeHolder="Jon@123"
             style={styles.TextInputContainer}
             secure={ConfirmPassVisible}
-            handleChange={value => onhandleChange('confirm_password', value)}
+            handleChange={(value: string) =>
+              onhandleChange('confirm_password', value)
+            }
             showIcon={true}
             handleVisible={() => setConfirmPassVisible(!ConfirmPassVisible)}
           />
@@ -217,7 +218,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
           <Input
             style={styles.TextInputContainer}
             placeHolder="1231231230"
-            handleChange={value => onhandleChange('phone_no', value)}
+            handleChange={(value: number) => onhandleChange('phone_no', value)}
           />
           <Text style={styles.errorText}>
             {errors.phone_no} {errors.general}

@@ -2,7 +2,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
-import {colors} from '../../assets/colors/Colors';
 import {Text} from 'react-native-paper';
 import {EditCartItems, ListcartItems} from '../../Redux/Cart/CartSlice';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
@@ -12,6 +11,7 @@ import {Swipeable} from 'react-native-gesture-handler';
 import IconComponent from '../Custom/Icon';
 import {baseUrl} from '../../utils/constants';
 import axios from 'axios';
+import CustomText from '../Custom/Text';
 
 interface IcartProps {
   item: {
@@ -34,7 +34,6 @@ const CartItems = ({item}: IcartProps) => {
   const dispatch = useAppDispatch();
   const token = useAppSelector(userToken);
   const updatedCartDetails = useAppSelector(state => state.cart.updatedCart);
-  // const [state, setState] = useState(false); // for rendering
   const increment = (qnty: number) => {
     if (qnty === 8) {
       Toast.show('REACHED MAX LIMIT', Toast.SHORT);
@@ -49,7 +48,7 @@ const CartItems = ({item}: IcartProps) => {
       Toast.show('Cannot be reduced more', Toast.SHORT);
       return;
     }
-    const quantity = --qnty; // 72.3
+    const quantity = --qnty;
     const data = {quantity, id};
     dispatch(EditCartItems(data));
   };
@@ -59,7 +58,6 @@ const CartItems = ({item}: IcartProps) => {
   }, [updatedCartDetails]);
 
   const handleDelete = async (id: number) => {
-    console.log('asas', id);
     const formData = new FormData();
     formData.append('product_id', id);
     try {
@@ -70,10 +68,8 @@ const CartItems = ({item}: IcartProps) => {
         },
       });
 
-      // setState(true);
       Toast.show('Product Deleted', Toast.SHORT);
       await dispatch(ListcartItems(token));
-
       console.log(res.data);
     } catch (err) {
       console.log('Something went wrong');
@@ -85,12 +81,13 @@ const CartItems = ({item}: IcartProps) => {
     return (
       <>
         <View>
-          <TouchableOpacity style={styles.delContainer}>
-            <IconComponent
-              handlePress={() => handleDelete(id)}
-              name="delete"
-              color={'red'}
-              size={35}
+          <TouchableOpacity
+            onPress={() => handleDelete(id)}
+            style={styles.delContainer}>
+            <CustomText
+              onPress={() => handleDelete(id)}
+              style={styles.delText}
+              title="delete"
             />
           </TouchableOpacity>
         </View>
@@ -113,13 +110,23 @@ const CartItems = ({item}: IcartProps) => {
           <TouchableOpacity
             onPress={() => decrement(item.quantity)}
             style={styles.quantityButton}>
-            <Text style={styles.quantityButtonText}>-</Text>
+            <IconComponent
+              color="#6C3C40"
+              size={23}
+              name={'minuscircleo'}
+              use="AntDesign"
+            />
           </TouchableOpacity>
           <Text style={styles.quantity}>{item.quantity}</Text>
           <TouchableOpacity
             onPress={() => increment(item.quantity)}
             style={styles.quantityButton}>
-            <Text style={styles.quantityButtonText}>+</Text>
+            <IconComponent
+              color="#6C3C40"
+              size={23}
+              name={'pluscircleo'}
+              use="AntDesign"
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -130,17 +137,14 @@ const CartItems = ({item}: IcartProps) => {
 const styles = StyleSheet.create({
   itemContainer: {
     borderWidth: 1,
-    margin: 5,
+    marginVertical: 5,
     marginHorizontal: 10,
     backgroundColor: '#fff',
-    borderColor: colors.ACTIONCOLOR,
+    borderColor: '#6C3C40',
     borderRadius: 8,
-    paddingHorizontal: 5,
-    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    //
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -148,45 +152,38 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    elevation: 3,
+    elevation: 2,
   },
   image: {
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
     resizeMode: 'contain',
-    marginRight: 10,
+    marginRight: 15,
+    marginHorizontal: 5,
+    marginVertical: 5,
   },
   textContainer: {
     flex: 1,
   },
   productName: {
-    fontSize: 19,
+    fontSize: 17,
     fontWeight: 'bold',
-    marginBottom: 8,
+    fontFamily: 'Montserrat-Regular',
   },
   productCost: {
-    fontSize: 17,
+    fontSize: 18,
     color: '#000',
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Poppins-Bold',
+    marginTop: 6,
   },
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   quantityButton: {
-    backgroundColor: colors.ACTIONCOLOR,
-    borderRadius: 10,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
     marginHorizontal: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  quantityButtonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white',
-  },
+
   quantity: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -195,9 +192,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 8,
-    backgroundColor: 'grqy',
+    paddingHorizontal: 15,
+    marginVertical: 12,
+    marginRight: 5,
+    borderRadius: 7,
+    backgroundColor: 'red',
   },
+
+  delText: {fontSize: 18, fontFamily: 'Roboto-Bold', color: '#fff'},
 });
 
 export default CartItems;

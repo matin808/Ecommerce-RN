@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderWidth: 1,
     margin: 10,
+    borderColor: '#6C3C40',
     backgroundColor: '#fff',
     borderRadius: 8,
     paddingHorizontal: 5,
@@ -45,22 +46,27 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    elevation: 3,
+    elevation: 2,
   },
   totalCtn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 10,
+    marginHorizontal: 16,
     marginTop: 10,
   },
 
   textStyle: {
-    fontSize: 18,
-    fontFamily: 'Montserrat-Black',
+    fontSize: 19,
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: 'bold',
-    color: colors.BTN,
+    color: colors.ACTIONCOLOR,
   },
-  btn: {backgroundColor: colors.BTN, margin: 20},
+  btn: {
+    backgroundColor: colors.ACTIONCOLOR,
+    marginTop: 21,
+    marginBottom: 12,
+    marginHorizontal: 18,
+  },
 });
 
 export default CartFooter;

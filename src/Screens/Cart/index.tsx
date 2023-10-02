@@ -6,8 +6,8 @@ import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {userToken} from '../../Redux/Users/userSlice';
 import {ListcartItems} from '../../Redux/Cart/CartSlice';
 import CartItems from '../../Container/Cart/CartItems';
-import {ActivityIndicator} from 'react-native-paper';
 import CartFooter from '../../Container/Cart/CartFooter';
+import Loader from '../../Container/Custom/Loader';
 
 /**
  * @author Matin Kadri
@@ -40,9 +40,7 @@ const Cart = () => {
       {data.count > 0 ? (
         <>
           {loading ? (
-            <View style={styles.main}>
-              <ActivityIndicator size={'large'} />
-            </View>
+            <Loader />
           ) : (
             <>
               <FlatList
@@ -72,7 +70,6 @@ const Cart = () => {
 };
 
 const styles = StyleSheet.create({
-  main: {flex: 1, alignSelf: 'center', justifyContent: 'center'},
   ImgCtn: {backgroundColor: '#fff', flex: 1},
   Img: {
     width: '80%',

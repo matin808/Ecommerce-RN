@@ -4,7 +4,7 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 interface IIconProps {
-  name: string;
+  name: any;
   size?: number;
   color?: string;
   handlePress?: () => void;

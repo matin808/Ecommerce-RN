@@ -8,11 +8,12 @@ interface InputProps {
   value?: string;
   style?: StyleProp<Text>;
   secure?: boolean;
-  handleChange?: ((event: string) => void) | any;
+  handleChange?: ((event: any) => void) | any;
   showIcon?: boolean;
   handleVisible?: () => void;
   profileIcon?: boolean;
   disabled?: boolean;
+  profileIconName?: string;
 }
 
 const Input = (props: InputProps) => {
@@ -26,10 +27,13 @@ const Input = (props: InputProps) => {
     value,
     profileIcon,
     disabled,
+    profileIconName,
   } = props;
   return (
     <View style={style}>
-      {profileIcon ? <IconComponent name="account" color="gray" /> : null}
+      {profileIcon ? (
+        <IconComponent name={profileIconName} color="gray" />
+      ) : null}
 
       <TextInput
         style={styles.TextInputStyle}
@@ -39,6 +43,8 @@ const Input = (props: InputProps) => {
         onChangeText={txt => handleChange(txt)}
         editable={disabled}
         selectTextOnFocus={disabled}
+        autoCorrect={false}
+        autoCapitalize="none"
       />
       {showIcon ? (
         <View style={styles.IconStyle}>

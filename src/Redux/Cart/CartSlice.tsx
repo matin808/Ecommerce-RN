@@ -116,12 +116,10 @@ const cartSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(AddToCart.fulfilled, state => {
-      // console.log('aaasszz111', action.payload);
       state.isProductAdded = true;
     });
 
     builder.addCase(ListcartItems.fulfilled, (state, action) => {
-      // state.updatedCart = action.payload;
       state.cart = action.payload;
       console.log('cartitemsss.', state.cart);
     });

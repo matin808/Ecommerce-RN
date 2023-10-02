@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {FlatList, SafeAreaView, View} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {fetchProductsById} from '../../Redux/Products/ProductSlice';
 import {getIdForSpecificProducts} from '../../utils/getIdForProducts';
 import ProductList from '../../Container/CategoryItems/ProductList';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {CategoryItemsScreenNavigationProps} from '../../Navigation/types';
-import {ActivityIndicator} from 'react-native-paper';
-import {colors} from '../../assets/colors/Colors';
+import Loader from '../../Container/Custom/Loader';
 
 /**
  * @author Matin Kadri
@@ -37,15 +36,9 @@ const CategoryItems = ({route}: CategoryItemsScreenNavigationProps) => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={styles.container}>
       {loading ? (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <ActivityIndicator
-            size="large"
-            animating={true}
-            color={colors.ACTIONCOLOR}
-          />
-        </View>
+        <Loader />
       ) : (
         <FlatList
           data={mydata}
@@ -55,5 +48,11 @@ const CategoryItems = ({route}: CategoryItemsScreenNavigationProps) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default CategoryItems;

@@ -1,20 +1,20 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/react-in-jsx-scope */
-// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
 import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigation';
 import Settings from '../Screens/Settings';
 import Home from '../Screens/Home';
 import IconComponent from '../Container/Custom/Icon';
 import Order from '../Screens/Orders';
+import Explore from '../Screens/Explore';
 
 const Tab = createMaterialBottomTabNavigator();
 
 function MyTabs() {
   return (
     <Tab.Navigator
-      activeColor="#67C4A7"
-      inactiveColor="#000"
-      // activeColor={colors.UIBG}
+      activeColor="brown"
+      inactiveColor="gray"
       barStyle={{
         backgroundColor: '#fefefe',
         borderTopWidth: 1,
@@ -22,7 +22,6 @@ function MyTabs() {
       }}>
       <Tab.Screen
         name="Home"
-        component={Home}
         options={{
           tabBarLabel: 'Home',
 
@@ -30,10 +29,11 @@ function MyTabs() {
             <IconComponent name="home" color={color} size={26} />
           ),
         }}
+        component={Home}
       />
       <Tab.Screen
         name="Explore"
-        component={Settings}
+        component={Explore}
         options={{
           tabBarLabel: 'Explore',
           tabBarIcon: ({color}) => (
@@ -62,10 +62,11 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Settidngs"
+        name="Settings"
         component={Settings}
         options={{
           tabBarLabel: 'Settings',
+
           tabBarIcon: ({color}) => (
             <IconComponent
               use="IonIcons"

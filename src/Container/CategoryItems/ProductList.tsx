@@ -1,11 +1,9 @@
+/* eslint-disable react/react-in-jsx-scope */
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
-// import Toast from 'react-native-simple-toast';
 import {colors} from '../../assets/colors/Colors';
 import {Rating} from 'react-native-ratings';
 import {useNavigation} from '@react-navigation/native';
 import {MyNavigationProp} from '../../Navigation/types';
-// import IconComponent from '../Custom/Icon';
 
 export interface SingleProduct {
   id: number;
@@ -48,7 +46,6 @@ const ProductList = ({item}: IProductListProps) => {
           <View style={styles.priceContainer}>
             <Text style={styles.price}>₹{item.cost.toLocaleString()}</Text>
             <Rating
-              // showRating={true}
               imageSize={20}
               readonly={true}
               ratingImage="custom"

@@ -6,7 +6,7 @@ import {useAppSelector} from '../../Redux/store';
 import {getUserData} from '../../Redux/Users/userSlice';
 
 const UserInfo = () => {
-  const userDetails: any = useAppSelector(getUserData);
+  const userDetails = useAppSelector(getUserData);
   console.log(userDetails);
   const user = userDetails[0];
   return (

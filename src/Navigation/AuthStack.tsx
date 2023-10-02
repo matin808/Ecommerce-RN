@@ -11,6 +11,11 @@ import ForgetPassword from '../Screens/Auth/ForgetPassword';
 import MyTabs from './BottomNavigation';
 import {useAppSelector} from '../Redux/store';
 
+/**
+ * @author Matin kadri
+ * @description This will contain all Auth navigation components - Login, Register, Onboarding, ForgotPassword
+ */
+
 const Auth = createNativeStackNavigator<RootStackParamList>();
 
 const AuthStack = () => {

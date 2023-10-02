@@ -6,6 +6,12 @@ import {OnboardingScreenNavigationProps} from '../../../Navigation/types';
 import {colors} from '../../../assets/colors/Colors';
 import IconComponent from '../../../Container/Custom/Icon';
 
+/**
+ * @author Matin kadri
+ * @param param0 navigation for navigation user to login screen
+ * @returns
+ */
+
 const OnboardingScreen = ({navigation}: OnboardingScreenNavigationProps) => {
   const handlePress = () => {
     navigation.replace('Login');

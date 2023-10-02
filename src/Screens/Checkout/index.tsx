@@ -1,15 +1,15 @@
 import {View, StyleSheet, ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import {useAppSelector} from '../../Redux/store';
-import {userToken} from '../../Redux/Users/userSlice';
+import {userToken, usrSelectedAddress} from '../../Redux/Users/userSlice';
 import Address from '../../Container/Checkout/Address';
 import {PaperProvider} from 'react-native-paper';
 import UserInfo from '../../Container/Checkout/UserInfo';
-import axios from 'axios';
-import {baseUrl} from '../../utils/constants';
 import {CheckoutNavigationProps} from '../../Navigation/types';
 import Toast from 'react-native-simple-toast';
 import CartInfo from '../../Container/Checkout/CartInfo';
+import {placeOrder} from '../../utils/API/PlaceOrder';
+import LottieView from 'lottie-react-native';
 
 /**
  * @author Matin kadri
@@ -20,29 +20,41 @@ import CartInfo from '../../Container/Checkout/CartInfo';
 
 const Checkout = ({navigation}: CheckoutNavigationProps) => {
   const cartData = useAppSelector(state => state.cart.cart);
+  const usrAddress = useAppSelector(usrSelectedAddress);
+  const [Orderloading, setOrderLoading] = useState(false);
   const {count, total} = cartData;
   const token = useAppSelector(userToken);
   const [loading, setLoading] = useState(false);
 
-  const placeOrder = async () => {
+  const merge =
+    usrAddress?.address +
+    ' ' +
+    usrAddress?.city +
+    ' ' +
+    usrAddress?.state +
+    ' ' +
+    usrAddress?.zipCode;
+
+  console.log('1', usrAddress);
+
+  const handlePlaceOrder = async () => {
+    if (usrAddress === undefined) {
+      Toast.show('Please select an address', Toast.LONG);
+      return;
+    }
+    setOrderLoading(true);
     setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append(
-        'address',
-        'The Ruby, 29-Senapati Bapat Marg, Dadar (West)',
-      );
-      await axios.post(`${baseUrl}/order`, formData, {
-        headers: {
-          access_token: token,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+    const res = await placeOrder(merge, token);
+
+    if (res === 200) {
       setLoading(false);
-      Toast.show('Order Placed Successfully', Toast.SHORT);
-      navigation.navigate('Home');
-    } catch (err) {
-      console.log('From order', err);
+      // Toast.show('Order Placed Successfully', Toast.SHORT);
+
+      setOrderLoading(false);
+      navigation.navigate('OrderCompleted');
+    } else {
+      setLoading(false);
+      Toast.show('Something went wrong', Toast.SHORT);
     }
   };
 
@@ -55,11 +67,33 @@ const Checkout = ({navigation}: CheckoutNavigationProps) => {
           <CartInfo
             count={count}
             total={total}
-            onPress={placeOrder}
+            onPress={handlePlaceOrder}
             loading={loading}
           />
         </View>
       </ScrollView>
+
+      {Orderloading ? (
+        <View
+          style={{
+            backgroundColor: 'black',
+            opacity: 0.6,
+            justifyContent: 'center',
+            alignContent: 'center',
+            width: '100%',
+            position: 'absolute',
+            height: '100%',
+          }}>
+          <LottieView
+            style={{height: 200}}
+            source={require('../../assets/animation/scanner.json')}
+            speed={3}
+            autoPlay
+          />
+        </View>
+      ) : (
+        <></>
+      )}
     </PaperProvider>
   );
 };

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {baseUrl} from '../constants';
+import {IUpdateStateProps} from '../../Screens/UpdateProfile';
 
-export const updateDetails = async (form, token) => {
-  console.log(`updateDetails`, form, token);
+export const updateDetails = async (form: IUpdateStateProps, token: string) => {
   const formData = new FormData();
   formData.append('first_name', form.first_name);
   formData.append('last_name', form.last_name);

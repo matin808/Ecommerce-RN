@@ -11,6 +11,13 @@ import UpdateProfile from '../Screens/UpdateProfile';
 import Profile from '../Screens/Profile';
 import OrderDetails from '../Screens/OrderDetails';
 import ChangePassword from '../Screens/Auth/ChangePassword';
+import AddressScreen from '../Screens/AddAddress';
+import OrderCompleted from '../Screens/OrderCompleted';
+
+/**
+ * @author Matin Kadri
+ * @description Root navigation which handle entire navigation tree
+ */
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -85,6 +92,21 @@ const RootNavigation = () => {
             headerTitle: '',
           })}
           component={ChangePassword}
+        />
+        <RootStack.Screen
+          name="AddressScreen"
+          options={() => ({
+            headerBackTitleVisible: false,
+            headerTitle: '',
+          })}
+          component={AddressScreen}
+        />
+        <RootStack.Screen
+          name="OrderCompleted"
+          options={() => ({
+            headerShown: false,
+          })}
+          component={OrderCompleted}
         />
       </RootStack.Navigator>
     </NavigationContainer>

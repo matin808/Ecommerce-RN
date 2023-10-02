@@ -13,6 +13,7 @@ interface IProductState {
   loading: boolean;
   success: boolean;
   error: boolean;
+  allProducts: any;
 }
 
 interface IProductProps {
@@ -21,6 +22,7 @@ interface IProductProps {
 
 const initialState: IProductState = {
   products: [],
+  allProducts: [],
   loading: false,
   success: false,
   error: false,
@@ -57,9 +59,10 @@ export const productsSlice = createSlice({
     });
     builder.addCase(fetchProductsById.fulfilled, (state, action) => {
       state.products = action.payload.data;
+      state.allProducts.push(action.payload.data);
       state.error = false;
       state.loading = false;
-      console.log(action.payload);
+      console.log('allll products', state.allProducts);
     });
     builder.addCase(fetchProductsById.rejected, state => {
       state.error = true;
@@ -70,5 +73,7 @@ export const productsSlice = createSlice({
 
 export const getProductLists = (state: IProductProps) =>
   state.products.products;
+export const getAllProducts = (state: IProductProps) =>
+  state.products.allProducts;
 
 export default productsSlice.reducer;

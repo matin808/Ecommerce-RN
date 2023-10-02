@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import Input from '../../Container/Custom/TextInput';
@@ -16,21 +17,31 @@ import {colors} from '../../assets/colors/Colors';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-crop-picker';
 import {getAvatarUrl} from '../../utils/GetAvatar';
+import {UpdateProfileNavigationProps} from '../../Navigation/types';
 
 /**
  * @author Matin Kadri
+ * @param naviagtion for navigate user to setting screen
  * @description This will used to update the user account details
  * @returns
  */
 
-const UpdateProfile = () => {
+export interface IUpdateStateProps {
+  first_name: string;
+  last_name: string;
+  email: string;
+  dob: string;
+  profile_pic: string;
+  phone_no: string;
+}
+
+const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
   const data: any = useAppSelector(getUserData);
   const userDetails = data[0];
-  console.log('2222222', userDetails);
   const token = userDetails.access_token;
   const usrAvatar = getAvatarUrl(userDetails?.gender);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<IUpdateStateProps>({
     first_name: userDetails.first_name,
     last_name: userDetails.last_name,
     email: userDetails.email,
@@ -62,7 +73,6 @@ const UpdateProfile = () => {
       height: 400,
       cropping: true,
     }).then(image => {
-      // console.log(image);
       handleImage(image);
     });
   };
@@ -73,7 +83,6 @@ const UpdateProfile = () => {
       height: 400,
       cropping: true,
     }).then(image => {
-      console.log(image);
       handleImage(image);
     });
   };
@@ -82,21 +91,30 @@ const UpdateProfile = () => {
     const profilePic = 'data:image/jpg;base64,' + image.data;
     console.log('111', profilePic);
     setForm({...form, profile_pic: profilePic});
+    hideDialog();
   };
 
   const handlePress = async () => {
-    // const res = await updateDetails(form, token);
-    console.log('12121212', form);
+    if (
+      form.first_name === '' ||
+      form.last_name === '' ||
+      form.email === '' ||
+      form.phone_no === ''
+    ) {
+      Alert.alert("Required fields, should n't be empty");
+      return;
+    }
     const data = {form: form, token: token};
     await dispatch(updateDetails(data));
     Toast.show('Profile Updated', Toast.SHORT);
+    navigation.goBack();
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <PaperProvider>
         <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog style={styles.Modal} visible={visible} onDismiss={hideDialog}>
             <Dialog.Title style={styles.ModalTitle}>Upload Image </Dialog.Title>
             <Dialog.Content>
               <Text onPress={handleCameraFunctionality} style={styles.ModalBtn}>
@@ -114,7 +132,9 @@ const UpdateProfile = () => {
             </Dialog.Actions>
           </Dialog>
         </Portal>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          alwaysBounceVertical={false}>
           <View style={styles.container}>
             {form.profile_pic === '' || form.profile_pic === null ? (
               <TouchableOpacity onPress={handlePhotoUpload}>
@@ -144,6 +164,7 @@ const UpdateProfile = () => {
                 handleChange={(txt: string) =>
                   onHandleChange('first_name', txt)
                 }
+                profileIconName="account"
               />
 
               <Input
@@ -151,6 +172,7 @@ const UpdateProfile = () => {
                 value={form.last_name}
                 profileIcon={true}
                 handleChange={(txt: string) => onHandleChange('last_name', txt)}
+                profileIconName="account"
               />
               <Input
                 style={styles.textInput}
@@ -158,6 +180,7 @@ const UpdateProfile = () => {
                 profileIcon={true}
                 placeHolder="Enter your email"
                 handleChange={(txt: string) => onHandleChange('email', txt)}
+                profileIconName="email"
               />
               <Input
                 style={styles.textInput}
@@ -165,6 +188,7 @@ const UpdateProfile = () => {
                 profileIcon={true}
                 placeHolder="Enter phone number"
                 handleChange={(txt: string) => onHandleChange('phone_no', txt)}
+                profileIconName="phone"
               />
 
               <Input
@@ -173,6 +197,7 @@ const UpdateProfile = () => {
                 placeHolder="Enter your DOB"
                 profileIcon={true}
                 handleChange={(txt: string) => onHandleChange('dob', txt)}
+                profileIconName="party-popper"
               />
             </View>
 
@@ -220,6 +245,9 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     backgroundColor: colors.ACTIONCOLOR,
     borderRadius: 8,
+  },
+  Modal: {
+    backgroundColor: colors.UIBG,
   },
   ModalTitle: {
     alignSelf: 'center',

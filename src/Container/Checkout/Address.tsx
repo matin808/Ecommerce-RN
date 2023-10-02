@@ -3,35 +3,34 @@ import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {colors} from '../../assets/colors/Colors';
 import CustomText from '../Custom/Text';
-import {Button, Dialog, Portal, Text, TextInput} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import IconComponent from '../Custom/Icon';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {
-  addAddress,
   deleteAddress,
+  selectAddress,
   userAddress,
 } from '../../Redux/Users/userSlice';
 import {Swipeable} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
+import {MyNavigationProp} from '../../Navigation/types';
 
 const Address = () => {
-  const [text, setText] = useState<string>();
-  const [visible, setVisible] = React.useState(false);
   const addressData = useAppSelector(userAddress);
-  const [selected, setSelected] = useState(-1);
-  const showDialog = () => setVisible(true);
-  const hideDialog = () => setVisible(false);
   const dispatch = useAppDispatch();
-  console.log('112211122', addressData);
+  const navigation: MyNavigationProp = useNavigation();
+  const [selected, setSelected] = useState<number>();
 
-  const handlePress = () => {
-    dispatch(addAddress(text));
-    setVisible(false);
+  const handleUpdate = (id: number) => {
+    navigation.navigate('AddressScreen', {id});
   };
 
-  // console.log(address);
+  const handleSelectedAddress = (id: number) => {
+    dispatch(selectAddress(id));
+    setSelected(id);
+  };
 
   const renderRightActions = (id: number) => {
-    console.log(id);
     return (
       <View
         style={{
@@ -43,6 +42,9 @@ const Address = () => {
         <TouchableOpacity onPress={() => dispatch(deleteAddress(id))}>
           <IconComponent name="delete" />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleUpdate(id)}>
+          <IconComponent name="edit" use="AntDesign" />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -51,45 +53,30 @@ const Address = () => {
       <View style={styles.addHeader}>
         <CustomText title="Shipping Address" style={styles.textStyle} />
 
-        <Text style={styles.change} onPress={showDialog}>
+        <Text
+          style={styles.change}
+          onPress={() => navigation.navigate('AddressScreen')}>
           <IconComponent name="plus-circle" />
         </Text>
       </View>
-      <View>
-        <Portal>
-          <Dialog
-            style={styles.dialog}
-            visible={visible}
-            onDismiss={hideDialog}>
-            <Dialog.Title>Address</Dialog.Title>
-            <Dialog.Content>
-              <TextInput
-                placeholder="Delivery address"
-                mode="outlined"
-                onChangeText={(txt: string) => setText(txt)}
-                multiline={true}
-              />
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={handlePress}>Add address</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
-      </View>
+
       <FlatList
         data={addressData}
         renderItem={({item}) => (
           <Swipeable renderRightActions={() => renderRightActions(item?.id)}>
             <TouchableOpacity
-              onPress={() => setSelected(item?.id)}
+              onPress={() => handleSelectedAddress(item?.id)}
               style={[
-                styles.addContainer,
+                styles.addressContainer,
                 {
-                  borderColor: selected === item?.id ? 'green' : 'lightgray',
-                  borderWidth: 1,
+                  borderColor: selected === item?.id ? 'brown' : '#fff',
+                  borderWidth: 2,
                 },
               ]}>
-              <Text style={styles.AddressStyle}>{item?.data}</Text>
+              <Text style={styles.addressText}>
+                {item?.data?.address} {item?.data?.city} {item?.data?.state}{' '}
+                {item?.data?.zipCode}
+              </Text>
             </TouchableOpacity>
           </Swipeable>
         )}
@@ -130,6 +117,23 @@ const styles = StyleSheet.create({
   },
   dialog: {
     backgroundColor: '#fff',
+  },
+
+  addressContainer: {
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    marginVertical: 7,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  addressTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  addressText: {
+    fontSize: 16,
   },
 });
 

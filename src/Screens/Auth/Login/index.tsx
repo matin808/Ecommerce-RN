@@ -9,6 +9,13 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {signInUser} from '../../../Redux/Users/userSlice';
 import {validateEmail, validatePassword} from '../../../utils/Validator';
 import {useAppDispatch} from '../../../Redux/store';
+import Toast from 'react-native-simple-toast';
+
+/**
+ * @author Matin Kadri
+ * @param navigation for navigate user to home screen and register/forgot password screen
+ * @description Login Screen
+ */
 
 export interface ILoginForm {
   email: string;
@@ -61,6 +68,7 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
         }
       } catch (err) {
         console.log('Sigin err', err);
+        Toast.show('Please Enter correct credentials', Toast.SHORT);
       }
     }
   };

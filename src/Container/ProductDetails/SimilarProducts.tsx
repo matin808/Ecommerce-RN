@@ -3,6 +3,11 @@ import React from 'react';
 import ProductList, {SingleProduct} from '../CategoryItems/ProductList';
 import CustomText from '../Custom/Text';
 
+/**
+ * @author Matin Kadri
+ * @description will render similar products of category items
+ */
+
 interface ISMProps {
   data: SingleProduct[];
 }

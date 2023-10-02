@@ -7,8 +7,9 @@ import {useAppSelector} from '../../Redux/store';
 import {userToken} from '../../Redux/Users/userSlice';
 import {fetchOrders} from '../../utils/API/FetchOrders';
 import OrderList from '../../Container/Order/OrderList';
-import {ActivityIndicator, Text} from 'react-native-paper';
 import {useFocusEffect} from '@react-navigation/native';
+import Loader from '../../Container/Custom/Loader';
+import {Text} from 'react-native-paper';
 
 /**
  * @author Matin Kadri
@@ -49,7 +50,7 @@ const Order = ({navigation}: OrderNavigationProps) => {
         </>
       ) : (
         <>
-          {loading && <ActivityIndicator size={'large'} />}
+          {loading && <Loader />}
           <FlatList
             data={orderdData}
             renderItem={({item}) => (

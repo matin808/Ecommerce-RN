@@ -6,7 +6,6 @@ import {colors} from '../../assets/colors/Colors';
 const OrderHeader = () => {
   return (
     <View style={styles.container}>
-      {/* <IconComponent handlePress={handlePress} name="order" use="AntDesign" /> */}
       <CustomText title="My Orders" style={styles.Text} />
     </View>
   );

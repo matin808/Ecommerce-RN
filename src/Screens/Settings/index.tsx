@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import CustomText from '../../Container/Custom/Text';
@@ -29,9 +30,20 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
   const dispatch = useAppDispatch();
   console.log('My user de', userData);
 
-  const handleLogout = () => {
+  const logOut = () => {
     dispatch(logoutUser());
     navigation.navigate('Login');
+  };
+
+  const handleLogout = () => {
+    Alert.alert('Are you sure', 'You will be redirected to login page', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: logOut},
+    ]);
   };
 
   const usrAvatar = getAvatarUrl(userData?.gender);
@@ -147,11 +159,6 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
               color="#000"
               size={35}
             />
-            {/* <IconComponent
-              color="red"
-              name="logout"
-              handlePress={handleLogout}
-            /> */}
           </View>
         </View>
       </SafeAreaView>

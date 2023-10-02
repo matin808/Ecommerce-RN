@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {baseUrl, getDetail} from '../../utils/constants';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import ProductDetailsHeader from '../../Container/ProductDetails/Header';
 import Details from '../../Container/ProductDetails/Details';
 // import {useIsFocused} from '@react-navigation/native';
 import {PaperProvider} from 'react-native-paper';
+import Loader from '../../Container/Custom/Loader';
 // import {useFocusEffect} from '@react-navigation/native';
 
 /**
@@ -67,9 +68,7 @@ const ProductDetails = ({route, navigation}: ProductDetailsNavigationProps) => {
   return (
     <PaperProvider>
       {loading ? (
-        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-          <ActivityIndicator />
-        </View>
+        <Loader />
       ) : (
         <ScrollView>
           <View style={styles.container}>

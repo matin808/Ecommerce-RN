@@ -47,6 +47,7 @@ const Profile = ({navigation}: ProfileNavigationProps) => {
             value={userDetails?.first_name}
             profileIcon={true}
             disabled={false}
+            profileIconName="account"
           />
 
           <Input
@@ -54,18 +55,21 @@ const Profile = ({navigation}: ProfileNavigationProps) => {
             value={userDetails?.last_name}
             profileIcon={true}
             disabled={false}
+            profileIconName="account"
           />
           <Input
             style={styles.textInput}
             value={userDetails?.email}
             profileIcon={true}
             disabled={false}
+            profileIconName="email"
           />
           <Input
             style={styles.textInput}
             value={userDetails?.phone_no}
             profileIcon={true}
             disabled={false}
+            profileIconName="phone"
           />
         </View>
 

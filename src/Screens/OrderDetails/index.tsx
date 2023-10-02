@@ -3,8 +3,8 @@ import {View, Text, FlatList, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {OrderDetailsNavigationProps} from '../../Navigation/types';
 import {fetchOrderDetail} from '../../utils/API/fetchOrderDetails';
-import {ActivityIndicator} from 'react-native-paper';
 import OrderData from '../../Container/Order/OrderData';
+import Loader from '../../Container/Custom/Loader';
 
 /**
  * @author Matin kadri
@@ -35,7 +35,7 @@ const OrderDetails = ({route}: OrderDetailsNavigationProps) => {
     <View style={styles.main}>
       {loading ? (
         <>
-          <ActivityIndicator size={'large'} />
+          <Loader />
         </>
       ) : (
         <View style={styles.container}>

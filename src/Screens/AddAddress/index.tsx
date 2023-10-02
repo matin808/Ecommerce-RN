@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import {
   addAddress,
@@ -13,15 +14,22 @@ import {
 } from '../../Redux/Users/userSlice';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {AddressScreensNavigationProps} from '../../Navigation/types';
+import {colors} from '../../assets/colors/Colors';
+import Toast from 'react-native-simple-toast';
 
-const AddressScreen = ({route}: AddressScreensNavigationProps) => {
+/**
+ * @author Matin Kadri
+ * @param param0 route for getting address id for updating address
+ * @description This will used to create a new address or update an existing address
+ * @returns
+ */
+
+const AddressScreen = ({route, navigation}: AddressScreensNavigationProps) => {
   console.log('aaaa', route?.params?.id);
-  const addressData = useAppSelector(userAddress).find(
+  const addressData = useAppSelector(userAddress)?.find(
     (a: any) => a?.id === route?.params?.id,
   );
   const id = route?.params?.id;
-
-  console.log('mydata', addressData);
 
   const [address, setAddress] = useState(
     addressData ? addressData?.data?.address : '',
@@ -36,16 +44,27 @@ const AddressScreen = ({route}: AddressScreensNavigationProps) => {
   const dispatch = useAppDispatch();
 
   const handleSaveAddress = () => {
+    if (address === '' || city === '' || state === '' || zipCode === '') {
+      Alert.alert('All Fields are required');
+      return;
+    }
     const data = {
       address,
       city,
       state,
       zipCode,
     };
+    console.log('myaddress', data);
     dispatch(addAddress(data));
+    Toast.show('Address saved', Toast.SHORT);
+    navigation.goBack();
   };
 
   const handleUpdate = () => {
+    if (address === '' || city === '' || state === '' || zipCode === '') {
+      Alert.alert('All Fields are required');
+      return;
+    }
     const data = {
       address,
       city,
@@ -54,11 +73,13 @@ const AddressScreen = ({route}: AddressScreensNavigationProps) => {
     };
     const main = {data, id};
     dispatch(updateAddress(main));
+    Toast.show('Address Updated', Toast.SHORT);
+    navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add an Address</Text>
+      <Text style={styles.title}>Add Address</Text>
       <TextInput
         style={styles.input}
         placeholder="Street Address"
@@ -104,8 +125,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 24,
+    marginBottom: 20,
+    alignSelf: 'center',
+    fontFamily: 'Poppins-SemiBold',
   },
   input: {
     backgroundColor: '#fff',
@@ -115,9 +137,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.ACTIONCOLOR,
     borderRadius: 8,
-    padding: 16,
+    padding: 10,
     alignItems: 'center',
   },
   buttonText: {

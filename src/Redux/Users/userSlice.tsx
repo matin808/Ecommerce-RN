@@ -157,11 +157,14 @@ export const userSlice = createSlice({
       state.users.pop();
     },
     addAddress: (state, action) => {
+      console.log('aa', action.payload);
       const addData = {
         id: Math.floor(Math.random() * 1000),
         data: action.payload,
       };
-      state.address.push(addData);
+      console.log('myyy', addData);
+      state?.address?.push(addData);
+      console.log('1122', state.address);
     },
     deleteAddress: (state, action) => {
       state.address = state.address.filter(

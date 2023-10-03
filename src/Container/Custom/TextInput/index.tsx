@@ -33,7 +33,7 @@ const Input = (props: InputProps) => {
     inputMode,
   } = props;
   return (
-    <View style={[style, {flexDirection: 'row'}]}>
+    <View style={style}>
       {profileIcon ? (
         <IconComponent name={profileIconName} color="gray" />
       ) : null}

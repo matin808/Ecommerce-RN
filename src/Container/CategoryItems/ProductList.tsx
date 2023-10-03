@@ -76,17 +76,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 40,
     borderRadius: 12,
+    borderColor: Platform.OS === 'android' ? 'gray' : '',
+    borderWidth: Platform.OS === 'android' ? 1 : 0,
 
     //
-    // shadowColor: '#000',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 0,
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
 
-    elevation: Platform.OS === 'android' ? 1 : 3,
+    // elevation: Platform.OS === 'android' ? 0 : 3,
   },
 
   imageContainer: {

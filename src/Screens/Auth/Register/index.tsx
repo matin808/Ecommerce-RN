@@ -168,6 +168,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
 
           <CustomText style={styles.LabelStyle} title="Email*" />
           <Input
+            inputMode={'email'}
             placeHolder="john@gmail.com"
             style={styles.TextInputContainer}
             handleChange={(value: string) => onhandleChange('email', value)}
@@ -217,6 +218,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
           <CustomText style={styles.LabelStyle} title="Phone Number*" />
           <Input
             style={styles.TextInputContainer}
+            inputMode={'numeric'}
             placeHolder="1231231230"
             handleChange={(value: number) => onhandleChange('phone_no', value)}
           />

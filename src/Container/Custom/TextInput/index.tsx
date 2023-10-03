@@ -14,6 +14,8 @@ interface InputProps {
   profileIcon?: boolean;
   disabled?: boolean;
   profileIconName?: string;
+  inputMode?: any;
+  editable?: boolean;
 }
 
 const Input = (props: InputProps) => {
@@ -28,9 +30,10 @@ const Input = (props: InputProps) => {
     profileIcon,
     disabled,
     profileIconName,
+    inputMode,
   } = props;
   return (
-    <View style={style}>
+    <View style={[style, {flexDirection: 'row'}]}>
       {profileIcon ? (
         <IconComponent name={profileIconName} color="gray" />
       ) : null}
@@ -44,6 +47,7 @@ const Input = (props: InputProps) => {
         editable={disabled}
         selectTextOnFocus={disabled}
         autoCorrect={false}
+        inputMode={inputMode ? inputMode : 'text'}
         autoCapitalize="none"
       />
       {showIcon ? (
@@ -65,6 +69,7 @@ const styles = StyleSheet.create({
   },
   IconStyle: {
     marginRight: 10,
+    alignSelf: 'center',
   },
 });
 

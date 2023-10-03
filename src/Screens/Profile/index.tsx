@@ -25,7 +25,8 @@ const Profile = ({navigation}: ProfileNavigationProps) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        {userDetails?.profile_pic === '' ? (
+        {userDetails?.profile_pic === '' ||
+        userDetails?.profile_pic === null ? (
           <Image
             source={{uri: usrAvatar}}
             style={styles.avatar}

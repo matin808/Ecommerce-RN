@@ -1,5 +1,12 @@
 /* eslint-disable react/react-in-jsx-scope */
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import {colors} from '../../assets/colors/Colors';
 import {Rating} from 'react-native-ratings';
 import {useNavigation} from '@react-navigation/native';
@@ -69,8 +76,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 40,
     borderRadius: 12,
+
     //
-    shadowColor: '#000',
+    // shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -78,7 +86,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
 
-    elevation: 4,
+    elevation: Platform.OS === 'android' ? 1 : 3,
   },
 
   imageContainer: {

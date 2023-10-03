@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import {
   View,
   SafeAreaView,
@@ -18,6 +19,8 @@ import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-crop-picker';
 import {getAvatarUrl} from '../../utils/GetAvatar';
 import {UpdateProfileNavigationProps} from '../../Navigation/types';
+import DatePicker from 'react-native-date-picker';
+import IconComponent from '../../Container/Custom/Icon';
 
 /**
  * @author Matin Kadri
@@ -30,7 +33,7 @@ export interface IUpdateStateProps {
   first_name: string;
   last_name: string;
   email: string;
-  dob: string;
+  dob: any;
   profile_pic: string;
   phone_no: string;
 }
@@ -101,6 +104,8 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
       form.email === '' ||
       form.phone_no === ''
     ) {
+      console.log(setDate);
+
       Alert.alert("Required fields, should n't be empty");
       return;
     }
@@ -108,6 +113,20 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
     await dispatch(updateDetails(data));
     Toast.show('Profile Updated', Toast.SHORT);
     navigation.goBack();
+  };
+  const maxDate = new Date();
+  maxDate.setFullYear(maxDate.getFullYear() - 15);
+  const [date, setDate] = useState(new Date(maxDate));
+  const [open, setOpen] = useState(false);
+
+  const handleDate = (Userdate: Date) => {
+    const date = new Date(Userdate);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const dob = `${day}-${month}-${year}`;
+    console.log('22222', dob);
+    setForm({...form, dob: dob});
   };
 
   return (
@@ -158,6 +177,7 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
 
             <View style={styles.InputContainer}>
               <Input
+                placeHolder="First Name"
                 style={styles.textInput}
                 value={form.first_name}
                 profileIcon={true}
@@ -169,6 +189,7 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
 
               <Input
                 style={styles.textInput}
+                placeHolder="Last Name"
                 value={form.last_name}
                 profileIcon={true}
                 handleChange={(txt: string) => onHandleChange('last_name', txt)}
@@ -177,6 +198,7 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
               <Input
                 style={styles.textInput}
                 value={form?.email}
+                inputMode={'email'}
                 profileIcon={true}
                 placeHolder="Enter your email"
                 handleChange={(txt: string) => onHandleChange('email', txt)}
@@ -185,19 +207,42 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
               <Input
                 style={styles.textInput}
                 value={form.phone_no}
+                inputMode={'numeric'}
                 profileIcon={true}
                 placeHolder="Enter phone number"
                 handleChange={(txt: string) => onHandleChange('phone_no', txt)}
                 profileIconName="phone"
               />
 
-              <Input
-                style={styles.textInput}
-                value={form.dob}
-                placeHolder="Enter your DOB"
-                profileIcon={true}
-                handleChange={(txt: string) => onHandleChange('dob', txt)}
-                profileIconName="party-popper"
+              <View style={styles.dateStyle}>
+                <Input
+                  style={styles.textInput}
+                  value={form.dob}
+                  placeHolder="Enter your DOB"
+                  profileIcon={true}
+                  disabled={false}
+                  profileIconName="party-popper"
+                />
+                <TouchableOpacity
+                  style={styles.calendarIcon}
+                  onPress={() => setOpen(true)}>
+                  <IconComponent color="gray" name="calendar" use="AntDesign" />
+                </TouchableOpacity>
+              </View>
+              <DatePicker
+                modal
+                open={open}
+                mode="date"
+                date={date}
+                maximumDate={maxDate}
+                onConfirm={date => {
+                  setOpen(false);
+                  setDate(date);
+                  handleDate(date);
+                }}
+                onCancel={() => {
+                  setOpen(false);
+                }}
               />
             </View>
 
@@ -268,6 +313,8 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     alignSelf: 'center',
   },
+  dateStyle: {flexDirection: 'row', alignItems: 'center'},
+  calendarIcon: {position: 'absolute', right: 10},
 });
 
 export default UpdateProfile;

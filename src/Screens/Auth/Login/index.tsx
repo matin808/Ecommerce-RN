@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
   signupStyle: {
     alignSelf: 'center',
     marginTop: 12,
+    fontSize: 15,
   },
 
   errorText: {

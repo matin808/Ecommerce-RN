@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: colors.UIBG,
-    marginVertical: 5,
+    marginVertical: 3,
     borderColor: colors.UIBG,
     borderWidth: 2,
     borderRadius: 10,
@@ -331,6 +331,7 @@ const styles = StyleSheet.create({
   signupStyle: {
     alignSelf: 'center',
     marginVertical: 12,
+    fontSize: 15,
   },
   errorText: {
     color: 'red',

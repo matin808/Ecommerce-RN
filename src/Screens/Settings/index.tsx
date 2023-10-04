@@ -73,7 +73,8 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
               </TouchableOpacity>
             </View>
             <View>
-              {userData?.profile_pic === '' ? (
+              {userData?.profile_pic === '' ||
+              userData?.profile_pic === null ? (
                 <>
                   <Image
                     style={styles.ImgCtn}

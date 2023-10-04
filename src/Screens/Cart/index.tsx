@@ -26,12 +26,12 @@ const Cart = () => {
   console.log('@@@@', data.count);
 
   const fetch = async () => {
-    setLoading(true);
     await dispatch(ListcartItems(token));
     setLoading(false);
   };
 
   useEffect(() => {
+    setLoading(true);
     fetch();
   }, []);
 
@@ -55,14 +55,16 @@ const Cart = () => {
         </>
       ) : (
         <>
-          <View style={styles.ImgCtn}>
-            <Image
-              style={styles.Img}
-              source={{
-                uri: 'https://i.pinimg.com/736x/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.jpg',
-              }}
-            />
-          </View>
+          {!loading && (
+            <View style={styles.ImgCtn}>
+              <Image
+                style={styles.Img}
+                source={{
+                  uri: 'https://i.pinimg.com/736x/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.jpg',
+                }}
+              />
+            </View>
+          )}
         </>
       )}
     </>

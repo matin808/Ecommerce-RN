@@ -46,6 +46,7 @@ const ForgetPassword = () => {
       <CustomText style={styles.Text} title="It's okay! reset your password" />
 
       <Input
+        inputMode={'email'}
         style={styles.InputContainer}
         placeHolder="john@gmail.com"
         handleChange={(txt: string) => setEmail(txt)}

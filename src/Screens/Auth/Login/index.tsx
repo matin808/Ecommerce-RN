@@ -92,6 +92,7 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
           <Input
             placeHolder="john@gmail.com"
             style={styles.TextInputContainer}
+            inputMode={'email'}
             handleChange={(value: string) => onhandleChange('email', value)}
           />
           <Text style={styles.errorText}>{errors.email}</Text>

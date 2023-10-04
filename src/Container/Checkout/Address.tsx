@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {colors} from '../../assets/colors/Colors';
 import CustomText from '../Custom/Text';
@@ -14,6 +14,16 @@ import {
 import {Swipeable} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {MyNavigationProp} from '../../Navigation/types';
+
+interface IAddressProps {
+  data: {
+    address: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+  id: number;
+}
 
 const Address = () => {
   const addressData = useAppSelector(userAddress);
@@ -60,10 +70,11 @@ const Address = () => {
         </Text>
       </View>
 
-      <FlatList
-        data={addressData}
-        renderItem={({item}) => (
-          <Swipeable renderRightActions={() => renderRightActions(item?.id)}>
+      {addressData?.map((item: IAddressProps) => {
+        return (
+          <Swipeable
+            key={item.id}
+            renderRightActions={() => renderRightActions(item?.id)}>
             <TouchableOpacity
               onPress={() => handleSelectedAddress(item?.id)}
               style={[
@@ -79,8 +90,8 @@ const Address = () => {
               </Text>
             </TouchableOpacity>
           </Swipeable>
-        )}
-      />
+        );
+      })}
     </View>
   );
 };

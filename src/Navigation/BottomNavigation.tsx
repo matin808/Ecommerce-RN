@@ -15,11 +15,15 @@ function MyTabs() {
     <Tab.Navigator
       activeColor="brown"
       inactiveColor="gray"
+      theme={{colors: {secondaryContainer: 'transparent'}}}
       barStyle={{
         backgroundColor: '#fefefe',
         borderTopWidth: 1,
         borderTopColor: 'lightgray',
-      }}>
+      }}
+
+      // Set the background color of active tab to transparent
+    >
       <Tab.Screen
         name="Home"
         options={{

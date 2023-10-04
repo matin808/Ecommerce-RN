@@ -84,6 +84,7 @@ const AddressScreen = ({route, navigation}: AddressScreensNavigationProps) => {
         style={styles.input}
         placeholder="Street Address"
         value={address}
+        inputMode="text"
         onChangeText={text => setAddress(text)}
       />
       <TextInput
@@ -101,6 +102,7 @@ const AddressScreen = ({route, navigation}: AddressScreensNavigationProps) => {
       <TextInput
         style={styles.input}
         placeholder="Zip Code"
+        inputMode="numeric"
         value={zipCode}
         onChangeText={text => setZipCode(text)}
       />

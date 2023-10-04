@@ -10,6 +10,7 @@ import RadioBtn from '../../../Container/Custom/RadioButton';
 import {addUser} from '../../../Redux/Users/userSlice';
 import {
   validateEmail,
+  validateName,
   validatePassword,
   validatePhoneNo,
 } from '../../../utils/Validator';
@@ -34,6 +35,8 @@ export interface IFormState {
 }
 
 interface IErrorState {
+  first_name: string;
+  last_name: string;
   general: string;
   email: string;
   password: string;
@@ -56,6 +59,8 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
   });
 
   const [errors, setErrors] = useState<IErrorState>({
+    first_name: '',
+    last_name: '',
     general: '',
     email: '',
     password: '',
@@ -64,6 +69,24 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
   });
 
   const onhandleChange = (field: string, value: any) => {
+    if (field === 'first_name') {
+      if (!validateName(value)) {
+        setErrors({
+          ...errors,
+          first_name: 'Please enter a valid name',
+        });
+        return;
+      }
+    }
+    if (field === 'last_name') {
+      if (!validateName(value)) {
+        setErrors({
+          ...errors,
+          last_name: 'Please enter a valid name',
+        });
+        return;
+      }
+    }
     if (field === 'email') {
       if (!validateEmail(value)) {
         setErrors({...errors, general: '', email: 'Invalid email format'});
@@ -156,7 +179,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
               onhandleChange('first_name', value)
             }
           />
-          <Text style={styles.errorText}>{errors.general}</Text>
+          <Text style={styles.errorText}>{errors.first_name}</Text>
 
           <CustomText style={styles.LabelStyle} title="Last Name*" />
           <Input
@@ -164,7 +187,7 @@ const Register = ({navigation}: RegisterScreenNavigationProps) => {
             style={styles.TextInputContainer}
             handleChange={(value: string) => onhandleChange('last_name', value)}
           />
-          <Text style={styles.errorText}>{errors.general}</Text>
+          <Text style={styles.errorText}>{errors.last_name}</Text>
 
           <CustomText style={styles.LabelStyle} title="Email*" />
           <Input
@@ -307,7 +330,7 @@ const styles = StyleSheet.create({
 
   signupStyle: {
     alignSelf: 'center',
-    marginTop: 12,
+    marginVertical: 12,
   },
   errorText: {
     color: 'red',

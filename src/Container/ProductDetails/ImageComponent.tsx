@@ -21,7 +21,6 @@ const ImageComponent = ({images}: ImageProps) => {
     <View style={styles.container}>
       <SliderBox
         images={img}
-        // sliderBoxHeight={350}
         resizeMode="contain"
         inactiveDotColor="#AFE1AF"
         dotColor="darkgreen"

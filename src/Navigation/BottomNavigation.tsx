@@ -18,7 +18,6 @@ function MyTabs() {
       theme={{colors: {secondaryContainer: 'transparent'}}}
       barStyle={{
         backgroundColor: '#fefefe',
-
         borderTopWidth: 1,
         borderTopColor: 'lightgray',
       }}

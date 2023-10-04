@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
 
-    // elevation: Platform.OS === 'android' ? 0 : 3,
+    elevation: Platform.OS === 'android' ? 0 : 3,
   },
 
   imageContainer: {
@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   brandName: {
-    // color: '#9B9B9B',
     color: '#000',
     fontSize: 18,
     fontFamily: 'Montserrat-Bold',

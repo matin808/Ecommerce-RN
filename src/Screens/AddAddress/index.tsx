@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import {
   addAddress,
   updateAddress,
@@ -16,6 +9,7 @@ import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {AddressScreensNavigationProps} from '../../Navigation/types';
 import {colors} from '../../assets/colors/Colors';
 import Toast from 'react-native-simple-toast';
+import {TextInput} from 'react-native-paper';
 
 /**
  * @author Matin Kadri
@@ -80,28 +74,36 @@ const AddressScreen = ({route, navigation}: AddressScreensNavigationProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Add Address</Text>
+
       <TextInput
+        mode="outlined"
+        label="Street Address"
+        activeOutlineColor={colors.ACTIONCOLOR}
         style={styles.input}
-        placeholder="Street Address"
         value={address}
-        inputMode="text"
         onChangeText={text => setAddress(text)}
       />
       <TextInput
+        mode="outlined"
         style={styles.input}
-        placeholder="City"
+        label="City"
+        activeOutlineColor={colors.ACTIONCOLOR}
         value={city}
         onChangeText={text => setCity(text)}
       />
       <TextInput
+        mode="outlined"
         style={styles.input}
-        placeholder="State"
+        label="State"
+        activeOutlineColor={colors.ACTIONCOLOR}
         value={state}
         onChangeText={text => setState(text)}
       />
       <TextInput
+        mode="outlined"
         style={styles.input}
-        placeholder="Zip Code"
+        activeOutlineColor={colors.ACTIONCOLOR}
+        label="Zip Code"
         inputMode="numeric"
         value={zipCode}
         onChangeText={text => setZipCode(text)}
@@ -133,8 +135,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 12,
+
     marginBottom: 16,
     fontSize: 16,
   },
@@ -142,6 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.ACTIONCOLOR,
     borderRadius: 8,
     padding: 10,
+    marginTop: 7,
     alignItems: 'center',
   },
   buttonText: {

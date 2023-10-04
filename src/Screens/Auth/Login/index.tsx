@@ -74,7 +74,10 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
   };
   return (
     <SafeAreaView style={styles.LoginContainer}>
-      <View style={styles.main}>
+      <KeyboardAwareScrollView
+        style={styles.main}
+        showsVerticalScrollIndicator={false}
+        alwaysBounceVertical={false}>
         <View style={styles.ImageContainer}>
           <Image source={require('../../../assets/images/login.png')} />
         </View>
@@ -84,9 +87,7 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
           style={styles.subTitleStyle}
         />
 
-        <KeyboardAwareScrollView
-          style={styles.formContainer}
-          showsVerticalScrollIndicator={false}>
+        <View style={styles.formContainer}>
           <CustomText style={styles.LabelStyle} title="Email" />
 
           <Input
@@ -127,8 +128,8 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
               Sign up here
             </Text>
           </Text>
-        </KeyboardAwareScrollView>
-      </View>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
@@ -203,7 +204,6 @@ const styles = StyleSheet.create({
   ForgetPassStyle: {
     alignItems: 'flex-end',
     color: 'gray',
-    marginTop: 3,
   },
   ButtonStyle: {
     backgroundColor: colors.DEFAULT,

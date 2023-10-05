@@ -1,22 +1,22 @@
 import {
   View,
-  // Text,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   Image,
   Alert,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import CustomText from '../../Container/Custom/Text';
-import {colors} from '../../assets/colors/Colors';
-import {Divider} from 'react-native-paper';
+import {Divider, Tooltip} from 'react-native-paper';
 import {PaperProvider, Text} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import IconComponent from '../../Container/Custom/Icon';
 import {SettingsNavigationProps} from '../../Navigation/types';
 import {logoutUser} from '../../Redux/Users/userSlice';
 import {getAvatarUrl} from '../../utils/GetAvatar';
+import IconList from '../../Container/Custom/List';
 
 /**
  * @author Matin Kadri
@@ -51,117 +51,109 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
   return (
     <PaperProvider>
       <SafeAreaView style={styles.container}>
-        <View style={styles.main}>
-          <View style={styles.profileContainer}>
-            <View style={styles.ProfileCtnOne}>
-              <Text
-                style={styles.name}
-                onPress={() => navigation.navigate('Profile')}>
-                {userData?.first_name} {userData?.last_name}
-              </Text>
-              <Text style={styles.email}>{userData?.email}</Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('UpdateProfile')}
-                style={styles.btnContainer}>
-                <Text style={styles.EditText}>edit profile?</Text>
-                <IconComponent
-                  size={20}
-                  color="blue"
-                  name="edit"
-                  use="AntDesign"
-                />
-              </TouchableOpacity>
-            </View>
-            <View>
-              {userData?.profile_pic === '' ||
-              userData?.profile_pic === null ? (
-                <>
+        <ScrollView alwaysBounceVertical={false}>
+          <View style={styles.main}>
+            <View style={styles.profileContainer}>
+              <View style={styles.ProfileCtnOne}>
+                <Tooltip title="View Profile">
+                  <Text
+                    style={styles.name}
+                    onPress={() => navigation.navigate('Profile')}>
+                    {userData?.first_name} {userData?.last_name}
+                  </Text>
+                </Tooltip>
+                <Text style={styles.email}>{userData?.email}</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('UpdateProfile')}
+                  style={styles.btnContainer}>
+                  <Text style={styles.EditText}>edit profile?</Text>
+                  <IconComponent
+                    size={20}
+                    color="blue"
+                    name="edit"
+                    use="AntDesign"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View>
+                {userData?.profile_pic === '' ||
+                userData?.profile_pic === null ? (
+                  <>
+                    <Image
+                      style={styles.ImgCtn}
+                      source={{
+                        uri: usrAvatar,
+                      }}
+                      height={115}
+                      width={115}
+                    />
+                  </>
+                ) : (
                   <Image
                     style={styles.ImgCtn}
                     source={{
-                      uri: usrAvatar,
+                      uri: userData?.profile_pic,
                     }}
-                    height={115}
-                    width={115}
+                    height={100}
+                    width={100}
                   />
-                </>
-              ) : (
-                <Image
-                  style={styles.ImgCtn}
-                  source={{
-                    uri: userData?.profile_pic,
-                  }}
-                  height={100}
-                  width={100}
+                )}
+              </View>
+            </View>
+          </View>
+          <Divider />
+          {/*  */}
+          <View style={styles.statistics}>
+            <CustomText style={styles.statisticsTitle} title="Statistics" />
+            <View style={styles.statisticsCtn}>
+              <View>
+                <CustomText
+                  title="Orders in cart"
+                  style={styles.statisticsHeadingText}
                 />
-              )}
+                <CustomText title="23" style={styles.statisticsvalue} />
+              </View>
+
+              <View>
+                <CustomText
+                  title="Order delivered"
+                  style={styles.statisticsHeadingText}
+                />
+                <CustomText title="12" style={styles.statisticsvalue} />
+              </View>
             </View>
           </View>
-        </View>
-        <Divider />
-        {/*  */}
-        <View style={styles.statistics}>
-          <CustomText style={styles.statisticsTitle} title="Statistics" />
-          <View style={styles.statisticsCtn}>
-            <View>
-              <CustomText
-                title="Orders in cart"
-                style={styles.statisticsHeadingText}
-              />
-              <CustomText title="23" style={styles.statisticsvalue} />
-            </View>
 
-            <View>
-              <CustomText
-                title="Order delivered"
-                style={styles.statisticsHeadingText}
-              />
-              <CustomText title="12" style={styles.statisticsvalue} />
-            </View>
-          </View>
-        </View>
-        {/*  */}
-        <View style={styles.listContainer}>
-          <CustomText
-            style={styles.statisticsTitle}
-            title="Additional Settings"
-          />
+          {/* Additional List */}
+          <View style={styles.listContainer}>
+            <CustomText
+              style={styles.statisticsTitle}
+              title="Additional Settings"
+            />
 
-          <View style={styles.updateHeader}>
-            <Text style={styles.DetailHeading}>Change Password</Text>
-            <IconComponent
-              // handlePress={showDialog}
-              handlePress={() => navigation.navigate('ChangePassword')}
-              name="arrowright"
+            <IconList
+              iconName="security"
+              onPress={() => navigation.navigate('ChangePassword')}
+              title="Change Password"
+              desc="Refresh Your Security, Reset Your Passcode."
+            />
+            <IconList
+              iconName="slack-square"
               use="AntDesign"
-              color="#000"
-              size={35}
+              onPress={() => navigation.navigate('UpdateProfile')}
+              title="Update Profile"
+              desc="Elevate Your Presence, Enhance Your Profile."
+            />
+            <IconList
+              iconName="logout"
+              use="AntDesign"
+              iconSize={29}
+              onPress={handleLogout}
+              title="Logout"
+              desc="Secure Your Exit, Log Out Safely"
             />
           </View>
-
-          <View style={styles.updateHeader}>
-            <Text style={styles.DetailHeading}>Update Your Profile</Text>
-            <IconComponent
-              handlePress={() => navigation.navigate('UpdateProfile')}
-              name="arrowright"
-              use="AntDesign"
-              color="#000"
-              size={35}
-            />
-          </View>
-
-          {/* LOGOUT */}
-          <View style={styles.updateHeader}>
-            <Text style={styles.DetailHeading}>Logout</Text>
-            <IconComponent
-              handlePress={handleLogout}
-              name="arrowright"
-              use="AntDesign"
-              color="#000"
-              size={35}
-            />
-          </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </PaperProvider>
   );
@@ -177,12 +169,6 @@ const styles = StyleSheet.create({
     padding: 15,
   },
 
-  heading: {
-    fontSize: 25,
-    fontFamily: 'Roboto-regular',
-    color: colors.TEXT,
-  },
-
   profileContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -195,7 +181,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 25,
-    fontFamily: 'Poppins-Black',
+    fontFamily: 'Poppins-Bold',
   },
   email: {
     fontSize: 18,
@@ -224,17 +210,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
 
-  updateHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-
-  DetailHeading: {
-    fontSize: 20,
-  },
-  //
   statistics: {
     marginVertical: 20,
     marginHorizontal: 15,
@@ -257,7 +232,6 @@ const styles = StyleSheet.create({
 
   statisticsHeadingText: {
     fontSize: 18,
-    // margin: 10,
     fontFamily: 'Montserrat-SemiBold',
   },
   statisticsvalue: {

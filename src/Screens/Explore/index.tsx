@@ -34,6 +34,8 @@ const Explore = () => {
       a.name.localeCompare(b.name),
     );
     setALlProducts(main);
+    console.log('11223311', main);
+
     setLoading(false);
   };
   useEffect(() => {
@@ -92,20 +94,21 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: 'lightgray',
-    paddingVertical: 5,
+
     paddingHorizontal: 15,
     margin: 15,
     borderRadius: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    maxHeight: 52,
+    maxHeight: 50,
   },
   Icon: {flex: 0.1},
   Input: {
     backgroundColor: '#fff',
     marginLeft: 5,
     flex: 0.9,
-    fontSize: 18,
+    alignSelf: 'center',
+    fontSize: 17,
   },
 });
 

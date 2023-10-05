@@ -46,9 +46,11 @@ const ProductDetails = ({route, navigation}: ProductDetailsNavigationProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const {id} = route.params;
   const [productDetails, setProductDetails] = useState<IProductData>();
+
   const similarCategoryData = useAppSelector(getProductLists).filter(
     item => item.id !== id,
   );
+  console.log('simiiiiiiii', similarCategoryData.length);
   const fetchProductDetails = async () => {
     setLoading(true);
     try {
@@ -87,8 +89,9 @@ const ProductDetails = ({route, navigation}: ProductDetailsNavigationProps) => {
               name={productDetails?.name}
               singleImage={singleImage}
             />
-
-            <SimilarProducts data={similarCategoryData} />
+            {similarCategoryData.length > 0 && (
+              <SimilarProducts data={similarCategoryData} />
+            )}
           </View>
         </ScrollView>
       )}

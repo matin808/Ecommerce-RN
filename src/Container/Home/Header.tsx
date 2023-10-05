@@ -19,7 +19,7 @@ const Header: React.FC<IHeaderProps> = ({handlePress}) => {
           use="AntDesign"
           name="shoppingcart"
           handlePress={handlePress}
-          size={28}
+          size={32}
           color={colors.ACTIONCOLOR}
         />
       </View>
@@ -31,8 +31,9 @@ const styles = StyleSheet.create({
   Container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 10,
-    marginLeft: 15,
+    marginTop: 15,
+    marginHorizontal: 10,
+    marginBottom: 2,
     alignItems: 'center',
   },
 

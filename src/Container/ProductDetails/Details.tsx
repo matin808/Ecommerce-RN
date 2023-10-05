@@ -42,9 +42,9 @@ const Details = (props: IDetails) => {
   const [addedToCart, setAddedToCart] = useState(false);
   const cartDetails: ICartDetailsProps = useAppSelector(state => state.cart);
   const [ratingStatus, setRatingStatus] = useState(false);
+
   const cartData = cartDetails.cart.data;
   console.log('cartDetails', cartDetails.cart.data);
-  console.log('cartDetails1122', cartDetails);
 
   const [visible, setVisible] = React.useState(false);
 
@@ -65,6 +65,7 @@ const Details = (props: IDetails) => {
       await dispatch(AddToCart({token, id, quantity: 1})).unwrap();
       setAddedToCart(true);
       Toast.show('Added to cart', Toast.SHORT);
+      present = true;
       if (str === 'buy') {
         handlePress();
       }

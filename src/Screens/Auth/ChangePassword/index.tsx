@@ -8,6 +8,8 @@ import {colors} from '../../../assets/colors/Colors';
 import Input from '../../../Container/Custom/TextInput';
 import {useAppSelector} from '../../../Redux/store';
 import {userToken} from '../../../Redux/Users/userSlice';
+import Toast from 'react-native-simple-toast';
+import {ChangePassowrdScreensNavigationProps} from '../../../Navigation/types';
 
 /**
  * @author Matin Kadri
@@ -20,7 +22,7 @@ export interface IForm {
   confirm_password: string;
 }
 
-const ChangePassword = () => {
+const ChangePassword = ({navigation}: ChangePassowrdScreensNavigationProps) => {
   const token = useAppSelector(userToken);
   const [oldPass, setOldPass] = useState(true);
   const [passVisible, setPassVisible] = useState(true);
@@ -79,6 +81,8 @@ const ChangePassword = () => {
       return;
     }
     handleChangePassword(form, token);
+    Toast.show('Passowrd Updated Successfully', Toast.SHORT);
+    navigation.goBack();
     console.log(form);
   };
   return (

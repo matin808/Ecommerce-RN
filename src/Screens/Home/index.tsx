@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import Header from '../../Container/Home/Header';
 import {colors} from '../../assets/colors/Colors';
 import {getUserData, userToken} from '../../Redux/Users/userSlice';
@@ -9,6 +9,7 @@ import Category from '../../Container/Home/Category';
 import {useAppDispatch, useAppSelector} from '../../Redux/store';
 import {HomeScreenNavigationProps} from '../../Navigation/types';
 import {ListcartItems} from '../../Redux/Cart/CartSlice';
+import {useFocusEffect} from '@react-navigation/native';
 
 /**
  * @author Matin kadri
@@ -23,12 +24,17 @@ const Home = ({navigation}: HomeScreenNavigationProps) => {
   console.log(userData);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(ListcartItems(token));
-    if (token) {
-      console.log('fromhome111', token);
-    }
-  }, []);
+  // useEffect(() => {
+  //   dispatch(ListcartItems(token));
+  //   if (token) {
+  //     console.log('fromhome111', token);
+  //   }
+  // }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(ListcartItems(token));
+    }, []),
+  );
 
   return (
     <SafeAreaView style={styles.container}>

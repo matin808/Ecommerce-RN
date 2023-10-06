@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Text,
   Image,
-  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import Input from '../../Container/Custom/TextInput';
@@ -21,6 +20,7 @@ import {getAvatarUrl} from '../../utils/GetAvatar';
 import {UpdateProfileNavigationProps} from '../../Navigation/types';
 import DatePicker from 'react-native-date-picker';
 import IconComponent from '../../Container/Custom/Icon';
+import CustomModal from '../../Container/Custom/Modal';
 
 /**
  * @author Matin Kadri
@@ -43,15 +43,21 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
   const userDetails = data[0];
   const token = userDetails.access_token;
   const usrAvatar = getAvatarUrl(userDetails?.gender);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const [form, setForm] = useState<IUpdateStateProps>({
-    first_name: userDetails.first_name,
-    last_name: userDetails.last_name,
-    email: userDetails.email,
-    dob: userDetails.dob,
+    first_name: userDetails?.first_name,
+    last_name: userDetails?.last_name,
+    email: userDetails?.email,
+    dob: userDetails?.dob,
     profile_pic: userDetails.profile_pic,
     phone_no: userDetails.phone_no,
   });
+
+  const handlePhotoUpload = async () => {
+    showDialog();
+    console.log('async upload');
+  };
 
   const onHandleChange = (field: string, value: string) => {
     setForm({...form, [field]: value});
@@ -65,20 +71,17 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
 
   const hideDialog = () => setVisible(false);
 
-  const handlePhotoUpload = () => {
-    console.log('async upload');
-    showDialog();
-  };
-
   const handleCameraFunctionality = () => {
     ImagePicker.openCamera({
       width: 300,
       height: 400,
       cropping: true,
+      includeBase64: true,
     }).then(image => {
       handleImage(image);
     });
   };
+  console.log();
   const handleGalleryFunctionality = () => {
     ImagePicker.openPicker({
       includeBase64: true,
@@ -92,7 +95,7 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
 
   const handleImage = (image: any) => {
     const profilePic = 'data:image/jpg;base64,' + image.data;
-    console.log('111', profilePic);
+    console.log('111000', profilePic);
     setForm({...form, profile_pic: profilePic});
     hideDialog();
   };
@@ -105,8 +108,7 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
       form.phone_no === ''
     ) {
       console.log(setDate);
-
-      Alert.alert("Required fields, should n't be empty");
+      setModalVisible(true);
       return;
     }
     const data = {form: form, token: token};
@@ -144,13 +146,20 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
                 style={styles.ModalBtn}>
                 Gallery
               </Text>
-              {/* <Text variant="bodyMedium">This is simple dialog</Text> */}
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={hideDialog}>Close</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
+        {modalVisible && (
+          <CustomModal
+            modalVisible={modalVisible}
+            title="All details must be filled"
+            showButton={true}
+            setModalVisible={setModalVisible}
+          />
+        )}
         <ScrollView
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical={false}>
@@ -262,7 +271,7 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#D7DBDD',
+    backgroundColor: '#D6DBDF',
   },
   container: {
     flex: 1,

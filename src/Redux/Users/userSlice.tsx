@@ -155,6 +155,7 @@ export const userSlice = createSlice({
   reducers: {
     logoutUser: state => {
       state.users.pop();
+      // state.users = [];
     },
     addAddress: (state, action) => {
       console.log('aa', action.payload);

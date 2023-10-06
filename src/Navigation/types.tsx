@@ -85,3 +85,7 @@ export type OrderCompletedScreensNavigationProps = NativeStackScreenProps<
   RootStackParamList,
   'OrderCompleted'
 >;
+export type ChangePassowrdScreensNavigationProps = NativeStackScreenProps<
+  RootStackParamList,
+  'ChangePassword'
+>;

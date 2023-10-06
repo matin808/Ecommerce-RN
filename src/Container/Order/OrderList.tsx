@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import React from 'react';
 type TOrderProps = {
   item: {
@@ -9,7 +9,8 @@ type TOrderProps = {
   onPress: (arg: any) => void;
 };
 const OrderList = ({item, onPress}: TOrderProps) => {
-  console.log('111', item);
+  console.log('110001', item);
+  console.log('11122222', item);
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 3,
+    elevation: Platform.OS === 'android' ? 0 : 3,
   },
   dataRow: {
     flexDirection: 'row',

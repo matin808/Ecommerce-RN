@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import React, {useState} from 'react';
 import {handleChangePassword} from '../../../utils/API/changePassword';
 import {validatePassword} from '../../../utils/Validator';
@@ -8,7 +8,8 @@ import {colors} from '../../../assets/colors/Colors';
 import Input from '../../../Container/Custom/TextInput';
 import {useAppSelector} from '../../../Redux/store';
 import {userToken} from '../../../Redux/Users/userSlice';
-import IconComponent from '../../../Container/Custom/Icon';
+import Toast from 'react-native-simple-toast';
+import {ChangePassowrdScreensNavigationProps} from '../../../Navigation/types';
 
 /**
  * @author Matin Kadri
@@ -21,7 +22,7 @@ export interface IForm {
   confirm_password: string;
 }
 
-const ChangePassword = () => {
+const ChangePassword = ({navigation}: ChangePassowrdScreensNavigationProps) => {
   const token = useAppSelector(userToken);
   const [oldPass, setOldPass] = useState(true);
   const [passVisible, setPassVisible] = useState(true);
@@ -71,17 +72,21 @@ const ChangePassword = () => {
   };
 
   const handlePress = () => {
+    if (
+      form.old_password === '' ||
+      form.password === '' ||
+      form.confirm_password === ''
+    ) {
+      Alert.alert('All fields are required');
+      return;
+    }
     handleChangePassword(form, token);
+    Toast.show('Passowrd Updated Successfully', Toast.SHORT);
+    navigation.goBack();
     console.log(form);
   };
   return (
     <View style={styles.main}>
-      <IconComponent
-        name="checkcircle"
-        use="AntDesign"
-        size={70}
-        style={styles.Icon}
-      />
       <CustomText style={styles.heading} title="Change Your Password" />
       <View style={styles.Container}>
         <CustomText title="Old Password" />
@@ -142,9 +147,9 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 22,
     fontFamily: 'Montserrat-Bold',
-    alignSelf: 'center',
     color: colors.ACTIONCOLOR,
-    marginBottom: 30,
+    marginVertical: 15,
+    marginHorizontal: 20,
   },
 
   Container: {

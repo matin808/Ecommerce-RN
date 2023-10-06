@@ -32,6 +32,7 @@ export interface IProductListProps {
 
 const ProductList = ({item}: IProductListProps) => {
   const {id, name} = item;
+
   const navigation: MyNavigationProp = useNavigation();
 
   return (

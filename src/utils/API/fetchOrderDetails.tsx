@@ -8,7 +8,7 @@ export const fetchOrderDetail = async (id: number, token: string) => {
         access_token: token,
       },
     });
-    console.log(res.data);
+
     return res.data;
   } catch (err) {
     console.log('Something Went wrong');

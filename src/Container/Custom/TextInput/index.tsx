@@ -52,7 +52,12 @@ const Input = (props: InputProps) => {
       />
       {showIcon ? (
         <View style={styles.IconStyle}>
-          <IconComponent name="eye" color="gray" handlePress={handleVisible} />
+          <IconComponent
+            size={28}
+            name={secure ? 'eye-off' : 'eye'}
+            color="gray"
+            handlePress={handleVisible}
+          />
         </View>
       ) : null}
     </View>

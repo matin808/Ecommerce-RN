@@ -20,7 +20,7 @@ const CategoryItems = ({route}: CategoryItemsScreenNavigationProps) => {
 
   const dispatch = useAppDispatch();
   const mydata = useAppSelector(state => state.products.products);
-
+  console.log('11223311', mydata);
   const fetchProduct = async () => {
     setLoading(true);
     try {

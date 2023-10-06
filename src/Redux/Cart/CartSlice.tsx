@@ -1,6 +1,10 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {baseUrl} from '../../utils/constants';
 import axios from 'axios';
+/**
+ * @author Matin Kadri
+ * @param Props for Cart add and update
+ */
 
 interface ICartProps {
   token: string;
@@ -12,11 +16,6 @@ interface IEditCartProps {
   quantity: number;
   id: number;
 }
-
-/**
- * @author Matin Kadri
- * @param Props for Cart add and update
- */
 
 type IUpdatedCartProps = {
   data: boolean;
@@ -131,4 +130,5 @@ const cartSlice = createSlice({
 });
 
 export const {fetchCartDetails} = cartSlice.actions;
+export const cartItemDetails = (state: any) => state.cart.cart;
 export default cartSlice.reducer;

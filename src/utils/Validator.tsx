@@ -13,3 +13,8 @@ export function validatePhoneNo(num: any) {
   const regex = /^\d{10}$/;
   return regex.test(num);
 }
+
+export const validateName = (name: string) => {
+  const nameRegex = /^[a-zA-Z'\-]+$/;
+  return nameRegex.test(name);
+};

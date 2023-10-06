@@ -4,7 +4,7 @@ import {RadioGroup} from 'react-native-radio-buttons-group';
 import {StyleSheet, View} from 'react-native';
 
 interface IRadioBtn {
-  handleChange: (arg: any) => void;
+  handleChange: (arg: string) => void;
   data: string;
 }
 

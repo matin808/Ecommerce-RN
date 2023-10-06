@@ -1,5 +1,13 @@
-import {Alert, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {
+  Alert,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  BackHandler,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import CustomText from '../../../Container/Custom/Text';
 import Input from '../../../Container/Custom/TextInput';
 import {colors} from '../../../assets/colors/Colors';
@@ -34,6 +42,27 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
     email: '',
     password: '',
   });
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to go close app?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const onhandleChange = (field: string, value: string) => {
     if (field === 'email') {
@@ -74,7 +103,10 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
   };
   return (
     <SafeAreaView style={styles.LoginContainer}>
-      <View style={styles.main}>
+      <KeyboardAwareScrollView
+        style={styles.main}
+        showsVerticalScrollIndicator={false}
+        alwaysBounceVertical={false}>
         <View style={styles.ImageContainer}>
           <Image source={require('../../../assets/images/login.png')} />
         </View>
@@ -84,9 +116,7 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
           style={styles.subTitleStyle}
         />
 
-        <KeyboardAwareScrollView
-          style={styles.formContainer}
-          showsVerticalScrollIndicator={false}>
+        <View style={styles.formContainer}>
           <CustomText style={styles.LabelStyle} title="Email" />
 
           <Input
@@ -127,8 +157,8 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
               Sign up here
             </Text>
           </Text>
-        </KeyboardAwareScrollView>
-      </View>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
@@ -203,7 +233,6 @@ const styles = StyleSheet.create({
   ForgetPassStyle: {
     alignItems: 'flex-end',
     color: 'gray',
-    marginTop: 3,
   },
   ButtonStyle: {
     backgroundColor: colors.DEFAULT,
@@ -216,6 +245,7 @@ const styles = StyleSheet.create({
   signupStyle: {
     alignSelf: 'center',
     marginTop: 12,
+    fontSize: 15,
   },
 
   errorText: {

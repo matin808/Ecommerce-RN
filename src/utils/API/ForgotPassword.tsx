@@ -10,7 +10,7 @@ export const forgetPassword = async (email: string) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(res.data);
+
     return res.data?.status;
   } catch (err: any) {
     console.log(err.message);

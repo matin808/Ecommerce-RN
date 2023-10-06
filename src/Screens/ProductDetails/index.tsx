@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {View, StyleSheet, ScrollView} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {baseUrl, getDetail} from '../../utils/constants';
 import axios from 'axios';
 import {ProductDetailsNavigationProps} from '../../Navigation/types';
@@ -9,10 +9,9 @@ import {getProductLists} from '../../Redux/Products/ProductSlice';
 import SimilarProducts from '../../Container/ProductDetails/SimilarProducts';
 import ProductDetailsHeader from '../../Container/ProductDetails/Header';
 import Details from '../../Container/ProductDetails/Details';
-// import {useIsFocused} from '@react-navigation/native';
 import {PaperProvider} from 'react-native-paper';
 import Loader from '../../Container/Custom/Loader';
-// import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
 /**
  * @author Matin kadri
@@ -62,9 +61,12 @@ const ProductDetails = ({route, navigation}: ProductDetailsNavigationProps) => {
     }
   };
 
-  useEffect(() => {
-    fetchProductDetails();
-  }, [id]);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchProductDetails();
+    }, [id]),
+  );
+
   console.log('1122333', productDetails?.product_images[0].image);
   const singleImage = productDetails?.product_images[0].image;
   return (

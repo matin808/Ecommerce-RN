@@ -130,4 +130,5 @@ const cartSlice = createSlice({
 });
 
 export const {fetchCartDetails} = cartSlice.actions;
+export const cartItemDetails = (state: any) => state.cart.cart;
 export default cartSlice.reducer;

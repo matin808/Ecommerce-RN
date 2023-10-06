@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import IconComponent from '../Icon';
 import {List} from 'react-native-paper';
@@ -16,10 +16,9 @@ interface IListProps {
 const IconList = (props: IListProps) => {
   const {onPress, iconName, iconSize, title, desc, use} = props;
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <List.Item
         titleStyle={styles.title}
-        onPress={onPress}
         title={title}
         description={desc}
         left={() => (
@@ -32,7 +31,7 @@ const IconList = (props: IListProps) => {
           />
         )}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -41,11 +40,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    // backgroundColor: 'red',
     marginTop: 10,
   },
 
   title: {
     fontSize: 20,
+
     fontFamily: 'Monterrack-Light',
   },
 

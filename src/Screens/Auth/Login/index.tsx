@@ -1,5 +1,13 @@
-import {Alert, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {
+  Alert,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  BackHandler,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import CustomText from '../../../Container/Custom/Text';
 import Input from '../../../Container/Custom/TextInput';
 import {colors} from '../../../assets/colors/Colors';
@@ -34,6 +42,27 @@ const Login = ({navigation}: LoginScreenNavigationProps) => {
     email: '',
     password: '',
   });
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to go close app?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const onhandleChange = (field: string, value: string) => {
     if (field === 'email') {

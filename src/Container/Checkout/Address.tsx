@@ -84,10 +84,18 @@ const Address = () => {
                   borderWidth: 2,
                 },
               ]}>
-              <Text style={styles.addressText}>
-                {item?.data?.address} {item?.data?.city} {item?.data?.state}{' '}
-                {item?.data?.zipCode}
-              </Text>
+              <CustomText
+                style={styles.addressText}
+                title={
+                  item?.data?.address +
+                  ' ' +
+                  item?.data?.city +
+                  ' ' +
+                  item?.data?.state +
+                  ' ' +
+                  item?.data?.zipCode
+                }
+              />
             </TouchableOpacity>
           </Swipeable>
         );
@@ -144,7 +152,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   addressText: {
-    fontSize: 16,
+    fontSize: 17,
   },
 });
 

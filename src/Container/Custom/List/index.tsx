@@ -21,6 +21,7 @@ const IconList = (props: IListProps) => {
         titleStyle={styles.title}
         title={title}
         description={desc}
+        descriptionStyle={styles.desc}
         left={() => (
           <IconComponent
             name={iconName}
@@ -40,16 +41,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // backgroundColor: 'red',
+
     marginTop: 10,
   },
 
   title: {
     fontSize: 20,
-
+    color: '#000',
     fontFamily: 'Monterrack-Light',
   },
-
+  desc: {
+    color: 'gray',
+  },
   IconStyle: {
     alignSelf: 'center',
   },

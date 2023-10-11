@@ -65,6 +65,7 @@ const Explore = () => {
               use="AntDesign"
             />
             <TextInput
+              placeholderTextColor={'gray'}
               autoCapitalize="none"
               autoCorrect={false}
               clearButtonMode="always"
@@ -108,6 +109,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     flex: 0.9,
     alignSelf: 'center',
+    color: '#000',
     fontSize: 17,
   },
 });

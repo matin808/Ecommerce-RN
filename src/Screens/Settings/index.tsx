@@ -56,11 +56,11 @@ const Settings = ({navigation}: SettingsNavigationProps) => {
             <View style={styles.profileContainer}>
               <View style={styles.ProfileCtnOne}>
                 <Tooltip title="View Profile">
-                  <Text
+                  <CustomText
                     style={styles.name}
-                    onPress={() => navigation.navigate('Profile')}>
-                    {userData?.first_name} {userData?.last_name}
-                  </Text>
+                    onPress={() => navigation.navigate('Profile')}
+                    title={userData?.first_name + ' ' + userData?.last_name}
+                  />
                 </Tooltip>
                 <Text style={styles.email}>{userData?.email}</Text>
                 <TouchableOpacity

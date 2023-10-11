@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Montserrat-SemiBold',
     fontWeight: 'bold',
+    color: '#000',
   },
   productCategory: {
     fontSize: 16,
@@ -73,10 +74,12 @@ const styles = StyleSheet.create({
   qty: {
     fontSize: 16,
     fontWeight: '400',
+    color: '#000',
   },
   price: {
     fontSize: 16,
     fontWeight: '400',
+    color: '#000',
   },
 });
 

@@ -332,6 +332,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 12,
     fontSize: 15,
+    color: '#000',
   },
   errorText: {
     color: 'red',

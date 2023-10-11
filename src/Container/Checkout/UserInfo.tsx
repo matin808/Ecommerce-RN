@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React from 'react';
 import {colors} from '../../assets/colors/Colors';
 import CustomText from '../Custom/Text';
@@ -14,22 +14,23 @@ const UserInfo = () => {
       <CustomText title="Your Details" style={styles.textStyle} />
       <View style={styles.container}>
         <View style={styles.main}>
-          <Text style={styles.label}>Username:</Text>
-          <Text style={styles.text}>{user.username}</Text>
+          <CustomText style={styles.label} title="Username :" />
+          <CustomText style={styles.text} title={user?.username} />
         </View>
         <View style={styles.main}>
-          <Text style={styles.label}>Email:</Text>
-          <Text style={styles.text}>{user.email}</Text>
+          <CustomText style={styles.label} title="Email :" />
+          <CustomText style={styles.text} title={user?.email} />
         </View>
         <View style={styles.main}>
-          <Text style={styles.label}>Name:</Text>
-          <Text style={styles.text}>
-            {user.first_name} {user.last_name}
-          </Text>
+          <CustomText style={styles.label} title="Name :" />
+          <CustomText
+            style={styles.text}
+            title={user?.first_name + ' ' + user?.last_name}
+          />
         </View>
         <View style={styles.main}>
-          <Text style={styles.label}>Phone Number:</Text>
-          <Text style={styles.text}>{user.phone_no}</Text>
+          <CustomText style={styles.label} title="Phone Number :" />
+          <CustomText style={styles.text} title={user?.phone_no} />
         </View>
       </View>
     </View>

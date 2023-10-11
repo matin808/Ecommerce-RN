@@ -1,7 +1,7 @@
 import {View} from 'react-native';
 import React from 'react';
 import CustomText from '../Custom/Text';
-import {Button, Text} from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import {styles} from './UserInfo';
 import {colors} from '../../assets/colors/Colors';
 
@@ -20,24 +20,24 @@ const CartInfo = (props: ICartProps) => {
       <CustomText title="Cart Details" style={styles.textStyle} />
       <View style={styles.container}>
         <View style={styles.main}>
-          <Text style={styles.label}>Total Products</Text>
-          <Text style={styles.text}>{count}</Text>
+          <CustomText style={styles.label} title="Total Products" />
+          <CustomText style={styles.text} title={count} />
         </View>
         <View style={styles.main}>
-          <Text style={styles.label}>Amount</Text>
-          <Text style={styles.text}>₹{total}</Text>
+          <CustomText style={styles.label} title="Amount" />
+          <CustomText style={styles.text} title={'₹' + total} />
         </View>
         <View style={styles.main}>
-          <Text style={styles.label}>Delivery Charge</Text>
-          <Text style={styles.text}>+40</Text>
+          <CustomText style={styles.label} title="Delivery Charge" />
+          <CustomText style={styles.text} title={+40} />
         </View>
         <View style={styles.main}>
-          <Text style={styles.label}>Discount Applied</Text>
-          <Text style={styles.text}>-40</Text>
+          <CustomText style={styles.label} title="Discount Applied" />
+          <CustomText style={styles.text} title={-40} />
         </View>
         <View style={styles.main}>
-          <Text style={styles.label}>Total Amount</Text>
-          <Text style={styles.text}>₹{total}</Text>
+          <CustomText style={styles.label} title="Total Amount" />
+          <CustomText style={styles.text} title={'₹' + total} />
         </View>
       </View>
       <Button

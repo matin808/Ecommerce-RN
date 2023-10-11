@@ -35,12 +35,17 @@ const Input = (props: InputProps) => {
   return (
     <View style={style}>
       {profileIcon ? (
-        <IconComponent name={profileIconName} color="gray" />
+        <IconComponent
+          style={styles.LeftIconStyle}
+          name={profileIconName}
+          color="gray"
+        />
       ) : null}
 
       <TextInput
         style={styles.TextInputStyle}
         placeholder={placeHolder}
+        placeholderTextColor={'lightgray'}
         secureTextEntry={secure}
         value={value && value}
         onChangeText={txt => handleChange(txt)}
@@ -71,7 +76,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 6,
     fontFamily: 'Roboto-Regular',
+    color: '#000',
   },
+  LeftIconStyle: {alignSelf: 'center'},
   IconStyle: {
     marginRight: 10,
     alignSelf: 'center',

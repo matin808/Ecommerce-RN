@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {View, FlatList, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {OrderDetailsNavigationProps} from '../../Navigation/types';
 import {fetchOrderDetail} from '../../utils/API/fetchOrderDetails';
 import OrderData from '../../Container/Order/OrderData';
 import Loader from '../../Container/Custom/Loader';
+import CustomText from '../../Container/Custom/Text';
 
 /**
  * @author Matin kadri
@@ -48,10 +49,13 @@ const OrderDetails = ({route}: OrderDetailsNavigationProps) => {
             />
           </View>
           <View style={styles.costContainer}>
-            <Text style={styles.textStyle}>Total : </Text>
-            <Text style={styles.textStyle}>
-              ₹ {orderData?.data.cost.toLocaleString()}
-            </Text>
+            {/* <Text >Total : </Text> */}
+            <CustomText style={styles.textStyle} title="Total : " />
+
+            <CustomText
+              style={styles.textStyle}
+              title={'₹ ' + orderData?.data.cost.toLocaleString()}
+            />
           </View>
         </View>
       )}
@@ -83,6 +87,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 16,
     fontFamily: 'Montserrat-Bold',
+    color: '#000',
   },
 });
 

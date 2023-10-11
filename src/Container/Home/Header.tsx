@@ -1,4 +1,4 @@
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Platform, StatusBar} from 'react-native';
 import React from 'react';
 import CustomText from '../Custom/Text';
 import IconComponent from '../Custom/Icon';
@@ -14,6 +14,8 @@ const Header: React.FC<IHeaderProps> = ({handlePress}) => {
   console.log('112233aa', cartDetais);
   return (
     <>
+      <StatusBar barStyle={'dark-content'} />
+
       <View style={styles.Container}>
         <View style={styles.TextContainer}>
           <CustomText style={styles.TextStyle_one} title="Neo" />
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
   CartCount: {
     position: 'absolute',
     right: 5,
-    top: 10,
+    top: Platform.OS === 'ios' ? 25 : 10,
     fontFamily: 'Montserrat-SemiBold',
     backgroundColor: 'brown',
     borderRadius: 15,

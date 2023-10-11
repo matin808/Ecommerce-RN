@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 19,
     marginVertical: 15,
+    color: '#000',
   },
 });
 export default SimilarProducts;

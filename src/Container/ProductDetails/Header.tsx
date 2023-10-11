@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontFamily: 'Montserrat-SemiBold',
+    color: '#000',
   },
   producer: {
     color: 'gray',

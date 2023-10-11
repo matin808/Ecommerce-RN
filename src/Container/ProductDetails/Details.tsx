@@ -241,7 +241,8 @@ const styles = StyleSheet.create({
   },
   DialogText: {
     alignSelf: 'center',
-    fontFamily: 'Montserrat-Black',
+    fontFamily: 'Montserrat-SemiBold',
+    color: '#000',
   },
   DialogContent: {
     justifyContent: 'center',

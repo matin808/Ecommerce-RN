@@ -10,6 +10,7 @@ import {AddressScreensNavigationProps} from '../../Navigation/types';
 import {colors} from '../../assets/colors/Colors';
 import Toast from 'react-native-simple-toast';
 import {TextInput} from 'react-native-paper';
+import CustomText from '../../Container/Custom/Text';
 
 /**
  * @author Matin Kadri
@@ -73,7 +74,7 @@ const AddressScreen = ({route, navigation}: AddressScreensNavigationProps) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add Address</Text>
+      <CustomText style={styles.title} title="Add Address" />
 
       <TextInput
         mode="outlined"

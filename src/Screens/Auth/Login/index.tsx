@@ -246,6 +246,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 12,
     fontSize: 15,
+    color: '#000',
   },
 
   errorText: {

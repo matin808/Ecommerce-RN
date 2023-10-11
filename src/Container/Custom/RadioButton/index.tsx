@@ -15,12 +15,14 @@ const RadioBtn = (props: IRadioBtn) => {
       {
         id: 'M',
         label: 'Male',
-        color: colors.ACTIONCOLOR,
+        color: colors.DEFAULT,
+        labelStyle: {color: '#000'},
       },
       {
         id: 'F',
         label: 'Female',
-        color: colors.ACTIONCOLOR,
+        color: colors.DEFAULT,
+        labelStyle: {color: '#000'},
       },
     ],
     [],

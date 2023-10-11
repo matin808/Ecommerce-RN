@@ -74,18 +74,9 @@ const Checkout = ({navigation}: CheckoutNavigationProps) => {
       </ScrollView>
 
       {Orderloading ? (
-        <View
-          style={{
-            backgroundColor: 'black',
-            opacity: 0.6,
-            justifyContent: 'center',
-            alignContent: 'center',
-            width: '100%',
-            position: 'absolute',
-            height: '100%',
-          }}>
+        <View style={styles.orderLoadingStyle}>
           <LottieView
-            style={{height: 200}}
+            style={styles.lottieStyle}
             source={require('../../assets/animation/scanner.json')}
             speed={3}
             autoPlay
@@ -103,6 +94,16 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 15,
   },
+  orderLoadingStyle: {
+    backgroundColor: 'black',
+    opacity: 0.6,
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '100%',
+    position: 'absolute',
+    height: '100%',
+  },
+  lottieStyle: {height: 200},
 });
 
 export default Checkout;

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Text,
   Image,
 } from 'react-native';
 import React, {useState} from 'react';
@@ -21,6 +20,8 @@ import {UpdateProfileNavigationProps} from '../../Navigation/types';
 import DatePicker from 'react-native-date-picker';
 import IconComponent from '../../Container/Custom/Icon';
 import CustomModal from '../../Container/Custom/Modal';
+import CustomText from '../../Container/Custom/Text';
+import Loader from '../../Container/Custom/Loader';
 
 /**
  * @author Matin Kadri
@@ -44,7 +45,7 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
   const token = userDetails.access_token;
   const usrAvatar = getAvatarUrl(userDetails?.gender);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [form, setForm] = useState<IUpdateStateProps>({
     first_name: userDetails?.first_name,
     last_name: userDetails?.last_name,
@@ -111,8 +112,10 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
       setModalVisible(true);
       return;
     }
+    setIsUpdated(true);
     const data = {form: form, token: token};
     await dispatch(updateDetails(data));
+    setIsUpdated(false);
     Toast.show('Profile Updated', Toast.SHORT);
     navigation.goBack();
   };
@@ -137,15 +140,18 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
         <Portal>
           <Dialog style={styles.Modal} visible={visible} onDismiss={hideDialog}>
             <Dialog.Title style={styles.ModalTitle}>Upload Image </Dialog.Title>
+
             <Dialog.Content>
-              <Text onPress={handleCameraFunctionality} style={styles.ModalBtn}>
-                Camera
-              </Text>
-              <Text
+              <CustomText
+                onPress={handleCameraFunctionality}
+                style={styles.ModalBtn}
+                title="Camera"
+              />
+              <CustomText
                 onPress={handleGalleryFunctionality}
-                style={styles.ModalBtn}>
-                Gallery
-              </Text>
+                style={styles.ModalBtn}
+                title="Gallery"
+              />
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={hideDialog}>Close</Button>
@@ -160,109 +166,122 @@ const UpdateProfile = ({navigation}: UpdateProfileNavigationProps) => {
             setModalVisible={setModalVisible}
           />
         )}
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          alwaysBounceVertical={false}>
-          <View style={styles.container}>
-            {form.profile_pic === '' || form.profile_pic === null ? (
-              <TouchableOpacity onPress={handlePhotoUpload}>
-                <Image
-                  source={{uri: usrAvatar}}
-                  width={120}
-                  height={120}
-                  style={styles.Img}
+        {isUpdated ? (
+          <Loader />
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            alwaysBounceVertical={false}>
+            <View style={styles.container}>
+              {form.profile_pic === '' || form.profile_pic === null ? (
+                <TouchableOpacity onPress={handlePhotoUpload}>
+                  <Image
+                    source={{uri: usrAvatar}}
+                    width={120}
+                    height={120}
+                    style={styles.Img}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={handlePhotoUpload}>
+                  <Image
+                    source={{uri: form.profile_pic}}
+                    width={120}
+                    height={120}
+                    style={styles.Img}
+                  />
+                </TouchableOpacity>
+              )}
+
+              <View style={styles.InputContainer}>
+                <Input
+                  placeHolder="First Name"
+                  style={styles.textInput}
+                  value={form.first_name}
+                  profileIcon={true}
+                  handleChange={(txt: string) =>
+                    onHandleChange('first_name', txt)
+                  }
+                  profileIconName="account"
                 />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={handlePhotoUpload}>
-                <Image
-                  source={{uri: form.profile_pic}}
-                  width={120}
-                  height={120}
-                  style={styles.Img}
-                />
-              </TouchableOpacity>
-            )}
 
-            <View style={styles.InputContainer}>
-              <Input
-                placeHolder="First Name"
-                style={styles.textInput}
-                value={form.first_name}
-                profileIcon={true}
-                handleChange={(txt: string) =>
-                  onHandleChange('first_name', txt)
-                }
-                profileIconName="account"
-              />
-
-              <Input
-                style={styles.textInput}
-                placeHolder="Last Name"
-                value={form.last_name}
-                profileIcon={true}
-                handleChange={(txt: string) => onHandleChange('last_name', txt)}
-                profileIconName="account"
-              />
-              <Input
-                style={styles.textInput}
-                value={form?.email}
-                inputMode={'email'}
-                profileIcon={true}
-                placeHolder="Enter your email"
-                handleChange={(txt: string) => onHandleChange('email', txt)}
-                profileIconName="email"
-              />
-              <Input
-                style={styles.textInput}
-                value={form.phone_no}
-                inputMode={'numeric'}
-                profileIcon={true}
-                placeHolder="Enter phone number"
-                handleChange={(txt: string) => onHandleChange('phone_no', txt)}
-                profileIconName="phone"
-              />
-
-              <View style={styles.dateStyle}>
                 <Input
                   style={styles.textInput}
-                  value={form.dob}
-                  placeHolder="Enter your DOB"
+                  placeHolder="Last Name"
+                  value={form.last_name}
                   profileIcon={true}
-                  disabled={false}
-                  profileIconName="party-popper"
+                  handleChange={(txt: string) =>
+                    onHandleChange('last_name', txt)
+                  }
+                  profileIconName="account"
                 />
-                <TouchableOpacity
-                  style={styles.calendarIcon}
-                  onPress={() => setOpen(true)}>
-                  <IconComponent color="gray" name="calendar" use="AntDesign" />
-                </TouchableOpacity>
-              </View>
-              <DatePicker
-                modal
-                open={open}
-                mode="date"
-                date={date}
-                maximumDate={maxDate}
-                onConfirm={date => {
-                  setOpen(false);
-                  setDate(date);
-                  handleDate(date);
-                }}
-                onCancel={() => {
-                  setOpen(false);
-                }}
-              />
-            </View>
+                <Input
+                  style={styles.textInput}
+                  value={form?.email}
+                  inputMode={'email'}
+                  profileIcon={true}
+                  placeHolder="Enter your email"
+                  handleChange={(txt: string) => onHandleChange('email', txt)}
+                  profileIconName="email"
+                />
+                <Input
+                  style={styles.textInput}
+                  value={form.phone_no}
+                  inputMode={'numeric'}
+                  profileIcon={true}
+                  placeHolder="Enter phone number"
+                  handleChange={(txt: string) =>
+                    onHandleChange('phone_no', txt)
+                  }
+                  profileIconName="phone"
+                />
 
-            <Button
-              mode="contained"
-              style={styles.editButton}
-              onPress={handlePress}>
-              Submit
-            </Button>
-          </View>
-        </ScrollView>
+                <View style={styles.dateStyle}>
+                  <Input
+                    style={styles.textInput}
+                    value={form.dob}
+                    placeHolder="Enter your DOB"
+                    profileIcon={true}
+                    disabled={false}
+                    profileIconName="party-popper"
+                  />
+                  <TouchableOpacity
+                    style={styles.calendarIcon}
+                    onPress={() => setOpen(true)}>
+                    <IconComponent
+                      color="gray"
+                      name="calendar"
+                      use="AntDesign"
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DatePicker
+                  modal
+                  open={open}
+                  mode="date"
+                  date={date}
+                  maximumDate={maxDate}
+                  onConfirm={date => {
+                    setOpen(false);
+                    setDate(date);
+                    handleDate(date);
+                  }}
+                  onCancel={() => {
+                    setOpen(false);
+                  }}
+                />
+              </View>
+
+              <Button
+                textColor="#fff"
+                mode="contained"
+                style={styles.editButton}
+                onPress={handlePress}>
+                Submit
+              </Button>
+            </View>
+          </ScrollView>
+        )}
       </PaperProvider>
     </SafeAreaView>
   );
@@ -305,6 +324,7 @@ const styles = StyleSheet.create({
   },
   ModalTitle: {
     alignSelf: 'center',
+    color: '#000',
   },
   ModalBtn: {
     borderRadius: 10,
